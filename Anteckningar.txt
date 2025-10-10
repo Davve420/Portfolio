@@ -1,0 +1,3 @@
+Det behövs göras kort eller liknande klass för projekt uppvisning
+Innehåll på startsidan (om mig själv)
+Komma på lite innehåll till funstuff - kan vara både css/html saker och vanliga roliga saker.
