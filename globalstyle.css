@@ -1,7 +1,26 @@
 /* Mobile first */
+@import url('https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&family=Quicksand:wght@300..700&family=Sora:wght@100..800&display=swap');
 
 body{
     margin: 0;
+    background-color: rgba(48, 48, 48, 0.594);
+}
+
+h1, a{
+    font-family: "Gloria Hallelujah", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+
+}
+h2, h3{
+    font-family: 'Sora', sans-serif;
+    font-style: normal;
+}
+
+p, li, figcaption{
+    font-family: 'Quicksand', sans-serif;
+    font-style: normal;
+    
 }
 
 header{
@@ -15,18 +34,21 @@ nav{
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
-    border:#000 solid 2px;
+    border-bottom:#000 solid 1px;
     padding: 2vh;
+    height: 4vh;
 }
 
 nav a{
     color: #fff;
     text-decoration: none;
-    padding:10px ;
+    text-align: center;
+    padding:1vh;
+    border-radius: 1vh;
 }
 
 nav a:hover{
-    background-color:rgba(255, 255, 255, 0.416); 
+    background-color:rgb(255, 255, 255); 
     color: #000;
 }
 

@@ -4,9 +4,10 @@ body{
 }
 
 .heroimg{
-    max-width: 100%;
-    max-height: fit-content;
-
+    width: 100%;
+    height: auto;
+    display: block;
+    margin-top: 8vh;
 }
 
 figure{
@@ -19,9 +20,43 @@ article{
     grid-template-columns: 1fr 1fr;
 }
 
-.figure1{
+.container{
+    border: solid black 1px;
+    margin-bottom: 4vh;
+    border-radius: 2vh;
+}
+
+.articles{
+    background-color: rgb(255, 255, 255);;
+    border-bottom: solid black 1px;
+    border-top-left-radius: 2vh;
+    border-bottom-left-radius: 2vh;
+}
+
+.article1{
+    border-top-right-radius: 2vh;
+}
+
+.article2{
+    border-bottom-right-radius: 2vh;
+}
+
+.articles section{
+    padding: 1vw;
+}
+
+.figures{
     max-width: 100%;
     max-height: 100%;
+    margin-bottom: -2vh;
+}
+
+.figure1{
+    border-top-left-radius: 2vh;
+}
+
+.figure2{
+    border-bottom-left-radius: 2vh;
 }
 
 .rubrik1{
@@ -39,6 +74,21 @@ article{
     max-height: 100%;
 }
 
-li{
-    margin: 10%;
+.container2{
+    display: flex;
+    flex-flow: column wrap;
+    border: solid black 1px;
+    border-radius: 2vh;
+    background-color: rgb(255, 255, 255);
+    margin: 4vh 0 2vh 0;
+    padding: 1.5vh;
+}
+
+
+footer{
+    text-align: center;
+    padding: 1vh;
+    background-color: rgba(48, 48, 48, 0.594);
+    color: white;
+    border-top: solid black 1px;
 }
