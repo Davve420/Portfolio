@@ -1,5 +1,4 @@
-Det behövs göras kort eller liknande klass för projekt uppvisning
-Innehåll på startsidan (om mig själv)
+Det behövs göras kort eller liknande klass för projekt uppvisning.
 Komma på lite innehåll till funstuff - kan vara både css/html saker och vanliga roliga saker.
 Det är en liten padding på section (den ska vara där) men den sträcker ut sig (fråga johan) 
 Lägga till hover effekt på bilderna i article

@@ -42,7 +42,6 @@ nav{
 nav a{
     color: #fff;
     text-decoration: none;
-    text-align: center;
     padding:1vh;
     border-radius: 1vh;
 }
@@ -52,6 +51,11 @@ nav a:hover{
     color: #000;
 }
 
+.footericon{
+    max-width: 10vw;
+    max-height: 5vh;
+    margin: 1vh;
+}
 
 
 
