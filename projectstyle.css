@@ -1,0 +1,22 @@
+body{
+    display: flex;
+    flex-direction: column;
+}
+
+main{
+    margin-top: 8vh;
+}
+
+.projectcontainer{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2vh;
+}
+
+.projectcard{
+    display: flex;
+    border: 2px solid black;
+    background-color: thistle;
+    margin: 2vh;
+    padding: 1vh;
+}
