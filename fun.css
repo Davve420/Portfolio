@@ -32,6 +32,60 @@
     gap: 2vh;
 }
 
+.time-travel-container{
+    display:flex;
+    justify-content:center;
+    margin: 2vh 0;
+}
+.time-travel-btn{
+    display:inline-block;
+    /* dark red theme */
+    background: linear-gradient(135deg,#6b0000,#9a1414);
+    color: #fff;
+    padding: 0.8rem 1.2rem;
+    border-radius: 1.2rem;
+    text-decoration: none;
+    font-weight: 600;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.18), inset 0 -2px 8px rgba(0,0,0,0.15);
+    transition: transform 150ms ease, box-shadow 150ms ease, opacity 150ms ease;
+}
+.time-travel-btn:hover{
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 10px 26px rgba(0,0,0,0.24), 0 0 18px rgba(154,20,20,0.12);
+    opacity: 0.98;
+}
+.time-travel-btn:active{
+    transform: translateY(0) scale(0.995);
+}
+
+/* Overlay used for the "time travel" effect */
+#time-overlay{
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0;
+    background: radial-gradient(circle at 50% 40%, rgba(255,100,100,0.18) 0%, rgba(120,10,10,0.22) 20%, rgba(0,0,0,0.85) 65%);
+    transition: opacity 200ms ease;
+}
+#time-overlay.show{
+    pointer-events: auto;
+    animation: timewarp 900ms forwards ease-in-out;
+}
+
+@keyframes timewarp{
+    0%{ opacity: 0; transform: scale(0.96); filter: blur(0px); }
+    25%{ opacity: 1; transform: scale(1.03) rotate(0.6deg); filter: blur(2px); }
+    65%{ opacity: 0.95; transform: scale(1.02) rotate(-0.4deg); filter: blur(1px); }
+    100%{ opacity: 0; transform: scale(1.25); filter: blur(8px); }
+}
+
+/* small active pulse on button when clicked */
+.time-travel-btn.clicked{
+    transform: scale(0.98);
+    box-shadow: 0 14px 40px rgba(160,40,40,0.12), inset 0 -3px 10px rgba(0,0,0,0.2);
+}
+
 .funcontainer2{
     display: flex;
     flex-flow: column nowrap
@@ -64,3 +118,4 @@
     margin: 0 auto; 
     }
 }
+

@@ -43,6 +43,34 @@
         </article>
     </section>
 
+
+        <div class="time-travel-container">
+            <a id="timeBtn" class="time-travel-btn" href="FirstPage/index.html">Travel back in time🕰️</a>
+        </div>
+
+        <!-- overlay used for the time-travel visual effect  !!JOHAN, ignorera javascripten eftersom det är en HTML/CSS only inlämningen, jag ville bara testa lite och det blev snyggt så vill gära ha kvar det på netflify för att visa vänner :D-->
+        <div id="time-overlay" aria-hidden="true"></div>
+
+        <script>
+            (function(){
+                const btn = document.getElementById('timeBtn');
+                const overlay = document.getElementById('time-overlay');
+
+                btn.addEventListener('click', function(e){
+                    e.preventDefault();
+                    btn.classList.add('clicked');
+                    overlay.classList.add('show');
+
+                    setTimeout(()=>{
+                        overlay.classList.remove('show');
+                        btn.classList.remove('clicked');
+                    
+                        window.location.href = btn.getAttribute('href');
+                    }, 850);
+                });
+            })();
+        </script>
+
     <details class="details">
         <summary>Utmärkelser & CV</summary>
     <section class="funcontainer">
