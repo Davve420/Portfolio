@@ -7,6 +7,10 @@ main{
     margin-top: 8vh;
 }
 
+.heading{
+    margin: 2vh;
+}
+
 .projectcontainer{
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -15,8 +19,16 @@ main{
 
 .projectcard{
     display: flex;
-    border: 2px solid black;
-    background-color: thistle;
+    border: 2px solid #000;
+    border-radius: 2vh;
+    background-color: rgb(255, 255, 255);
     margin: 2vh;
-    padding: 1vh;
+}
+
+.projectcard img{
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 2vh;
+    height: auto;
+    margin: 0;
 }

@@ -6,6 +6,11 @@ body{
     background-color: rgba(48, 48, 48, 0.594);
 }
 
+a{
+    text-decoration: none;
+    color: inherit;
+}
+
 h1, a{
     font-family: "Gloria Hallelujah", sans-serif;
     font-weight: 400;
@@ -41,7 +46,6 @@ nav{
 
 nav a{
     color: #fff;
-    text-decoration: none;
     padding:1vh;
     border-radius: 1vh;
 }
@@ -58,12 +62,15 @@ nav a:hover{
     align-items: center;
     background-color: rgba(48, 48, 48, 0.594);
     border-top: solid black 1px;
-    height: 8vh;
     margin-top: 4vh;
     width: 100%;
-    bottom: 0;
-    text-align: center;
     color: white;
+}
+
+.footercontainer p{
+    font-family: "Gloria Hallelujah", sans-serif;
+    font-weight: 400;
+    font-style: normal;
 }
 
 .footericon{
