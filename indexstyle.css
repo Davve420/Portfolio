@@ -1,13 +1,13 @@
-body{
-    display: flex;
-    flex-direction: column;
-}
+
 
 .heroimg{
     width: 100%;
     height: auto;
     display: block;
-    margin-top: 8vh;
+}
+
+h1{
+    color: rgb(255, 255, 255);
 }
 
 figure{
@@ -24,6 +24,7 @@ article{
     border: solid black 1px;
     margin-bottom: 4vh;
     border-radius: 2vh;
+    margin: 1vh;
 }
 
 .articles{
@@ -80,15 +81,66 @@ article{
     border: solid black 1px;
     border-radius: 2vh;
     background-color: rgb(255, 255, 255);
-    margin: 4vh 0 2vh 0;
+    margin: 4vh 1vh 2vh 1vh;
     padding: 1.5vh;
 }
 
+/* Crossfade hover: figure1 -> Figure2, bestie -> Bestie2 */
+.article1 figure,
+.article2 figure {
+    position: relative;
+    overflow: hidden;
+}
 
-footer{
-    text-align: center;
-    padding: 1vh;
-    background-color: rgba(48, 48, 48, 0.594);
-    color: white;
-    border-top: solid black 1px;
+.article1 figure { border-top-left-radius: 2vh; }
+.article2 figure { border-bottom-left-radius: 2vh; }
+
+.article1 figure img,
+.article2 figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+    transition: opacity 450ms ease;
+    position: relative;
+    z-index: 1;
+    border-radius: inherit; 
+}
+
+.article1 figure .fig-hover,
+.article2 figure .fig-hover {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    opacity: 0;
+    transition: opacity 450ms ease;
+    z-index: 2;
+    border-radius: inherit;
+    pointer-events: none;
+}
+
+.article1 figure:hover .fig-hover,
+.article2 figure:hover .fig-hover,
+.article1 figure:focus-within .fig-hover,
+.article2 figure:focus-within .fig-hover {
+    opacity: 1;
+}
+
+.article1 figure:hover .fig-base,
+.article2 figure:hover .fig-base,
+.article1 figure:focus-within .fig-base,
+.article2 figure:focus-within .fig-base {
+    opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .article1 figure img,
+    .article2 figure img,
+    .article1 figure .fig-hover,
+    .article2 figure .fig-hover {
+        transition: none;
+        opacity: 1;
+    }
 }

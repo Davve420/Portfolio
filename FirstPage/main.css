@@ -1,0 +1,168 @@
+body {
+	background:#333333; 
+ background:-webkit-linear-gradient(to top, #8B0000, #333333);  
+background: linear-gradient(to top, #8B0000, #333333);
+}
+
+
+p {
+	color: white;
+}
+ h1 {
+ 	color: white;
+ }
+
+ h3 {
+ 	color: white;
+ }
+
+/*Index/allmän*/
+
+ .wrapper{
+ 	border-left: solid black 10px;
+ 	border-right: solid black 10px;
+ }
+
+ .nav ul{
+ 	padding: 0px !important;
+ }
+
+.nav{
+	padding: 10px;
+	overflow: hidden;
+	max-width: 100%;
+	background-color: black;
+	
+}
+ .nav a{
+ 	text-decoration: none;
+ 	color: white;
+ 	margin: 2px;
+ 	padding: 17px;
+ 	font-size: 17px;
+ }
+
+.nav a.active{
+	background-color: #914242;
+}
+
+.nav a:hover{
+	background-color: #C85F5F;
+}
+
+ li{
+ 	display: inline;
+ }
+
+.innehall{
+	background-color:#8B0000;
+	font-size: 20px;
+	overflow: hidden;
+	padding: 20px;
+ }
+
+ .text{
+ 	float: left;
+ 	display: inline-block;
+ 	text-align: center;
+ 	max-width: 45%;
+ }
+
+ .selfie{
+ 	max-width: 20%;
+ 	border-radius: 5%;
+ 	border:solid black 10px;
+ 	float: right;
+ 	margin-right: 10%;
+ }
+
+ .footer{
+ 	background-color: black;
+ 	padding: 10px;
+ 	text-align: center;
+ }
+
+ /*Historia*/
+
+.internetbild{
+	float: right;
+	display: inline-block;
+	padding-top: 25px;
+	margin-right: -100px;
+}
+
+/*HTML*/
+
+.knapp{
+	border-radius: 100%;
+	border-color: red;
+	width: 80%;
+	min-height: 250px;
+	margin-top: 10%;
+	color: white;
+	background-color: black;
+	display: inline-block;
+	font-size: 30px;
+}
+
+.knapp:hover{
+	opacity: 0.6;
+	background-color:white;
+	color: black;
+	border-color: black;
+}
+
+.knappbox{
+	width: 30%;
+	display: inline-block;
+}
+
+/*Photoshop*/
+
+.rubrik{
+	
+
+}
+
+.psIcon{
+	max-width: 5%;
+}
+
+.bilderbox{
+	display: inline-block;
+  	transition: transform .2s; 
+  	margin: 0 auto;
+}
+
+.psbilder{
+	max-width: 20%;
+	border-radius: 10%;
+	border: solid black 5px;
+	margin: 2%;
+}
+
+.psbilder:hover{
+	border-color: white;
+	transform: scale(1.15); 
+}
+
+
+/*Artist*/
+
+.juicebild{
+	width: 39%;
+	margin-left: 7%;
+	border-radius: 10%;
+	border:solid black 5px;
+	margin-top: 1%;
+}
+
+/*Hobby*/
+.bildbox{ 
+transition: transform .2s; 
+margin: 0 auto;
+}
+
+.ball:hover{
+	transform: scale(1.15);
+}

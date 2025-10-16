@@ -1,0 +1,66 @@
+
+.heading{
+    color: rgb(255, 255, 255);
+    background-color: rgba(48, 48, 48, 0.594);
+    text-align: center;
+    padding: 4vh;
+    border: 3px solid;
+    border-radius: 40%;
+}
+
+.funcard{
+    
+    display: flex;
+    flex-direction: column;
+    border: 2px solid #000;
+    border-radius: 2vh;
+    background-color: rgb(255, 255, 255);
+    margin: 2vh;
+}
+
+.funcard img{
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 2vh;
+    height: auto;
+    margin: 0;
+}
+
+.funcontainer{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2vh;
+}
+
+.funcontainer2{
+    display: flex;
+    flex-flow: column nowrap
+}
+
+.details{
+    margin: 2vh;
+    padding: 1vh;
+    border: 2px solid #000;
+    border-radius: 2vh;
+    background-color: rgb(255, 255, 255);
+}
+
+/* Brytpunkt 1: 480px (större mobiler) */
+@media (min-width: 480px) {
+.funcontainer2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 1rem;
+    }
+}
+
+/* Brytpunkt 2: 768px (tablet och uppåt) */
+@media (min-width: 768px) {
+.funcontainer2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    max-width: 1100px;
+    margin: 0 auto; 
+    }
+}
