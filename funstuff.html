@@ -40,32 +40,28 @@
     </section>
 
 
-        <div class="time-travel-container">
-            <a id="timeBtn" class="time-travel-btn" href="FirstPage/index.html">Travel back in time🕰️</a>
-        </div>
+    <details class="details">
+        <summary>Letters</summary>
+            <section class="letter-section">
+        <article class="letter">
+            <h1>The self</h1>
+            
+            <p>Hi there! If you have found your way here I'm guessing you are interested in self development and finding yourself in this vast world. I'm a human just like you and the other seven billion of us. Every human is different both in body and mind. We all have values, morals, ethics and norms we live by everyday. Sometimes we notice things about them and it can just be a small thought of <em>"why?"</em>. This is completely normal and good for you, it is your brain and mind asking itself if this habit is actually good for you.</p>
 
-        <!-- overlay used for the time-travel visual effect  !!JOHAN, ignorera javascripten eftersom det är en HTML/CSS only inlämningen, jag ville bara testa lite och det blev snyggt så vill gära ha kvar det på netflify för att visa vänner :D-->
-        <div id="time-overlay" aria-hidden="true"></div>
+            <p>Imagine you are in your regular routine and you think to yourself <em>"should I walk to work instead of taking the bus or driving?"</em>, while you usually wouldn't think about it you somehow did. This is your brain working its <em>"magic"</em>, your values, ethics and morals are put to work. The thought process could look like this: <em>"Maybe I shouldn't drive to work, the bus takes the same amount of time and is better for the environment. I'm limited to the bus's arriving time though. Maybe I could walk to work, it is better for the environment, I get to use my body more which is healthy for my body. It takes more time than driving or taking the bus but the bus leaves at the same time that I need to leave if I walk so the best option is walking for my overall health and for the environment I live in."</em></p>
+            
+            <p>This is a thought process that your brain often does automatically, you wouldn't need to speak these words in your head instead your brain does it and that's the brain <em>"magic"</em>. We are basically like a computer because a computer is basically a brain and with this analogy we can suffice that our brain works on stuff that our consciousness doesn't really <em>"read"</em> or notice.</p>
 
-        <script>
-            (function(){
-                const btn = document.getElementById('timeBtn');
-                const overlay = document.getElementById('time-overlay');
+            <p>I like to bring up meditation when I talk about this with people that might not be so spiritually tuned. Meditation is a tool you can use for many things and it also is many things. Basically meditation doesn't mean you have to sit like a monk for hours on hours, for example it could be playing an instrument freely, entering a type of flowstate where you are just you(I would compare it to the feeling of daydreaming). The main focus is being present and noticing yourself and your thoughts, you (the conscious part or you) is separate from your thoughts. Notice your thoughts and sort the bad ones out and invite the good ones. So what is a bad and good thought, it can be hard sometimes to differentiate your thoughts because often this is your brain's work, it uses old patterns and ideas to sort them and present them to you in ways of feelings. You know that voice in your head saying stuff like <em>"you are not good enough"</em> or <em>"everybody is looking at you, you need to be the best"</em>(here you could get nervous maybe anxiety comes and sometimes just full on panic). This is not really you, this is your brain reacting to the environment around you and all the external signals then running them through your old patterns, ideas, values etc etc just like an algorithm in a computer program.</p>
 
-                btn.addEventListener('click', function(e){
-                    e.preventDefault();
-                    btn.classList.add('clicked');
-                    overlay.classList.add('show');
+            <p>To come out of this type of unconscious sorting of thoughts and kind of update your algorithm is completely possible and you probably have done it before. Changing your brain is hard and can take a long time but it is definitely good for you especially if you have some type of mental illness. Many times we don't even realise we are mentally ill until this process has already started so I think everyone should try this out. Changing your brain actively doesn't happen by just living your normal life, you need to be present in what you are doing and ask yourself questions like <em>"why?"</em>, <em>"Should I?"</em>, <em>"is this good for me?"</em>, <em>"do I like this?"</em>, <em>"why do I like this?"</em> etc. The first step is to acknowledge your feelings and thoughts then talk about them with someone or something, maybe even go to therapy. Journaling is a good tool if you are a bit scared or uncomfortable talking to people about your feelings. My whimsy soul likes to talk to nature, source, god, the ether etc. This can become a lot for you and you might get a bit depressed asking all these questions to yourself all the time, trust me I have lived like that for a long time. It is both a beautiful way of experiencing the world and a hard time for your brain.</p>
+            
+            <p>Just a quick note here on why this is hard for your brain. In today's societies the systems that we are put in from birth are not always designed for you (the individual person). They are designed in a way that they say <em>"works"</em> and if you are like me and ask questions some day you will ask <em>"why does this work and why aren't we trying other things?"</em>. That's basically what politics should be about but today politics are not so transparent. I will not get into that too much here because I have so much to say about it so I will leave it at that.</p>
 
-                    setTimeout(()=>{
-                        overlay.classList.remove('show');
-                        btn.classList.remove('clicked');
-                    
-                        window.location.href = btn.getAttribute('href');
-                    }, 850);
-                });
-            })();
-        </script>
+            <p>Back to our brains, asking questions is good and you shouldn't feel afraid to do it. This is where meditation is a good tool to use. Here you are present and notice the thoughts that come to you. A thought I usually had was <em>"Am I good enough?"</em>, <em>"Do people really like me?"</em> etc. There was a lot of anxiety for me growing up so these thoughts just floated by in my mind and got sorted unconsciously by my brain and then affected my mood and emotion. This happens really quick and is often a reason we later get overwhelmed by the feeling of not knowing what is wrong with you. I asked myself <em>"Why am I feeling this way?"</em> so many times before actually finding the answer. It can be a long and painful process while going through your mind. When you finally come to conclusions or answers it feels all worth it. At that point you are not fully done but this is the fun part where you put everything you learned into action. It shouldn't be this hard for everyone to understand and accept themselves and that's why I am writing this and telling you about my experience. I think that hearing about others' experiences and also about how they learned then overcame their struggles are the best way for others to understand themselves too. Just like I said in the beginning we are all human, we all are different but we all are also the same. We are a part of the universe experiencing itself so try to be kind to yourself and embrace the part of the universe that is you. And with this understanding you can feel empathy for the other parts of the universe because they too are a part of you.</p>
+        </article>
+    </section>
+    </details>
 
     <details class="details">
         <summary>Achievements & CV</summary>
@@ -105,7 +101,32 @@
                 </div>
             </div>
         </section>
+                <div class="time-travel-container">
+            <a id="timeBtn" class="time-travel-btn" href="FirstPage/index.html">Travel back in time🕰️</a>
+        </div>
 
+        <!-- overlay used for the time-travel visual effect  !!JOHAN, ignorera javascripten eftersom det är en HTML/CSS only inlämningen, jag ville bara testa lite och det blev snyggt så vill gära ha kvar det på netflify för att visa vänner :D-->
+        <div id="time-overlay" aria-hidden="true"></div>
+
+        <script>
+            (function(){
+                const btn = document.getElementById('timeBtn');
+                const overlay = document.getElementById('time-overlay');
+
+                btn.addEventListener('click', function(e){
+                    e.preventDefault();
+                    btn.classList.add('clicked');
+                    overlay.classList.add('show');
+
+                    setTimeout(()=>{
+                        overlay.classList.remove('show');
+                        btn.classList.remove('clicked');
+                    
+                        window.location.href = btn.getAttribute('href');
+                    }, 850);
+                });
+            })();
+        </script>
     </main>
 
     <footer class="footercontainer">
