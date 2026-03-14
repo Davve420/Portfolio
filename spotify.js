@@ -11,7 +11,9 @@
 // ────────────────────────────────────────────────────────────────────────────
 
 const CLIENT_ID   = '375ff5c05859463cac63366000e2be50';
-const REDIRECT_URI = location.href.split('?')[0].split('#')[0];
+const REDIRECT_URI = (location.hostname === 'localhost' || location.hostname === '127.0.0.1')
+    ? `${location.origin}/favorites.html`
+    : 'https://davinet.netlify.app/favorites.html';
 const SCOPES       = 'user-top-read';
 
 // ── PKCE helpers ─────────────────────────────────────────────────────────────
