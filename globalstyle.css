@@ -1,13 +1,51 @@
 /* Mobile first */
-@import url('https://fonts.googleapis.com/css2?family=Gloria+Hallelujah&family=Quicksand:wght@300..700&family=Sora:wght@100..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Cormorant+Garamond:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Manrope:wght@400;500;600&display=swap');
+
+:root{
+    --surface-bg: #050505;
+    --text-primary: #ffffff;
+    --text-inverse: #000000;
+    --border-color: rgba(255, 255, 255, 0.14);
+    --active-bg: #ffffff;
+    --active-text: #000000;
+    --headline-font: 'Cinzel', serif;
+    --display-font: 'Space Grotesk', sans-serif;
+    --body-font: 'Manrope', sans-serif;
+    --accent-crimson: #7a1428;
+    --accent-moon: #dbdeeb;
+}
+
+html[data-theme="light"],
+body[data-theme="light"]{
+    --surface-bg: rgba(236, 236, 236, 0.92);
+    --text-primary: #111111;
+    --text-inverse: #ffffff;
+    --border-color: #646464;
+    --active-bg: #111111;
+    --active-text: #ffffff;
+}
 
 body{
     margin: 0;
-    background-color: rgba(48, 48, 48, 0.594);
+    background-color: var(--surface-bg);
+    color: var(--text-primary);
     display: flex;
     flex-direction: column;
     height: 100%;
     min-height: 100vh;
+    position: relative;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: -1;
+    background:
+        radial-gradient(circle at 8% 12%, rgba(122, 20, 40, 0.16), transparent 38%),
+        radial-gradient(circle at 84% 84%, rgba(195, 198, 215, 0.09), transparent 42%),
+        radial-gradient(circle at 56% 28%, rgba(96, 98, 115, 0.08), transparent 40%);
 }
 
 .heading{
@@ -24,48 +62,80 @@ a{
     color: inherit;
 }
 
-h1, a{
-    font-family: "Gloria Hallelujah", sans-serif;
-    font-weight: 400;
+h1, h2, h3, summary{
+    font-family: var(--headline-font);
+    font-weight: 600;
     font-style: normal;
-
 }
-h2, h3, summary{
-    font-family: 'Sora', sans-serif;
+
+a{
+    font-family: var(--display-font);
+    font-weight: 500;
     font-style: normal;
 }
 
 p, li, figcaption{
-    font-family: 'Quicksand', sans-serif;
+    font-family: var(--body-font);
     font-style: normal;
 }
 
 header{
     position: fixed;
     width: 100%;
-    z-index: 9; 
+    z-index: 20;
+    display: flex;
+    justify-content: center;
+    padding-top: 0.7rem;
 }
 
 /* Här använder jag en navbar med flex. */
 nav{
-    background-color: rgba(48, 48, 48, 0.594);
+    background: color-mix(in srgb, var(--surface-bg) 84%, transparent);
+    backdrop-filter: blur(10px);
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
-    border-bottom:#000 solid 1px;
-    padding: 2vh;
-    height: 4vh;
+    justify-content: center;
+    align-items: center;
+    gap: 0.55rem;
+    flex-wrap: wrap;
+    border-radius: 999px;
+    padding: 0.55rem 0.7rem;
+    min-height: 2.3rem;
+    width: min(94vw, 540px);
     z-index: 10;
+    opacity: 0;
+    transform: translateY(-10px);
+    animation: nav-enter 650ms ease forwards;
+    animation-delay: 450ms;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.48), 0 0 14px rgba(122, 20, 40, 0.22), 0 0 10px rgba(255, 255, 255, 0.08);
 }
 nav a{
-    color: #fff;
-    padding:1vh;
-    border-radius: 1vh;
+    color: var(--text-primary);
+    padding: 0.35rem 0.78rem;
+    border-radius: 999px;
+    letter-spacing: 0.1em;
+    font-size: 0.78rem;
+    font-family: var(--headline-font);
+    font-weight: 500;
+    text-transform: uppercase;
 }
 
 nav a:hover{
-    background-color:rgb(255, 255, 255); 
-    color: #000;
+    background: linear-gradient(135deg, #ffffff, #f0f0f0);
+    color: var(--active-text);
+    box-shadow: 0 0 14px rgba(255, 255, 255, 0.34), 0 0 18px rgba(122, 20, 40, 0.28);
+}
+
+nav a.is-active{
+    background: linear-gradient(135deg, #ffffff, #f0f0f0);
+    color: var(--active-text);
+    font-weight: 700;
+    box-shadow: 0 0 14px rgba(255, 255, 255, 0.34), 0 0 20px rgba(122, 20, 40, 0.34);
+}
+
+nav a:focus-visible{
+    outline: 2px solid var(--text-primary);
+    outline-offset: 2px;
 }
 
 .footercontainer{
@@ -73,23 +143,43 @@ nav a:hover{
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    background-color: rgba(48, 48, 48, 0.594);
-    border-top: solid black 1px;
-    margin-top: 4vh;
+    gap: 1.4rem;
+    background: linear-gradient(to bottom, transparent 0%, var(--surface-bg) 30%);
+    padding: 3rem 1rem 1.8rem;
+    margin-top: 2vh;
     width: 100%;
-    color: white;
-}
-
-.footercontainer p{
-    font-family: "Gloria Hallelujah", sans-serif;
-    font-weight: 400;
-    font-style: normal;
+    color: var(--text-primary);
 }
 
 .footericon{
-    max-width: 10vw;
-    max-height: 5vh;
-    margin: 1vh;
+    width: 2rem;
+    height: 2rem;
+    object-fit: contain;
+    display: block;
+    filter:
+        drop-shadow(0 0 5px rgba(255, 255, 255, 0.92))
+        drop-shadow(0 0 14px rgba(255, 255, 255, 0.55));
+    transition: filter 260ms ease, transform 260ms ease;
+}
+
+a:has(.footericon):hover .footericon,
+a:has(.footericon):focus-visible .footericon {
+    filter:
+        drop-shadow(0 0 8px #fff)
+        drop-shadow(0 0 20px rgba(255, 255, 255, 0.88))
+        drop-shadow(0 0 42px rgba(122, 20, 40, 0.7));
+    transform: scale(1.14) translateY(-3px);
+}
+
+@keyframes nav-enter {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 

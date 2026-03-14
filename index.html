@@ -3,87 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="DaviN3t is a gothic-cosmic portfolio featuring style, music and interactive projects.">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="DaviN3t">
+    <meta property="og:description" content="A gothic-cosmic portfolio featuring style, music and interactive projects.">
+    <meta property="og:url" content="https://davinet.netlify.app/">
+    <meta property="og:image" content="https://davinet.netlify.app/pictures/GrungeDavi.JPEG">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="DaviN3t">
+    <meta name="twitter:title" content="DaviN3t">
+    <meta name="twitter:description" content="A gothic-cosmic portfolio featuring style, music and interactive projects.">
+    <meta name="twitter:image" content="https://davinet.netlify.app/pictures/GrungeDavi.JPEG">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="icon" type="image/png" href="pictures/dvd.jpg">
     <link rel="stylesheet" href="globalstyle.css">
     <link rel="stylesheet" href="indexstyle.css">
-    <title>DavidsPortfolio</title>
+    <title>DaviN3t</title>
 </head>
-<body>
+<body data-page="index">
     <header>
-        <nav>
-            <a href="index.html">Start</a>
-            <a href="projects.html">Projects</a>
-            <a href="funstuff.html">Funstuff</a>
-        </nav>
+        <div id="site-nav"></div>
     </header>
-    <main>
-        <figure>
-        <img  class="heroimg" src="pictures\Hero.jpg" alt="David with a pelt coat">
-        </figure>
-        <h1 class="rubrik1">Welcome to David's Portfolio</h1>
-        
-        <section class="container">
-        <article class="articles article1">
-            <figure >
-                <img class="figures fig-base figure1" src="pictures\Figure1.jpg" alt="David sitting down with white bright hair">
-                <img class="figures fig-hover" src="pictures\Figure2.jpg" alt="David in the schoolbathroom" aria-hidden="true">
-            </figure>
-            <section>
-                <h3 class="rubrik2">I love to take photos and style myself</h3>
-                <p>I have a passion for taking photos of myself in my new outfits. My creations are all about self-exploration.</p>
-            </section>
-        </article>
-
-        <article class="articles article2">
-            <figure >
-                <img class="figures fig-base figure2" src="pictures\Bestie.JPEG" alt="David and his best friend">
-                <img class="figures fig-hover" src="pictures\Bestie2.JPEG" alt="David and his bestie" aria-hidden="true">
-            </figure>
-            <section>
-                <h3 class="rubrik2">The Photo isn't everything</h3>
-                <p>A lot of the pictures I post, I take myself. The best of them though always comes when friends are involved. Being yourself around your friends brings out a new light in you, and it is visible on the outside too. Here's a photo of me and my best friend after we bleached my hair.</p>
-            </section>
-        </article>
+    <div class="warp-overlay" aria-hidden="true"></div>
+    <main class="space-home">
+        <section class="hero-shell" aria-label="Welcome section">
+            <img class="hero-bg" src="pictures/GrungeDavi.JPEG" alt="" aria-hidden="true" fetchpriority="high" decoding="async">
+            <div class="hero-content">
+                <p class="eyebrow">Welcome to my cyberspace</p>
+                <h1 class="hero-title">You just got pulled into Davi's orbit</h1>
+                <p class="hero-lead">Choose where you land next. Every card is a different zone in my cyberspace: style, music, showcases and other thingies</p>
+            </div>
         </section>
 
-            <figure>
-                <a href="https://www.instagram.com/mojopin.mp3/">
-                <img class="concert-fig" src="pictures\Concert.jpg" alt="MojpPin concert in a skatepark">
+        <section class="destination-grid" aria-label="Main destinations">
+            <article class="destination-card" style="--delay: 0s">
+                <a class="card-link" href="funstuff.html">
+                    <img src="pictures/typeshi.JPG" alt="Style deck – Garderob" loading="lazy" decoding="async">
+                    <span class="card-label">
+                        <span class="card-eyebrow">Style deck</span>
+                        <span class="card-title">Wardrobe</span>
+                    </span>
                 </a>
-                <figcaption>MojoPin band, one of the best grunge/rock bands right now!</figcaption>
-            </figure>
+            </article>
 
-        <div class="container2">
-        <section>
-            <h2>Style & Music</h2>
-            <p>A lot of my outfits are inspired by music and the cultures revolving that type of music. There are many genres that are heavily influenced by political ideologies. A very obvious example is the punk genre, the scene is filled with rebellious outfits characterized by studs, spikes, and leather, often decorated with patches. The punks doesn't want to disobey but they want to set an example of going against the norms. I think that everyone is a mix och genres and influences from all around. I myself love grunge, shoegaze, alternative rap and many more genres. My style reflects who I am, and I've never felt better with myself than now. So if you are hesitating on putting on a specific fit or item, DO IT. You often think more about what others will think than they actually do. If you show up as yourself, the people who are meant for you will have an easier time finding you and vice versa.  </p>
-        </section>
-        <section>
-            <h3>Here's a snippet of my favorite song right now & a little list of links of songs that I liked recently</h3>
-            <ul>
-            <li>
-                <h4>Needles, CA - Rex Laurent</h4>
-                <audio controls>
-                    <source src="sounds\needles.mp3">
-                </audio> 
-            </li>  
-            <li>
-                <a href="https://open.spotify.com/track/3HFBqhotJeEKHJzMEW31jZ?si=ff3dae817703400a">Change - Big thief</a>
-            </li>
-            <li>
-                <a href="https://open.spotify.com/track/3I8gY1kGY1zRI7v0Qncq64?si=0f8d9ec776ab4bea">By Myself - Maya Hawke (Love her voice sm^^)</a>
-            </li>
-            <li>
-                <a href="https://open.spotify.com/track/6ig8zXqHrvRJmXWMk42h7b?si=d045dedb7ead498f">Lo on the Hi-way - Jordana, TV Girl</a>
-            </li>
+            <article class="destination-card" style="--delay: 0.9s">
+                <a class="card-link" href="favorites.html">
+                    <img src="pictures/musiclife.jpg" alt="Vibe deck – Favorites" loading="lazy" decoding="async">
+                    <span class="card-label">
+                        <span class="card-eyebrow">Vibe deck</span>
+                        <span class="card-title">Explore Music</span>
+                    </span>
+                </a>
+            </article>
 
-            <li>
-                <a href="https://open.spotify.com/track/384A86UiRMkfprxRyiltFH?si=36896cc327a84adb">mp3 - Cr1tter (My favorite artist!)</a>
-            </li>
+            <article class="destination-card" style="--delay: 1.8s">
+                <a class="card-link" href="projects.html">
+                    <img src="pictures/pinkproject.jpg" alt="Build deck – Scorpio Star Map" loading="lazy" decoding="async">
+                    <span class="card-label">
+                        <span class="card-eyebrow">Build deck</span>
+                        <span class="card-title">Projects</span>
+                    </span>
+                </a>
+            </article>
+
+            <article class="destination-card music-card" style="--delay: 3.6s">
+                <div class="music-now-playing">
+                    <div class="music-bars" aria-hidden="true">
+                        <span></span><span></span><span></span><span></span><span></span>
+                    </div>
+                    <div class="music-info">
+                        <span class="card-eyebrow">New release · Cr1tter.n3t</span>
+                        <span class="card-title">Brutalist (remix)</span>
+                    </div>
+                </div>
+                <div class="music-player-row">
+                    <img class="track-art" src="pictures/Cr1tterBrutalist.jpg" alt="Cr1tter Brutalist cover art" loading="lazy" decoding="async">
+                    <audio controls preload="none">
+                        <source src="sounds/critter.mp3">
+                    </audio>
+                </div>
+                <a class="card-cta" href="https://open.spotify.com/track/3tKZjK1LXF1RhQAv6MDUJr?si=e3e1e6f717b645d6">Open on Spotify</a>
+            </article>
         </section>
-    </div>
+
+
     </main>
-    <footer class="footercontainer">
-        <a href="https://www.instagram.com/david_brolins/" ><img class="footericon" src="pictures/instagram-logo.png" alt="Instagram logo"></a><p>My links</p> <a href="mailto:davidbrolin04@gmail.com"><img class="footericon" src="pictures/mail.png"></a>
+    <footer class="footercontainer" id="site-footer">
     </footer>
+    <script src="shared-shell.js" defer></script>
+    <script src="index-effects.js" defer></script>
 </body>
 </html>

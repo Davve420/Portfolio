@@ -1,16 +1,13 @@
 {
   "name": "hangman",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "hangman.JS",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "npx serve .",
+    "test": "echo \"No automated tests yet\""
   },
   "author": "",
   "license": "ISC",
-  "description": "",
-  "dependencies": {
-    "@inquirer/prompts": "^6.0.1",
-    "random-words": "^2.0.1"
-  }
+  "description": "Browser-based Hangman mini game"
 }

@@ -1,168 +1,238 @@
+:root {
+    --bg-dark: #030303;
+    --bg-red: #101010;
+    --surface: #111111;
+    --ink: #f8f8f8;
+    --ink-dark: #171717;
+    --accent: #ffffff;
+    --border: rgba(255, 255, 255, 0.16);
+}
+
+* {
+    box-sizing: border-box;
+}
+
 body {
-	background:#333333; 
- background:-webkit-linear-gradient(to top, #8B0000, #333333);  
-background: linear-gradient(to top, #8B0000, #333333);
+    margin: 0;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--ink);
+    background: linear-gradient(to top, #0a0a0a, var(--bg-dark));
+    min-height: 100vh;
 }
 
-
-p {
-	color: white;
-}
- h1 {
- 	color: white;
- }
-
- h3 {
- 	color: white;
- }
-
-/*Index/allmän*/
-
- .wrapper{
- 	border-left: solid black 10px;
- 	border-right: solid black 10px;
- }
-
- .nav ul{
- 	padding: 0px !important;
- }
-
-.nav{
-	padding: 10px;
-	overflow: hidden;
-	max-width: 100%;
-	background-color: black;
-	
-}
- .nav a{
- 	text-decoration: none;
- 	color: white;
- 	margin: 2px;
- 	padding: 17px;
- 	font-size: 17px;
- }
-
-.nav a.active{
-	background-color: #914242;
+img {
+    max-width: 100%;
+    display: block;
+    height: auto;
 }
 
-.nav a:hover{
-	background-color: #C85F5F;
+.wrapper {
+    max-width: 1100px;
+    margin: 0 auto;
+    border-left: 1px solid rgba(255, 255, 255, 0.08);
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
- li{
- 	display: inline;
- }
-
-.innehall{
-	background-color:#8B0000;
-	font-size: 20px;
-	overflow: hidden;
-	padding: 20px;
- }
-
- .text{
- 	float: left;
- 	display: inline-block;
- 	text-align: center;
- 	max-width: 45%;
- }
-
- .selfie{
- 	max-width: 20%;
- 	border-radius: 5%;
- 	border:solid black 10px;
- 	float: right;
- 	margin-right: 10%;
- }
-
- .footer{
- 	background-color: black;
- 	padding: 10px;
- 	text-align: center;
- }
-
- /*Historia*/
-
-.internetbild{
-	float: right;
-	display: inline-block;
-	padding-top: 25px;
-	margin-right: -100px;
+.legacy-nav {
+    background: #000;
+    border-bottom: 2px solid #2f2f2f;
 }
 
-/*HTML*/
-
-.knapp{
-	border-radius: 100%;
-	border-color: red;
-	width: 80%;
-	min-height: 250px;
-	margin-top: 10%;
-	color: white;
-	background-color: black;
-	display: inline-block;
-	font-size: 30px;
+.legacy-nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0.65rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.45rem;
+    justify-content: center;
 }
 
-.knapp:hover{
-	opacity: 0.6;
-	background-color:white;
-	color: black;
-	border-color: black;
+.legacy-nav a {
+    display: inline-block;
+    text-decoration: none;
+    color: var(--ink);
+    font-weight: 600;
+    border-radius: 999px;
+    padding: 0.45rem 0.85rem;
+    font-size: 0.92rem;
+    border: 1px solid transparent;
 }
 
-.knappbox{
-	width: 30%;
-	display: inline-block;
+.legacy-nav a:hover,
+.legacy-nav a:focus-visible {
+    border-color: var(--ink);
+    outline: none;
 }
 
-/*Photoshop*/
-
-.rubrik{
-	
-
+.legacy-nav a.active {
+    background: #ffffff;
+    color: #000;
+    box-shadow: 0 0 14px rgba(255, 255, 255, 0.4);
 }
 
-.psIcon{
-	max-width: 5%;
+.innehall {
+    flex: 1;
+    padding: 1rem;
+    background: rgba(7, 7, 7, 0.92);
+    display: grid;
+    gap: 1rem;
 }
 
-.bilderbox{
-	display: inline-block;
-  	transition: transform .2s; 
-  	margin: 0 auto;
+.single-column {
+    grid-template-columns: 1fr;
 }
 
-.psbilder{
-	max-width: 20%;
-	border-radius: 10%;
-	border: solid black 5px;
-	margin: 2%;
+.text {
+    background: rgba(8, 8, 8, 0.84);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 14px;
+    padding: 1rem;
+    line-height: 1.6;
 }
 
-.psbilder:hover{
-	border-color: white;
-	transform: scale(1.15); 
+.text h1,
+.text h2 {
+    margin: 0 0 0.6rem;
+    line-height: 1.2;
 }
 
-
-/*Artist*/
-
-.juicebild{
-	width: 39%;
-	margin-left: 7%;
-	border-radius: 10%;
-	border:solid black 5px;
-	margin-top: 1%;
+.text p {
+    margin: 0.6rem 0;
 }
 
-/*Hobby*/
-.bildbox{ 
-transition: transform .2s; 
-margin: 0 auto;
+.centered {
+    text-align: center;
 }
 
-.ball:hover{
-	transform: scale(1.15);
+.media-card {
+    background: var(--surface);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 0.5rem;
+    color: #f2f2f2;
+    box-shadow: 0 0 14px rgba(255, 255, 255, 0.14);
+}
+
+.selfie,
+.juicebild,
+.psbilder,
+.full-width-image {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.internetbild img {
+    border-radius: 999px;
+}
+
+.html-logo,
+.psIcon,
+.rocket-icon {
+    width: min(120px, 40vw);
+    margin: 0 auto 0.8rem;
+}
+
+.assignment-grid {
+    display: grid;
+    gap: 0.7rem;
+}
+
+.knapp {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 14px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 0.9rem 1rem;
+    background: #101010;
+    color: #ffffff;
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+
+.knapp:hover,
+.knapp:focus-visible {
+    background: #ffffff;
+    color: #101010;
+    box-shadow: 0 0 18px rgba(255, 255, 255, 0.48);
+}
+
+.gallery {
+    display: grid;
+    gap: 1rem;
+}
+
+.video-link {
+    text-decoration: none;
+}
+
+.video-link .ball {
+    transition: transform 180ms ease;
+}
+
+.video-link:hover .ball,
+.video-link:focus-visible .ball {
+    transform: scale(1.04);
+}
+
+.video-section {
+    display: grid;
+    gap: 0.7rem;
+}
+
+.video-section h2 {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.video-wrap {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 3px solid var(--border);
+}
+
+.video-wrap iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+.footer {
+    background: #000;
+    text-align: center;
+    padding: 0.8rem 1rem;
+}
+
+.footer p {
+    margin: 0;
+}
+
+@media (min-width: 760px) {
+    .innehall {
+        padding: 1.4rem;
+    }
+
+    body[data-page="index"] .innehall,
+    body[data-page="historia"] .innehall {
+        grid-template-columns: 1.4fr 1fr;
+        align-items: start;
+    }
+
+    .two-col {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .legacy-nav a {
+        font-size: 1rem;
+    }
 }

@@ -1,159 +1,387 @@
-
-
-h1{
-color: rgb(255, 255, 255);
+:root {
+    --map-panel: rgba(6, 6, 6, 0.94);
+    --line-color: rgba(220, 220, 220, 0.38);
+    --star-core: #f2f2f2;
+    --star-glow: rgba(255, 255, 255, 0.85);
 }
 
-.projectcontainer{
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2vh;
-}
-
-.projectcard{
-    display: flex;
-    border: 2px solid rgb(255, 255, 255);
-    border-radius: 2vh;
-    background-color: rgba(48, 48, 48, 0.594);
-    color: rgb(255, 255, 255);
-    text-align: center;
-    margin: 2vh;
-}
-
-.projectcard{
-    overflow: hidden; /* klipper bilden och pseudo-element till rundning */
-}
-
-.projectcard img{
-    max-width: 100%;
-    max-height: 100%;
-    border-radius: 2vh;
-    height: auto;
-    margin: 0;
-}
-
-
-.coming-wrapper {
-    display: flex;
-    justify-content: center; 
-    align-items: center;  
-    margin-top: 10vh;   
-}
-
-
-.coming-soon {
-    display: inline-flex;
-    align-items: center; 
-    gap: 0.25rem;          
-    font-size: 1.5rem;        
-    color: inherit;
-}
-
-
-.dots {
-    display: inline-flex;
-    align-items: center;
-    width: auto;           
-    margin-left: 0.25rem;
-}
-
-.dot {
-    display: inline-block;
-    opacity: 0;
-    font-weight: 700;
-    animation: dots-cycle 1.2s linear infinite;
-}
-
-.dot:nth-child(1) { animation-delay: 0s; }
-.dot:nth-child(2) { animation-delay: 0.2s; }
-.dot:nth-child(3) { animation-delay: 0.4s; }
-
-@keyframes dots-cycle {
-    0%   { opacity: 0; }
-    10%  { opacity: 1; }
-    50%  { opacity: 1; }
-    60%  { opacity: 0; }
-    100% { opacity: 0; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .dot { animation: none; opacity: 1; }
-}
-
-
-.projectcard a{
-    display: block;
+.constellation-main {
+    margin-top: 8vh;
+    padding: 1rem;
     position: relative;
     overflow: hidden;
+    min-height: calc(100vh - 8vh);
 }
 
-.projectcard a{ isolation: isolate; }
-
-
-.projectcard a::before{
+.constellation-main::before {
     content: "";
     position: absolute;
     inset: 0;
-    background: rgba(128,128,128,0); 
-        z-index: 2;
-        border-radius: inherit;
-    transition: background 300ms ease;
+    background:
+        radial-gradient(circle at 20% 18%, rgba(122, 20, 40, 0.18), transparent 35%),
+        radial-gradient(circle at 82% 75%, rgba(205, 205, 205, 0.12), transparent 42%);
+    pointer-events: none;
+    animation: sky-shift 18s linear infinite alternate;
+}
+
+.heading {
+    position: relative;
+    z-index: 1;
+    max-width: 760px;
+    margin: 0 auto 1rem;
+    text-align: center;
+}
+
+.eyebrow {
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 0.72rem;
+    color: rgba(220, 228, 255, 0.78);
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.heading h1 {
+    margin: 0.45rem 0;
+    color: #f4f6ff;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.9rem, 9vw, 3rem);
+    line-height: 1.08;
+}
+
+.heading p {
+    margin: 0;
+    color: #d6defd;
+}
+
+.constellation-wrap {
+    position: relative;
+    z-index: 1;
+    height: 70vh;
+    min-height: 430px;
+    max-width: 1100px;
+    margin: 0 auto;
+    background: linear-gradient(165deg, var(--map-panel), rgba(18, 20, 34, 0.82));
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    border-radius: 1rem;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55), 0 0 22px rgba(255, 255, 255, 0.16);
+    overflow: hidden;
+}
+
+.constellation-wrap::before {
+    content: "";
+    position: absolute;
+    inset: -25% -60%;
+    background: linear-gradient(112deg, transparent 44%, rgba(255, 255, 255, 0.16) 50%, transparent 56%);
+    animation: map-scan 11s linear infinite;
     pointer-events: none;
 }
 
-
-.projectcard a::after{
-    content: "EXPLORE";
+.constellation-lines {
     position: absolute;
     inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
-    font-size: 2rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    opacity: 0;
-    transform: translateY(8px);
-    transition: opacity 250ms ease, transform 250ms ease;
-    text-shadow: 0 4px 14px rgba(0,0,0,0.85); 
-    z-index: 3;
-    border-radius: inherit;
-    pointer-events: none;
-}
-
-
-.projectcard a:hover::before,
-.projectcard a:focus-within::before,
-.projectcard a:focus-visible::before {
-    background: rgba(0,0,0,0.65);
-}
-
-.projectcard a:hover::after,
-.projectcard a:focus-within::after,
-.projectcard a:focus-visible::after {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-
-.projectcard a img{
-    transition: transform 350ms ease;
-    display: block;
     width: 100%;
-    height: auto;
-    position: relative; 
-    z-index: 0; 
-    border-radius: inherit;
-}
-.projectcard a:hover img,
-.projectcard a:focus-within img {
-    transform: scale(1.03);
+    height: 100%;
 }
 
+.constellation-lines polyline {
+    fill: none;
+    stroke: var(--line-color);
+    stroke-width: 0.34;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 1 1.3;
+    animation: dash-float 10s linear infinite;
+}
+
+.constellation-lines {
+    filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.18));
+}
+
+.star {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    display: grid;
+    place-items: center;
+    text-decoration: none;
+    color: inherit;
+}
+
+.star-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #ffffff, var(--star-core));
+    box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.08), 0 0 24px 5px var(--star-glow);
+    transition: transform 200ms ease, box-shadow 220ms ease;
+}
+
+.star-label {
+    position: absolute;
+    left: calc(100% + 0.5rem);
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(9, 12, 22, 0.92);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    border-radius: 0.55rem;
+    padding: 0.45rem 0.58rem;
+    min-width: 170px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 180ms ease, transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.star-label strong {
+    display: block;
+    color: #f8f9ff;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.82rem;
+}
+
+.star-label small {
+    display: block;
+    margin-top: 0.12rem;
+    color: #c9d6ff;
+    font-size: 0.72rem;
+}
+
+.star:hover .star-dot,
+.star:focus-visible .star-dot {
+    transform: scale(1.45);
+    box-shadow:
+    0 0 0 7px rgba(255, 255, 255, 0.2),
+    0 0 28px 8px rgba(255, 255, 255, 0.95),
+    0 0 65px 18px rgba(255, 255, 255, 0.45),
+    0 0 26px rgba(122, 20, 40, 0.34);
+}
+
+.star:hover .star-label,
+.star:focus-visible .star-label {
+    opacity: 1;
+    transform: translateY(-50%) translateX(4px);
+    border-color: rgba(255, 255, 255, 0.82);
+    box-shadow: 0 0 18px rgba(255, 255, 255, 0.34), inset 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.s1 { left: 9%; top: 15%; }
+.s2 { left: 23%; top: 26%; }
+.s3 { left: 33%; top: 37%; }
+.s4 { left: 45%; top: 49%; }
+.s5 { left: 56%; top: 56%; }
+.s6 { left: 68%; top: 65%; }
+.s7 { left: 81%; top: 72%; }
+.s8 { left: 63%; top: 43%; }
+.s9 { left: 90%; top: 58%; }
+
+.s3,
+.s6 {
+    animation: twinkle 3.2s ease-in-out infinite;
+}
+
+.s5,
+.s8 {
+    animation: twinkle 4.1s ease-in-out infinite;
+    animation-delay: 0.9s;
+}
+
+.s9 {
+    animation: twinkle 3.6s ease-in-out infinite;
+    animation-delay: 0.4s;
+}
+
+.s6 .star-label,
+.s7 .star-label,
+.s9 .star-label {
+    left: auto;
+    right: calc(100% + 0.5rem);
+    text-align: right;
+}
+
+.todo-widget {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 1.1rem auto 0;
+    background: linear-gradient(160deg, rgba(8, 8, 8, 0.94), rgba(14, 18, 30, 0.88));
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 1rem;
+    padding: 1rem;
+    box-shadow: 0 16px 34px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+.todo-widget h2 {
+    margin: 0;
+    color: #f4f6ff;
+    font-size: 1.2rem;
+}
+
+.todo-widget p {
+    margin: 0.35rem 0 0.9rem;
+    color: #d0d9f7;
+}
+
+.todo-controls {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.todo-controls input {
+    flex: 1;
+    min-width: 210px;
+    padding: 0.62rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 0.56rem;
+    background: rgba(5, 5, 5, 0.82);
+    color: #eef4ff;
+}
+
+.todo-controls button {
+    padding: 0.5rem 0.8rem;
+    border-radius: 0.6rem;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.todo-controls button:hover,
+.todo-controls button:focus-visible {
+    box-shadow: 0 0 14px rgba(255, 255, 255, 0.26), 0 0 18px rgba(122, 20, 40, 0.32);
+    border-color: rgba(255, 255, 255, 0.7);
+    outline: none;
+}
+
+.todo-lists {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.todo-list,
+.done-list {
+    flex: 1;
+    min-width: 220px;
+}
+
+.todo-list h3,
+.done-list h3 {
+    margin: 0 0 0.5rem;
+    color: #f4f6ff;
+    font-size: 1rem;
+}
+
+.todo-list ul,
+.done-list ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-top: 1px dashed rgba(238, 244, 255, 0.35);
+}
+
+.todo-list li,
+.done-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid rgba(241, 241, 241, 0.28);
+}
+
+.todo-list li span,
+.done-list li span {
+    flex: 1;
+    color: #e9eeff;
+}
+
+.actions {
+    display: flex;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+}
+
+.actions button {
+    padding: 0.25rem 0.46rem;
+    border-radius: 0.4rem;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.actions button:hover,
+.actions button:focus-visible {
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.18);
+    border-color: rgba(255, 255, 255, 0.58);
+    outline: none;
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
+
+@keyframes dash-float {
+    from { stroke-dashoffset: 0; }
+    to { stroke-dashoffset: 12; }
+}
+
+@keyframes sky-shift {
+    from { transform: translateX(0); }
+    to { transform: translateX(14px); }
+}
+
+@keyframes map-scan {
+    from { transform: translateX(-44%); opacity: 0; }
+    20% { opacity: 0.9; }
+    60% { opacity: 0.28; }
+    to { transform: translateX(44%); opacity: 0; }
+}
+
+@media (max-width: 760px) {
+    .constellation-wrap {
+        height: 68vh;
+        min-height: 520px;
+    }
+
+    .star-label {
+        min-width: 145px;
+    }
+
+    .s1 { left: 12%; top: 12%; }
+    .s2 { left: 26%; top: 23%; }
+    .s3 { left: 38%; top: 34%; }
+    .s4 { left: 50%; top: 46%; }
+    .s5 { left: 60%; top: 57%; }
+    .s6 { left: 70%; top: 67%; }
+    .s7 { left: 78%; top: 78%; }
+    .s8 { left: 65%; top: 37%; }
+    .s9 { left: 89%; top: 55%; }
+
+    .todo-widget {
+        padding: 0.9rem;
+    }
+}
 
 @media (prefers-reduced-motion: reduce) {
-    .projectcard a::before { transition: none; }
-    .projectcard a::after { transition: none; transform: none; opacity: 1; }
-    .projectcard a img { transition: none; transform: none; }
+    .constellation-main::before,
+    .constellation-wrap::before,
+    .constellation-lines polyline,
+    .s3,
+    .s5,
+    .s6,
+    .s8,
+    .s9 {
+        animation: none;
+    }
+
+    .star-dot,
+    .star-label {
+        transition: none;
+    }
 }

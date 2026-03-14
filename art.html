@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Art Gallery from DaviN3t with a swipeable carousel of artworks and visual experiments.">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="DaviN3t - Art Gallery">
+    <meta property="og:description" content="Swipe through art and visual experiments in the DaviN3t gallery.">
+    <meta property="og:url" content="https://davinet.netlify.app/art.html">
+    <meta property="og:image" content="https://davinet.netlify.app/pictures/brainwashed.jpg">
+    <meta property="og:site_name" content="DaviN3t">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="DaviN3t - Art Gallery">
+    <meta name="twitter:description" content="Swipe through art and visual experiments in the DaviN3t gallery.">
+    <meta name="twitter:image" content="https://davinet.netlify.app/pictures/brainwashed.jpg">
+    <link rel="icon" type="image/png" href="pictures/dvd.jpg">
+    <link rel="stylesheet" href="globalstyle.css">
+    <link rel="stylesheet" href="gallery.css">
+    <title>DaviN3t - Gallery</title>
+</head>
+<body data-page="art">
+    <header>
+        <div id="site-nav"></div>
+    </header>
+
+    <main class="gallery-main">
+        <section class="gallery-head">
+            <h1>Art Gallery and whatever</h1>
+            <p class="gallery-vibe">Swipe through some of my artstuff and memes or whatever</p>
+        </section>
+
+        <section class="gallery-carousel" data-carousel aria-label="Art carousel">
+            <div class="carousel-viewport" tabindex="0" aria-label="Swipeable art carousel">
+                <div class="carousel-track">
+                    <figure class="carousel-slide"><img src="pictures/Cutekitten.jpg" alt="Artwork one" loading="lazy" decoding="async"></figure>
+                    <figure class="carousel-slide"><img src="pictures/brainwashed.jpg" alt="Artwork two" loading="lazy" decoding="async"></figure>
+                    <figure class="carousel-slide"><img src="pictures/Frinds.PNG" alt="Artwork three" loading="lazy" decoding="async"></figure>
+                    <figure class="carousel-slide"><img src="pictures/Hound.JPEG" alt="Artwork four" loading="lazy" decoding="async"></figure>
+                    <figure class="carousel-slide"><img src="pictures/ToporBottom.JPG" alt="Artwork five" loading="lazy" decoding="async"></figure>
+                    <figure class="carousel-slide"><img src="pictures/weirdshi.JPG" alt="Artwork six" loading="lazy" decoding="async"></figure>
+                    <figure class="carousel-slide"><img src="pictures/Diva.JPG" alt="Artwork seven" loading="lazy" decoding="async"></figure>
+                    <figure class="carousel-slide"><img src="pictures/Couldbeus.JPG" alt="Artwork eight" loading="lazy" decoding="async"></figure>
+                    <figure class="carousel-slide"><img src="pictures/Concert.jpg" alt="Artwork nine" loading="lazy" decoding="async"></figure>
+                </div>
+            </div>
+            <div class="carousel-controls">
+                <button class="carousel-btn" data-prev type="button" aria-label="Previous image">Prev</button>
+                <span class="carousel-status" data-status aria-live="polite"></span>
+                <button class="carousel-btn" data-next type="button" aria-label="Next image">Next</button>
+            </div>
+        </section>
+
+        <section class="thumbs-wrap" aria-label="Art thumbnails">
+            <div class="thumbs-grid" data-thumbs></div>
+        </section>
+    </main>
+
+    <footer class="footercontainer" id="site-footer"></footer>
+    <script src="shared-shell.js" defer></script>
+    <script src="gallery.js" defer></script>
+</body>
+</html>

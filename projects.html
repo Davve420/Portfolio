@@ -3,82 +3,112 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Scorpio Star Map: interactive project constellation from DaviN3t.">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="DaviN3t - Scorpio Star Map">
+    <meta property="og:description" content="Explore projects in an interactive Scorpio-inspired constellation map.">
+    <meta property="og:url" content="https://davinet.netlify.app/projects.html">
+    <meta property="og:image" content="https://davinet.netlify.app/pictures/projectsstarmap.jpg">
+    <meta property="og:site_name" content="DaviN3t">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="DaviN3t - Scorpio Star Map">
+    <meta name="twitter:description" content="Explore projects in an interactive Scorpio-inspired constellation map.">
+    <meta name="twitter:image" content="https://davinet.netlify.app/pictures/projectsstarmap.jpg">
+    <link rel="icon" type="image/png" href="pictures/dvd.jpg">
     <link rel="stylesheet" href="globalstyle.css">
     <link rel="stylesheet" href="projectstyle.css">
-    <title>DavidsPortfolio</title>
+    <title>DaviN3t - Projects</title>
 </head>
-<body>
+<body data-page="projects">
     <header>
-        <nav>
-            <a href="index.html">Start</a>
-            <a href="projects.html">Projects</a>
-            <a href="funstuff.html">Funstuff</a>
-        </nav>
+        <div id="site-nav"></div>
     </header>
 
-    <main>
+    <main class="constellation-main">
+        <section class="heading">
+            <p class="eyebrow">Build deck</p>
+            <h1>Scorpio Star Map</h1>
+            <p>Each project is a star in a Scorpius-inspired constellation. Hover any star to preview what it is, then click to jump to that project.</p>
+        </section>
 
-    <section class="heading">
-        <h1>Here are some of my projects</h1>
-        <p>These are projects made by me stretching years in between or only a couple of days. I've been working and studying as a softwaredeveloper for 5 years and i've tried a bunch of different coding styles and languanges. My favorite this far is making websites and coding in javascript.</p>
-    </section>
+        <section class="constellation-wrap" aria-label="Scorpius constellation projects map">
+            <svg class="constellation-lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                <polyline points="10,16 24,27 34,38 46,50 57,57 69,66 82,73" />
+                <polyline points="57,57 60,44 67,36 77,34" />
+                <polyline points="69,66 64,78 75,87" />
+                <polyline points="57,57 76,52 90,58" />
+            </svg>
 
-    <section class="projectcontainer">
+            <a class="star s1" href="https://davve420.github.io/fe25-js-slutuppgift-david-brolin/">
+                <span class="star-dot"></span>
+                <span class="star-label"><strong>MovieFinder</strong><small>JS movie search app</small></span>
+            </a>
 
-        <article class="projectcard">
-        <a href="https://davve420.github.io/fe25-js-slutuppgift-david-brolin/">
-            <img src="pictures\MovieFinder.jpg" alt="MovieFinder screenshot">
-            <h3>MovieFinder</h3>
-        </a>
-        </article>
+            <a class="star s2" href="https://plushieworld.netlify.app/">
+                <span class="star-dot"></span>
+                <span class="star-label"><strong>PlushieWorld</strong><small>React shopping demo</small></span>
+            </a>
 
-        <article class="projectcard">
-        <a href="https://plushieworld.netlify.app/">
-            <img src="pictures\PlushieWorld.png" alt="PlushieWorld React App screenshot">
-            <h3>PlushieWorld</h3>
-        </a>
-        </article>
+            <a class="star s3" href="https://fungidiet.netlify.app/">
+                <span class="star-dot"></span>
+                <span class="star-label"><strong>FungiDiet</strong><small>Niche themed site</small></span>
+            </a>
 
-        <article class="projectcard">
-        <a href="https://fungidiet.netlify.app/">
-            <img src="pictures/fungistart.png" alt="Fungidiet website screenshot">
-            <h3>FungiDiet</h3>
-        </a>
-        </article>
+            <a class="star s4" href="https://hornetsilksong.netlify.app/">
+                <span class="star-dot"></span>
+                <span class="star-label"><strong>Hornet's Silk & Songs</strong><small>Design-forward game fan page</small></span>
+            </a>
 
-        <article class="projectcard">
-        <a href="https://hornetsilksong.netlify.app/">
-            <img src="pictures/Silksong.png" alt="Silksong website screenshot">
-            <h3>Hornet's Silk & Songs</h3>
-        </a>
-        </article>
+            <a class="star s5" href="https://github.com/MSvennerheim/TechEaseSolutions/tree/main">
+                <span class="star-dot"></span>
+                <span class="star-label"><strong>TechEase CRM</strong><small>Collaboration repo</small></span>
+            </a>
 
-        <article class="projectcard">
-        <a href="https://github.com/MSvennerheim/TechEaseSolutions/tree/main">
-            <img src="pictures\TechEaseChat.png" alt="TechEaseSolutions CRM Chat screenshot">
-            <h3>TechEaseSolutions - CRM</h3>
-        </a>
-        </article>
+            <a class="star s6" href="hangman/index.html">
+                <span class="star-dot"></span>
+                <span class="star-label"><strong>Hangman</strong><small>Mini game in browser</small></span>
+            </a>
 
+            <a class="star s7" href="favorites.html">
+                <span class="star-dot"></span>
+                <span class="star-label"><strong>Favorites Wheel</strong><small>Music taste interface demo</small></span>
+            </a>
 
-    </section>
+            <a class="star s8" href="FirstPage/index.html">
+                <span class="star-dot"></span>
+                <span class="star-label"><strong>Time Capsule</strong><small>First web era archive</small></span>
+            </a>
+                
+            <a class="star s9" href="https://davireads.netlify.app/">
+                <span class="star-dot"></span>
+                <span class="star-label"><strong>Reading List</strong><small>Interactive reading list with database</small></span>
+            </a>
+        </section>
 
+        <section class="todo-widget" aria-label="Project planning todo list">
+            <h2>Project TODOs</h2>
+            <p>Plan what to build next in your Scorpio map journey.</p>
+            <div class="todo-controls">
+                <input id="newItem" type="text" placeholder="Add a task..." aria-label="New todo item">
+                <button id="addTopBtn" type="button">Add Top</button>
+                <button id="addBottomBtn" type="button">Add</button>
+            </div>
 
-<div class="coming-wrapper">
-    <span class="coming-soon" aria-label="Coming soon">
-    More coming soon
-    <span class="dots" aria-hidden="true">
-        <span class="dot">.</span>
-        <span class="dot">.</span>
-        <span class="dot">.</span>
-    </span>
-    </span>
-</div>
+            <div class="todo-lists">
+                <div class="todo-list">
+                    <h3>Todo</h3>
+                    <ul id="todoUl" aria-live="polite"></ul>
+                </div>
+                <div class="done-list">
+                    <h3>Done</h3>
+                    <ul id="doneUl" aria-live="polite"></ul>
+                </div>
+            </div>
+        </section>
     </main>
 
-    <footer class="footercontainer">
-        <a href="https://www.instagram.com/david_brolins/" ><img class="footericon" src="pictures/instagram-logo.png" alt="Instagram logo"></a><p>My links</p> <a href="mailto:davidbrolin04@gmail.com"><img class="footericon" src="pictures/mail.png"></a>
-    </footer>
-
+    <footer class="footercontainer" id="site-footer"></footer>
+    <script src="shared-shell.js" defer></script>
+    <script src="todo.js" defer></script>
 </body>
 </html>

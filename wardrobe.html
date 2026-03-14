@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Wardrobe gallery from DaviN3t with swipeable looks, outfits and portraits.">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="DaviN3t - Wardrobe">
+    <meta property="og:description" content="Swipe through outfits and visuals in the DaviN3t wardrobe gallery.">
+    <meta property="og:url" content="https://davinet.netlify.app/wardrobe.html">
+    <meta property="og:image" content="https://davinet.netlify.app/pictures/GrungeDavi.JPEG">
+    <meta property="og:site_name" content="DaviN3t">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="DaviN3t - Wardrobe">
+    <meta name="twitter:description" content="Swipe through outfits and visuals in the DaviN3t wardrobe gallery.">
+    <meta name="twitter:image" content="https://davinet.netlify.app/pictures/GrungeDavi.JPEG">
+    <link rel="icon" type="image/png" href="pictures/dvd.jpg">
+    <link rel="stylesheet" href="globalstyle.css">
+    <link rel="stylesheet" href="gallery.css">
+    <title>DaviN3t - Wardrobe</title>
+</head>
+<body data-page="wardrobe">
+    <header>
+        <div id="site-nav"></div>
+    </header>
+
+    <main class="gallery-main">
+        <section class="gallery-head">
+            <h1>Wardrobe</h1>
+            <p class="gallery-vibe">Swipe through a bunch of different fits and cool pictures of me and friends</p>
+        </section>
+
+        <section class="gallery-carousel" data-carousel aria-label="Wardrobe carousel">
+            <div class="carousel-viewport" tabindex="0" aria-label="Swipeable wardrobe carousel">
+                <div class="carousel-track">
+                    <figure class="carousel-slide"><img src="pictures/Bestie.JPEG" alt="Wardrobe look one" loading="lazy" decoding="async"></figure>
+                    <figure class="carousel-slide"><img src="pictures/chillingwindow.jpeg" alt="Wardrobe look two" loading="lazy" decoding="async"></figure>
+                    <figure class="carousel-slide"><img src="pictures/cropdemon.jpeg" alt="Wardrobe look three" loading="lazy" decoding="async"></figure>
+                    <figure class="carousel-slide"><img src="pictures/cuteglasses.jpg" alt="Wardrobe look four" loading="lazy" decoding="async"></figure>
+                    <figure class="carousel-slide"><img src="pictures/furjacketsitting.jpeg" alt="Wardrobe look five" loading="lazy" decoding="async"></figure>
+                    <figure class="carousel-slide"><img src="pictures/GlassesMirror.jpg" alt="Wardrobe look six" loading="lazy" decoding="async"></figure>
+                    <figure class="carousel-slide"><img src="pictures/GrungeDavi.JPEG" alt="Wardrobe look seven" loading="lazy" decoding="async"></figure>
+                    <figure class="carousel-slide"><img src="pictures/intense.jpg" alt="Wardrobe look eight" loading="lazy" decoding="async"></figure>
+                    <figure class="carousel-slide"><img src="pictures/jinandme.JPEG" alt="Wardrobe look nine" loading="lazy" decoding="async"></figure>
+                    <figure class="carousel-slide"><img src="pictures/meifucare.JPG" alt="Wardrobe look ten" loading="lazy" decoding="async"></figure>
+                    <figure class="carousel-slide"><img src="pictures/personsoulmirror.jpeg" alt="Wardrobe look eleven" loading="lazy" decoding="async"></figure>
+                    <figure class="carousel-slide"><img src="pictures/personsoulstars.jpeg" alt="Wardrobe look twelve" loading="lazy" decoding="async"></figure>
+                    <figure class="carousel-slide"><img src="pictures/Profilepic.jpg" alt="Wardrobe look thirteen" loading="lazy" decoding="async"></figure>
+                    <figure class="carousel-slide"><img src="pictures/typeshi.JPG" alt="Wardrobe look fourteen" loading="lazy" decoding="async"></figure>
+                    <figure class="carousel-slide"><img src="pictures/windowphoto.jpeg" alt="Wardrobe look fifteen" loading="lazy" decoding="async"></figure>
+                    <figure class="carousel-slide"><img src="pictures/Hero.jpg" alt="Wardrobe look sixteen" loading="lazy" decoding="async"></figure>
+                </div>
+            </div>
+            <div class="carousel-controls">
+                <button class="carousel-btn" data-prev type="button" aria-label="Previous image">Prev</button>
+                <span class="carousel-status" data-status aria-live="polite"></span>
+                <button class="carousel-btn" data-next type="button" aria-label="Next image">Next</button>
+            </div>
+        </section>
+
+        <section class="thumbs-wrap" aria-label="Wardrobe thumbnails">
+            <div class="thumbs-grid" data-thumbs></div>
+        </section>
+    </main>
+
+    <footer class="footercontainer" id="site-footer"></footer>
+    <script src="shared-shell.js" defer></script>
+    <script src="gallery.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="DaviN3t Vibe System: explore favorite tracks and orbit through music selections.">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="DaviN3t - Vibe System">
+    <meta property="og:description" content="Orbit through favorite songs in the DaviN3t Vibe System.">
+    <meta property="og:url" content="https://davinet.netlify.app/favorites.html">
+    <meta property="og:image" content="https://davinet.netlify.app/pictures/VibeSystem.jpg">
+    <meta property="og:site_name" content="DaviN3t">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="DaviN3t - Vibe System">
+    <meta name="twitter:description" content="Orbit through favorite songs in the DaviN3t Vibe System.">
+    <meta name="twitter:image" content="https://davinet.netlify.app/pictures/VibeSystem.jpg">
+    <link rel="icon" type="image/png" href="pictures/dvd.jpg">
+    <link rel="stylesheet" href="globalstyle.css">
+    <link rel="stylesheet" href="favorites.css">
+    <title>DaviN3t - Vibe System</title>
+</head>
+<body data-page="favorites">
+    <header>
+        <div id="site-nav"></div>
+    </header>
+
+    <main class="favorites-main">
+        <section class="favorites-hero">
+            <p class="eyebrow">Vibe system</p>
+            <h1>Vibe out to my favs or your own songs</h1>
+            <p>Connect your Spotify to see your own top tracks in the wheel.</p>
+        </section>
+
+        <section class="wheel-wrap" aria-label="Favorite tracks">
+            <div class="song-wheel" id="song-wheel">
+                <div class="wheel-core" id="wheel-core">
+                    <span class="core-text">— your orbit —</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="owner-top" aria-label="David top songs">
+            <h2>My current top songs</h2>
+            <ol class="owner-top-list" id="owner-top-list">
+                <li><span class="rank">01</span><span class="song">Add track name</span><span class="artist">Artist</span></li>
+                <li><span class="rank">02</span><span class="song">Add track name</span><span class="artist">Artist</span></li>
+                <li><span class="rank">03</span><span class="song">Add track name</span><span class="artist">Artist</span></li>
+                <li><span class="rank">04</span><span class="song">Add track name</span><span class="artist">Artist</span></li>
+                <li><span class="rank">05</span><span class="song">Add track name</span><span class="artist">Artist</span></li>
+                <li><span class="rank">06</span><span class="song">Add track name</span><span class="artist">Artist</span></li>
+            </ol>
+            <p class="owner-top-note">This list shows my own favorites, while the wheel uses each visitor's Spotify account.</p>
+            <div class="owner-top-actions">
+                <button class="owner-copy-btn" id="copy-owner-list" type="button" aria-label="Copy current top 6 for admin updates">Copy top 6 (admin)</button>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footercontainer" id="site-footer"></footer>
+    <script type="module">
+        import { login, exchangeCode, getToken, clearToken, getTopTracks } from './spotify.js';
+
+        const wheel = document.getElementById('song-wheel');
+        const core  = document.getElementById('wheel-core');
+        const ownerTopList = document.getElementById('owner-top-list');
+        const copyOwnerListBtn = document.getElementById('copy-owner-list');
+        const VISIBLE = 6;
+        const CAROUSEL_MS = 6000;
+        const PREVIEW_MS  = 5600;
+
+        let orbitRing     = null;
+        let allTracks     = [];
+        let currentStart  = 0;
+        let rotationTimer = null;
+        let previewTimer  = null;
+        let activeAudio   = null;
+        let topIndex      = 0;
+
+        function renderOwnerTopList(tracks) {
+            if (!ownerTopList) return;
+            ownerTopList.replaceChildren();
+
+            tracks.slice(0, 6).forEach((track, i) => {
+                const item = document.createElement('li');
+
+                const rank = document.createElement('span');
+                rank.className = 'rank';
+                rank.textContent = String(i + 1).padStart(2, '0');
+
+                const song = document.createElement('span');
+                song.className = 'song';
+                song.textContent = track.name;
+
+                const artist = document.createElement('span');
+                artist.className = 'artist';
+                artist.textContent = track.artists[0]?.name ?? 'Unknown artist';
+
+                item.append(rank, song, artist);
+                ownerTopList.appendChild(item);
+            });
+        }
+
+        async function copyOwnerTopList() {
+            if (!copyOwnerListBtn) return;
+            if (!allTracks.length) {
+                copyOwnerListBtn.textContent = 'Connect first';
+                setTimeout(() => { copyOwnerListBtn.textContent = 'Copy top 6 (admin)'; }, 1200);
+                return;
+            }
+
+            const lines = allTracks.slice(0, 6).map((track, i) => {
+                const rank = String(i + 1).padStart(2, '0');
+                const artist = track.artists[0]?.name ?? 'Unknown artist';
+                return `${rank}. ${track.name} - ${artist}`;
+            });
+
+            try {
+                await navigator.clipboard.writeText(lines.join('\n'));
+                copyOwnerListBtn.textContent = 'Copied';
+            } catch {
+                copyOwnerListBtn.textContent = 'Copy failed';
+            }
+
+            setTimeout(() => {
+                copyOwnerListBtn.textContent = 'Copy top 6 (admin)';
+            }, 1200);
+        }
+
+        copyOwnerListBtn?.addEventListener('click', copyOwnerTopList);
+
+        function getRing() {
+            if (!orbitRing) {
+                orbitRing = document.createElement('div');
+                orbitRing.className = 'orbit-ring';
+                wheel.insertBefore(orbitRing, core);
+            }
+            return orbitRing;
+        }
+
+        function stopAudio() {
+            if (previewTimer) {
+                clearTimeout(previewTimer);
+                previewTimer = null;
+            }
+            if (activeAudio) {
+                activeAudio.pause();
+                activeAudio.currentTime = 0;
+                activeAudio = null;
+            }
+        }
+
+        function stopCarousel() {
+            if (rotationTimer) {
+                clearInterval(rotationTimer);
+                rotationTimer = null;
+            }
+            stopAudio();
+        }
+
+        function getCurrentSlice() {
+            return allTracks.slice(currentStart, currentStart + VISIBLE);
+        }
+
+        function updateCoreStatus(text) {
+            const status = document.getElementById('core-status');
+            if (status) status.textContent = text;
+        }
+
+        function updateCoreSetInfo() {
+            const info = document.getElementById('core-set-info');
+            if (!info) return;
+
+            const end = Math.min(allTracks.length, currentStart + VISIBLE);
+            const slice = getCurrentSlice();
+            const previewCount = slice.filter(track => Boolean(track.preview_url)).length;
+            info.textContent = `Top ${currentStart + 1}-${end} • previews ${previewCount}/${slice.length || 0}`;
+        }
+
+        function updatePagerButtons() {
+            const prev = document.getElementById('sp-prev-set');
+            const next = document.getElementById('sp-next-set');
+            if (!prev || !next) return;
+
+            prev.disabled = currentStart <= 0;
+            next.disabled = currentStart + VISIBLE >= allTracks.length;
+        }
+
+        function playPreviewForTop(cards) {
+            cards.forEach((card, i) => card.classList.toggle('is-active', i === topIndex));
+            const topCard = cards[topIndex];
+            if (!topCard) return;
+
+            const trackTitle  = topCard.dataset.trackTitle ?? 'Track';
+            const trackArtist = topCard.dataset.trackArtist ?? '';
+            const previewUrl  = topCard.dataset.previewUrl ?? '';
+            updateCoreStatus(trackArtist ? `Now: ${trackTitle} - ${trackArtist}` : `Now: ${trackTitle}`);
+
+            stopAudio();
+            if (!previewUrl) {
+                updateCoreStatus(`Now: ${trackTitle} (no preview)`);
+                return;
+            }
+
+            const audio = new Audio(previewUrl);
+            audio.volume = 0.52;
+            activeAudio = audio;
+            previewTimer = setTimeout(() => {
+                if (activeAudio === audio) {
+                    audio.pause();
+                    audio.currentTime = 0;
+                    activeAudio = null;
+                }
+                previewTimer = null;
+            }, PREVIEW_MS);
+
+            audio.play().catch(() => {
+                if (previewTimer) {
+                    clearTimeout(previewTimer);
+                    previewTimer = null;
+                }
+                activeAudio = null;
+                updateCoreStatus('Preview blocked - click a card');
+            });
+        }
+
+        function applyCarouselStep() {
+            const cards = [...getRing().querySelectorAll('.song-card')];
+            if (!cards.length) return;
+
+            cards.forEach((card, cardIndex) => {
+                const slot = (cardIndex - topIndex + cards.length) % cards.length;
+                card.style.setProperty('--slot', String(slot));
+            });
+
+            playPreviewForTop(cards);
+        }
+
+        function startCarousel(cardCount) {
+            stopCarousel();
+            topIndex = 0;
+            applyCarouselStep();
+            rotationTimer = setInterval(() => {
+                topIndex = (topIndex + 1) % cardCount;
+                applyCarouselStep();
+            }, CAROUSEL_MS);
+        }
+
+        function showConnect() {
+            stopCarousel();
+            getRing().replaceChildren();
+            core.innerHTML = '<button class="spotify-connect-btn" id="sp-connect">Connect Spotify</button>';
+            document.getElementById('sp-connect').addEventListener('click', login);
+        }
+
+        function renderTrackSet() {
+            const tracks = getCurrentSlice();
+            const ring = getRing();
+            ring.replaceChildren();
+
+            if (!tracks.length) {
+                core.innerHTML = '<span class="core-text" id="core-status">No tracks found</span><button class="spotify-disconnect-btn" id="sp-disconnect">Disconnect</button>';
+                document.getElementById('sp-disconnect').addEventListener('click', () => {
+                    stopCarousel();
+                    clearToken();
+                    ring.replaceChildren();
+                    showConnect();
+                });
+                return;
+            }
+
+            tracks.forEach((track, i) => {
+                const a = document.createElement('a');
+                a.className = 'song-card';
+                a.href      = track.external_urls.spotify;
+                a.target    = '_blank';
+                a.rel       = 'noopener noreferrer';
+                a.style.setProperty('--slot', String(i));
+                a.setAttribute('aria-label', `${track.name} by ${track.artists.map(ar => ar.name).join(', ')}`);
+                a.dataset.previewUrl  = track.preview_url ?? '';
+                a.dataset.trackTitle  = track.name;
+                a.dataset.trackArtist = track.artists[0]?.name ?? '';
+
+                a.addEventListener('click', () => {
+                    if (activeAudio) {
+                        activeAudio.play().catch(() => {});
+                    }
+                });
+
+                const img = document.createElement('img');
+                img.className = 'track-art';
+                img.src       = track.album.images[1]?.url ?? track.album.images[0]?.url;
+                img.alt       = track.album.name;
+                img.loading   = 'lazy';
+
+                const info   = document.createElement('span'); info.className = 'track-info';
+                const title  = document.createElement('span'); title.className  = 'title';  title.textContent  = track.name;
+                const artist = document.createElement('span'); artist.className = 'artist'; artist.textContent = track.artists[0].name;
+                info.append(title, artist);
+
+                a.append(img, info);
+                ring.appendChild(a);
+            });
+
+            core.innerHTML = `
+                <span class="core-text" id="core-status">This month</span>
+                <span class="core-sub" id="core-set-info"></span>
+                <div class="core-controls">
+                    <button class="spotify-secondary-btn" id="sp-prev-set">Prev set</button>
+                    <button class="spotify-secondary-btn" id="sp-next-set">Next set</button>
+                </div>
+                <button class="spotify-disconnect-btn" id="sp-disconnect">Disconnect</button>
+            `;
+
+            document.getElementById('sp-prev-set').addEventListener('click', () => {
+                if (currentStart <= 0) return;
+                currentStart = Math.max(0, currentStart - VISIBLE);
+                renderTrackSet();
+            });
+
+            document.getElementById('sp-next-set').addEventListener('click', () => {
+                if (currentStart + VISIBLE >= allTracks.length) return;
+                currentStart = Math.min(allTracks.length - VISIBLE, currentStart + VISIBLE);
+                renderTrackSet();
+            });
+
+            document.getElementById('sp-disconnect').addEventListener('click', () => {
+                stopCarousel();
+                clearToken();
+                ring.replaceChildren();
+                showConnect();
+            });
+
+            updateCoreSetInfo();
+            updatePagerButtons();
+            startCarousel(tracks.length);
+        }
+
+        async function loadTopTracks(token) {
+            let tracks = await getTopTracks(token, { timeRange: 'short_term', limit: 50, offset: 0 });
+            if (!tracks || tracks.length === 0)
+                tracks = await getTopTracks(token, { timeRange: 'medium_term', limit: 50, offset: 0 });
+            return tracks ?? [];
+        }
+
+        async function init() {
+            const params = new URLSearchParams(location.search);
+            if (params.get('error')) {
+                history.replaceState({}, '', location.pathname);
+                showConnect();
+                return;
+            }
+
+            const code  = params.get('code');
+            let   token = getToken();
+
+            if (code && !token) {
+                core.innerHTML = '<span class="core-text">Connecting…</span>';
+                try   { token = await exchangeCode(code); }
+                catch { showConnect(); return; }
+            }
+
+            if (token) {
+                core.innerHTML = '<span class="core-text">Loading…</span>';
+                try {
+                    allTracks = await loadTopTracks(token);
+                    currentStart = 0;
+                    if (allTracks.length) renderOwnerTopList(allTracks);
+                    allTracks.length ? renderTrackSet() : showConnect();
+                } catch { showConnect(); }
+            } else {
+                showConnect();
+            }
+        }
+
+        init();
+    </script>
+    <script src="shared-shell.js" defer></script>
+</body>
+</html>

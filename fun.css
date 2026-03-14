@@ -1,20 +1,138 @@
 
 .heading{
     color: rgb(255, 255, 255);
-    background-color: rgba(48, 48, 48, 0.594);
+    background: linear-gradient(160deg, rgba(12, 12, 12, 0.9), rgba(4, 4, 4, 0.96));
     text-align: center;
-    padding: 4vh;
-    border: 3px solid;
-    border-radius: 40%;
+    padding: clamp(0.9rem, 4vh, 2rem);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 1.2rem;
+    width: min(92vw, 900px);
+    margin: 0 auto 1rem;
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.5), 0 0 18px rgba(255, 255, 255, 0.12);
+}
+
+.hub-section {
+    width: min(92vw, 900px);
+    margin: 0 auto 1rem;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.85rem;
+}
+
+.creative-hub {
+    width: min(92vw, 900px);
+    margin: 0 auto 1.2rem;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.95rem;
+}
+
+.hub-card {
+    position: relative;
+    border-radius: 1rem;
+    overflow: hidden;
+    min-height: 190px;
+    border: 1px solid rgba(255, 255, 255, 0.02);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5), 0 0 16px rgba(255, 255, 255, 0.16);
+    transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+    animation: hub-float 7.2s ease-in-out infinite;
+    animation-delay: var(--float-delay, 0s);
+}
+
+.hub-card::before,
+.hub-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.hub-card::before {
+    background: radial-gradient(circle at 26% 18%, rgba(255, 255, 255, 0.16), transparent 44%);
+    opacity: 0.4;
+    animation: hub-aura 5.5s ease-in-out infinite;
+}
+
+.hub-card::after {
+    inset: -22% -60%;
+    background: linear-gradient(110deg, transparent 42%, rgba(255, 255, 255, 0.24) 50%, transparent 58%);
+    transform: translateX(-46%);
+    opacity: 0;
+}
+
+.hub-card img {
+    width: 100%;
+    height: 100%;
+    min-height: 190px;
+    object-fit: cover;
+    display: block;
+    transition: transform 420ms cubic-bezier(0.2, 0.8, 0.2, 1), filter 280ms ease;
+}
+
+.hub-label {
+    position: absolute;
+    inset: auto 0 0 0;
+    padding: 0.7rem 0.8rem;
+    font-family: 'Space Grotesk', sans-serif;
+    color: #eef4ff;
+    background: linear-gradient(to top, rgba(8, 8, 8, 0.92), rgba(122, 20, 40, 0.22), transparent);
+}
+
+.hub-card:hover,
+.hub-card:focus-visible {
+    transform: translateY(-3px);
+    border-color: rgba(255, 255, 255, 0.84);
+    box-shadow: 0 18px 34px rgba(0, 0, 0, 0.58), 0 0 26px rgba(255, 255, 255, 0.32), 0 0 22px rgba(122, 20, 40, 0.3);
+}
+
+.hub-card:hover::after,
+.hub-card:focus-visible::after {
+    opacity: 1;
+    animation: hub-sheen 840ms ease;
+}
+
+.hub-card:hover img,
+.hub-card:focus-visible img {
+    transform: scale(1.05);
+    filter: contrast(1.06) brightness(1.03);
+}
+
+.hub-section .hub-card:nth-child(1) { --float-delay: 0s; }
+.hub-section .hub-card:nth-child(2) { --float-delay: 1.1s; }
+.creative-hub .hub-card:nth-child(1) { --float-delay: 0.45s; }
+.creative-hub .hub-card:nth-child(2) { --float-delay: 1.55s; }
+
+.feature-card {
+    min-height: 220px;
+}
+
+.feature-card img {
+    min-height: 220px;
+}
+
+@keyframes hub-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+}
+
+@keyframes hub-aura {
+    0%, 100% { opacity: 0.32; }
+    50% { opacity: 0.58; }
+}
+
+@keyframes hub-sheen {
+    0% { transform: translateX(-46%); }
+    100% { transform: translateX(46%); }
 }
 
 .funcard{
     
     display: flex;
     flex-direction: column;
-    border: 2px solid #000;
+    border: 1px solid rgba(255, 255, 255, 0.02);
     border-radius: 2vh;
-    background-color: rgb(255, 255, 255);
+    background: rgba(8, 8, 8, 0.86);
+    box-shadow: 0 0 14px rgba(255, 255, 255, 0.12);
     margin: 2vh;
 }
 
@@ -32,58 +150,22 @@
     gap: 2vh;
 }
 
-.time-travel-container{
-    display:flex;
-    justify-content:center;
-    margin: 2vh 0;
-}
-.time-travel-btn{
-    display:inline-block;
-    /* dark red theme */
-    background: linear-gradient(135deg,#6b0000,#9a1414);
-    color: #fff;
-    padding: 0.8rem 1.2rem;
-    border-radius: 1.2rem;
-    text-decoration: none;
-    font-weight: 600;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.18), inset 0 -2px 8px rgba(0,0,0,0.15);
-    transition: transform 150ms ease, box-shadow 150ms ease, opacity 150ms ease;
-}
-.time-travel-btn:hover{
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 10px 26px rgba(0,0,0,0.24), 0 0 18px rgba(154,20,20,0.12);
-    opacity: 0.98;
-}
-.time-travel-btn:active{
-    transform: translateY(0) scale(0.995);
+.section-intro {
+    width: min(92vw, 900px);
+    margin: 0 auto 0.5rem;
+    text-align: center;
 }
 
-/* Overlay used for the "time travel" effect */
-#time-overlay{
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 9999;
-    opacity: 0;
-    background: radial-gradient(circle at 50% 40%, rgba(255,100,100,0.18) 0%, rgba(120,10,10,0.22) 20%, rgba(0,0,0,0.85) 65%);
-    transition: opacity 200ms ease;
-}
-#time-overlay.show{
-    pointer-events: auto;
-    animation: timewarp 900ms forwards ease-in-out;
+.section-intro h2 {
+    margin: 0;
+    color: #f3f5ff;
+    font-size: clamp(1.2rem, 4vw, 1.6rem);
 }
 
-@keyframes timewarp{
-    0%{ opacity: 0; transform: scale(0.96); filter: blur(0px); }
-    25%{ opacity: 1; transform: scale(1.03) rotate(0.6deg); filter: blur(2px); }
-    65%{ opacity: 0.95; transform: scale(1.02) rotate(-0.4deg); filter: blur(1px); }
-    100%{ opacity: 0; transform: scale(1.25); filter: blur(8px); }
-}
-
-/* small active pulse on button when clicked */
-.time-travel-btn.clicked{
-    transform: scale(0.98);
-    box-shadow: 0 14px 40px rgba(160,40,40,0.12), inset 0 -3px 10px rgba(0,0,0,0.2);
+.section-intro p {
+    margin: 0.2rem 0 0;
+    color: rgba(225, 229, 242, 0.78);
+    font-size: 0.9rem;
 }
 
 .funcontainer2{
@@ -92,25 +174,42 @@
 }
 
 .details{
-    margin: 2vh;
+    margin: 1rem auto;
     padding: 1vh;
-    border: 2px solid #000;
+    border: 1px solid rgba(255, 255, 255, 0.03);
     border-radius: 2vh;
-    background-color: rgb(201, 201, 201);
+    background: rgba(8, 8, 8, 0.88);
+    width: min(92vw, 900px);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.35), 0 0 14px rgba(255, 255, 255, 0.08);
+}
+
+.details > summary {
+    cursor: pointer;
+    color: #f6f7ff;
+    letter-spacing: 0.02em;
+}
+
+.details[open] > summary {
+    margin-bottom: 0.6rem;
 }
 
 /* Todo widget styles */
 .todo-widget{
-    margin: 1.5rem 2rem;
+    margin: 1rem auto;
     padding: 1rem;
     border-radius: 0.8rem;
-    background: linear-gradient(180deg, #fff 0%, #faf6f6 100%);
-    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+    background: linear-gradient(180deg, rgba(12, 12, 12, 0.93) 0%, rgba(5, 5, 5, 0.96) 100%);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.25);
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.38), 0 0 18px rgba(255, 255, 255, 0.12);
+    width: min(92vw, 900px);
 }
 .todo-widget h3{margin:0 0 0.6rem 0}
 .todo-controls{display:flex;gap:0.5rem;align-items:center;margin-bottom:1rem}
-.todo-controls input{flex:1;padding:0.6rem;border:1px solid #ccc;border-radius:0.5rem}
-.todo-controls button{padding:0.5rem 0.8rem;border-radius:0.6rem;border:0;background:#6b0000;color:#fff;font-weight:600;cursor:pointer}
+.todo-controls input{flex:1;padding:0.6rem;border:1px solid rgba(255, 255, 255, 0.2);border-radius:0.5rem;background:rgba(5,5,5,0.75);color:#eef4ff}
+.todo-controls button{padding:0.5rem 0.8rem;border-radius:0.6rem;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.08);color:#fff;font-weight:600;cursor:pointer}
+.todo-controls button:hover,
+.todo-controls button:focus-visible{box-shadow:0 0 16px rgba(255,255,255,0.3),0 0 20px rgba(122,20,40,0.28);border-color:rgba(255,255,255,0.75);outline:none}
 .todo-lists{display:flex;gap:1rem;flex-wrap:wrap}
 .todo-list,.done-list{flex:1;min-width:220px}
 .todo-list h4,.done-list h4{margin:0 0 0.5rem 0}
@@ -144,6 +243,55 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr); 
     gap: 1rem;
+    }
+}
+
+@media (max-width: 700px) {
+    .heading {
+        text-align: left;
+        border-radius: 0.95rem;
+    }
+
+    .hub-section {
+        grid-template-columns: 1fr;
+        gap: 0.7rem;
+    }
+
+    .creative-hub {
+        grid-template-columns: 1fr;
+        gap: 0.7rem;
+    }
+
+    .hub-card,
+    .feature-card {
+        min-height: 155px;
+    }
+
+    .hub-card img,
+    .feature-card img {
+        min-height: 155px;
+    }
+
+    .todo-controls {
+        flex-wrap: wrap;
+    }
+
+    .todo-controls input {
+        min-width: 100%;
+    }
+
+    .todo-controls button {
+        flex: 1;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hub-card,
+    .hub-card::before,
+    .hub-card::after,
+    .hub-card img {
+        animation: none;
+        transition: none;
     }
 }
 

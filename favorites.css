@@ -1,0 +1,416 @@
+:root {
+    --wheel-panel: rgba(7, 7, 7, 0.95);
+    --wheel-border: rgba(255, 255, 255, 0.04);
+}
+
+.favorites-main {
+    margin-top: 8vh;
+    padding: 1rem;
+    min-height: calc(100vh - 8vh);
+    display: grid;
+    gap: 1.2rem;
+    position: relative;
+}
+
+.favorites-main::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(circle at 16% 12%, rgba(122, 20, 40, 0.2), transparent 36%),
+        radial-gradient(circle at 84% 76%, rgba(210, 210, 210, 0.1), transparent 40%);
+}
+
+.favorites-main > * {
+    position: relative;
+    z-index: 1;
+}
+
+.favorites-hero {
+    max-width: 760px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.eyebrow {
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 0.72rem;
+    color: rgba(225, 230, 255, 0.78);
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+.favorites-hero h1 {
+    margin: 0.45rem 0;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.9rem, 9vw, 2.9rem);
+    color: #f5f7ff;
+}
+
+.favorites-hero p {
+    margin: 0;
+    color: #d4defe;
+}
+
+.owner-top {
+    width: min(92vw, 760px);
+    margin: 0 auto;
+    padding: 0.9rem;
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    background: linear-gradient(165deg, rgba(11, 11, 11, 0.9), rgba(4, 4, 4, 0.96));
+    box-shadow: 0 12px 34px rgba(0, 0, 0, 0.5), inset 0 0 22px rgba(255, 255, 255, 0.08), 0 0 18px rgba(255, 255, 255, 0.12);
+}
+
+.owner-top h2 {
+    margin: 0 0 0.55rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.3rem, 4.6vw, 1.8rem);
+    color: #edf2ff;
+}
+
+.owner-top-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.42rem;
+}
+
+.owner-top-list li {
+    display: grid;
+    grid-template-columns: 38px 1fr auto;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.5rem 0.62rem;
+    border-radius: 0.72rem;
+    border: 1px solid rgba(255, 255, 255, 0.02);
+    background: rgba(7, 7, 7, 0.7);
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.09);
+}
+
+.owner-top-list .rank {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.67rem;
+    letter-spacing: 0.08em;
+    color: rgba(190, 207, 255, 0.74);
+}
+
+.owner-top-list .song {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.84rem;
+    color: #f3f6ff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.owner-top-list .artist {
+    font-size: 0.74rem;
+    color: rgba(182, 199, 245, 0.86);
+    white-space: nowrap;
+    margin-left: 0.35rem;
+}
+
+.owner-top-note {
+    margin: 0.58rem 0 0;
+    font-size: 0.72rem;
+    color: rgba(197, 213, 255, 0.65);
+}
+
+.owner-top-actions {
+    margin-top: 0.45rem;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.owner-copy-btn {
+    background: transparent;
+    color: rgba(180, 197, 240, 0.55);
+    border: 1px dashed rgba(165, 186, 245, 0.25);
+    border-radius: 999px;
+    padding: 0.22rem 0.56rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition: color 150ms ease, border-color 150ms ease, background-color 150ms ease;
+}
+
+.owner-copy-btn:hover,
+.owner-copy-btn:focus-visible {
+    color: rgba(223, 233, 255, 0.92);
+    border-color: rgba(165, 186, 245, 0.46);
+    background: rgba(165, 186, 245, 0.08);
+    outline: none;
+}
+
+.wheel-wrap {
+    display: grid;
+    place-items: center;
+}
+
+.song-wheel {
+    position: relative;
+    width: min(92vw, 760px);
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    border: 1px solid var(--wheel-border);
+    background: radial-gradient(circle at center, rgba(32, 36, 54, 0.92), var(--wheel-panel));
+    box-shadow: 0 20px 55px rgba(0, 0, 0, 0.58), inset 0 0 40px rgba(255, 255, 255, 0.12), 0 0 24px rgba(255, 255, 255, 0.16);
+    animation: wheel-breathe 9s ease-in-out infinite;
+}
+
+.orbit-ring {
+    position: absolute;
+    inset: 0;
+}
+
+.song-card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: min(26vw, 140px);
+    aspect-ratio: 1;
+    --orbit-radius: min(39vw, 285px);
+    border-radius: 0.85rem;
+    overflow: hidden;
+    text-decoration: none;
+    border: 1px solid rgba(255, 255, 255, 0.02);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.58), 0 0 14px rgba(255, 255, 255, 0.18);
+    transform: translate(-50%, -50%) rotate(calc(var(--slot, 0) * 60deg)) translateY(calc(-1 * var(--orbit-radius))) rotate(calc(var(--slot, 0) * -60deg));
+    transition: transform 1100ms cubic-bezier(0.2, 0.8, 0.2, 1), border-color 220ms ease, box-shadow 220ms ease;
+}
+
+.song-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(circle at 28% 20%, rgba(255, 255, 255, 0.15), transparent 44%);
+    opacity: 0.4;
+    transition: opacity 220ms ease;
+}
+
+.song-card:hover,
+.song-card:focus-visible {
+    border-color: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 0 26px rgba(255, 255, 255, 0.4), 0 10px 28px rgba(0, 0, 0, 0.65), 0 0 24px rgba(122, 20, 40, 0.3);
+}
+
+.song-card:hover::after,
+.song-card:focus-visible::after,
+.song-card.is-active::after {
+    opacity: 0.72;
+}
+
+.song-card.is-active {
+    border-color: rgba(255, 255, 255, 0.88);
+    box-shadow: 0 0 28px rgba(255, 255, 255, 0.5), 0 12px 30px rgba(0, 0, 0, 0.62);
+    z-index: 2;
+    animation: active-pulse 1.9s ease-in-out infinite;
+}
+
+.track-art {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.track-info {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(4, 6, 18, 0.92) 45%, rgba(4, 6, 18, 0.15) 70%, transparent);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0.6rem;
+    opacity: 0;
+    transition: opacity 200ms ease;
+}
+
+.song-card:hover .track-info,
+.song-card:focus-visible .track-info,
+.song-card.is-active .track-info {
+    opacity: 1;
+}
+
+.song-card .title {
+    display: block;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.74rem;
+    font-weight: 600;
+    color: #f6f7ff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.song-card .artist {
+    display: block;
+    margin-top: 0.1rem;
+    font-size: 0.66rem;
+    color: #b8ccff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.wheel-core {
+    position: absolute;
+    inset: 50% auto auto 50%;
+    transform: translate(-50%, -50%);
+    width: min(38vw, 210px);
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    color: #f7f8ff;
+    background: radial-gradient(circle at 35% 35%, rgba(62, 62, 62, 0.3), rgba(6, 6, 6, 0.96));
+    box-shadow: inset 0 0 18px rgba(255, 255, 255, 0.16), 0 0 18px rgba(255, 255, 255, 0.16);
+}
+
+.core-text {
+    font-size: 0.8rem;
+    line-height: 1.4;
+    color: rgba(220, 230, 255, 0.75);
+}
+
+.core-sub {
+    font-size: 0.65rem;
+    color: rgba(201, 214, 255, 0.62);
+    font-family: 'Space Grotesk', sans-serif;
+    letter-spacing: 0.03em;
+}
+
+.core-controls {
+    display: flex;
+    gap: 0.45rem;
+}
+
+.spotify-connect-btn {
+    background: #1db954;
+    color: #000;
+    border: none;
+    border-radius: 999px;
+    padding: 0.5rem 1rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.74rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: filter 150ms ease, transform 150ms ease;
+}
+
+.spotify-connect-btn:hover,
+.spotify-connect-btn:focus-visible {
+    filter: brightness(1.12);
+    transform: scale(1.05);
+    outline: none;
+}
+
+.spotify-secondary-btn {
+    background: rgba(255, 255, 255, 0.07);
+    color: rgba(235, 235, 235, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 999px;
+    padding: 0.28rem 0.62rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.65rem;
+    cursor: pointer;
+    transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease;
+}
+
+.spotify-secondary-btn:hover,
+.spotify-secondary-btn:focus-visible {
+    background: rgba(255, 255, 255, 0.16);
+    border-color: rgba(255, 255, 255, 0.7);
+    box-shadow: 0 0 16px rgba(255, 255, 255, 0.3);
+    outline: none;
+}
+
+.spotify-secondary-btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+.spotify-disconnect-btn {
+    background: transparent;
+    color: rgba(190, 205, 255, 0.55);
+    border: 1px solid rgba(190, 205, 255, 0.22);
+    border-radius: 999px;
+    padding: 0.28rem 0.65rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.66rem;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: color 150ms ease, border-color 150ms ease;
+}
+
+.spotify-disconnect-btn:hover,
+.spotify-disconnect-btn:focus-visible {
+    color: #f0f2ff;
+    border-color: rgba(190, 205, 255, 0.5);
+    outline: none;
+}
+
+@media (max-width: 740px) {
+    .owner-top {
+        padding: 0.75rem;
+    }
+
+    .owner-top-list li {
+        grid-template-columns: 30px 1fr;
+        row-gap: 0.15rem;
+    }
+
+    .owner-top-list .artist {
+        grid-column: 2;
+        margin-left: 0;
+    }
+
+    .song-card {
+        width: min(29vw, 125px);
+        --orbit-radius: min(37vw, 205px);
+    }
+
+    .wheel-core {
+        width: min(45vw, 185px);
+    }
+
+    .core-controls {
+        gap: 0.35rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .song-wheel,
+    .song-card {
+        transition: none;
+        animation: none;
+    }
+
+    .track-info {
+        opacity: 1;
+    }
+}
+
+@keyframes wheel-breathe {
+    0%, 100% { box-shadow: 0 20px 55px rgba(0, 0, 0, 0.58), inset 0 0 40px rgba(255, 255, 255, 0.12), 0 0 24px rgba(255, 255, 255, 0.16); }
+    50% { box-shadow: 0 20px 55px rgba(0, 0, 0, 0.6), inset 0 0 46px rgba(255, 255, 255, 0.2), 0 0 32px rgba(255, 255, 255, 0.24); }
+}
+
+@keyframes active-pulse {
+    0%, 100% { box-shadow: 0 0 28px rgba(255, 255, 255, 0.5), 0 12px 30px rgba(0, 0, 0, 0.62); }
+    50% { box-shadow: 0 0 34px rgba(255, 255, 255, 0.62), 0 14px 34px rgba(0, 0, 0, 0.66); }
+}
