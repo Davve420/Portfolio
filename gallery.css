@@ -1,3 +1,4 @@
+*, *::before, *::after { box-sizing: border-box; }
 :root {
     --gallery-glow-soft: rgba(255, 255, 255, 0.18);
     --gallery-glow-strong: rgba(255, 255, 255, 0.42);
@@ -5,15 +6,17 @@
 }
 
 .gallery-main {
-    margin-top: 8vh;
-    padding: 0.9rem;
+    margin-top: 0.35rem;
+    padding: 0.9rem 0.75rem 1.35rem;
     min-height: calc(100vh - 8vh);
     display: grid;
+    overflow-x: clip;
     gap: 1rem;
 }
 
 .gallery-head {
-    width: min(94vw, 1020px);
+    width: 100%;
+    max-width: 1020px;
     margin: 0 auto;
     text-align: center;
     padding: 0.9rem 1rem;
@@ -55,9 +58,11 @@
 }
 
 .gallery-carousel {
-    width: min(94vw, 1020px);
+    width: 100%;
+    max-width: 1020px;
     margin: 0 auto;
     display: grid;
+    overflow-x: clip;
     gap: 0.65rem;
     position: relative;
     padding: 0.45rem;
@@ -102,6 +107,7 @@
     margin: 0;
     padding: 0.35rem;
     display: grid;
+    overflow-x: clip;
     place-items: center;
 }
 
@@ -116,6 +122,7 @@
 
 .carousel-controls {
     display: grid;
+    overflow-x: clip;
     grid-template-columns: auto 1fr auto;
     gap: 0.5rem;
     align-items: center;
@@ -149,12 +156,14 @@
 }
 
 .thumbs-wrap {
-    width: min(94vw, 1020px);
+    width: 100%;
+    max-width: 1020px;
     margin: 0 auto;
 }
 
 .thumbs-grid {
     display: grid;
+    overflow-x: clip;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0.55rem;
 }
@@ -222,5 +231,68 @@
     .thumb-btn {
         animation: none;
         transition: none;
+    }
+}
+
+/* Letters under gallery */
+.letters-board {
+    width: 100%;
+    max-width: 1020px;
+    margin: 0 auto;
+}
+
+.letters-details {
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 1rem;
+    background: linear-gradient(160deg, rgba(10, 10, 12, 0.94), rgba(6, 8, 14, 0.96));
+    box-shadow: 0 14px 30px rgba(0, 0, 0, 0.5), 0 0 16px rgba(255, 255, 255, 0.1);
+    padding: 0.8rem;
+}
+
+.letters-details > summary {
+    cursor: pointer;
+    color: #f4f6ff;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.86rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.letters-grid {
+    margin-top: 0.75rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.7rem;
+}
+
+.letter-card {
+    background: linear-gradient(180deg, #faf8f3 0%, #f2efe7 100%);
+    color: #232120;
+    border: 1px solid #e0d8c9;
+    border-radius: 0.8rem;
+    padding: 1rem;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.16), inset 0 0 34px rgba(0, 0, 0, 0.03);
+}
+
+.letter-card h2 {
+    margin: 0 0 0.4rem;
+    font-size: clamp(1.05rem, 4vw, 1.34rem);
+    color: #171514;
+}
+
+.letter-card p {
+    margin: 0 0 0.5rem;
+    font-size: 0.94rem;
+    line-height: 1.65;
+    color: #2b2826;
+}
+
+.letter-card p:last-child {
+    margin-bottom: 0;
+}
+
+@media (min-width: 880px) {
+    .letters-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }

@@ -3,91 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Scorpio Star Map: interactive project constellation from DaviN3t.">
+    <meta name="description" content="My project universe — everything David has built, shipped and hacked. Live from GitHub and beyond.">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="DaviN3t - Scorpio Star Map">
-    <meta property="og:description" content="Explore projects in an interactive Scorpio-inspired constellation map.">
+    <meta property="og:title" content="DaviN3t - Projects">
+    <meta property="og:description" content="Browse David's projects — apps, experiments and creative builds, live from GitHub.">
     <meta property="og:url" content="https://davinet.netlify.app/projects.html">
     <meta property="og:image" content="https://davinet.netlify.app/pictures/projectsstarmap.jpg">
     <meta property="og:site_name" content="DaviN3t">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="DaviN3t - Scorpio Star Map">
-    <meta name="twitter:description" content="Explore projects in an interactive Scorpio-inspired constellation map.">
+    <meta name="twitter:title" content="DaviN3t - Projects">
+    <meta name="twitter:description" content="Browse David's projects — apps, experiments and creative builds, live from GitHub.">
     <meta name="twitter:image" content="https://davinet.netlify.app/pictures/projectsstarmap.jpg">
     <link rel="icon" type="image/png" href="pictures/dvd.jpg">
     <link rel="stylesheet" href="globalstyle.css">
     <link rel="stylesheet" href="projectstyle.css">
-    <title>DaviN3t - Projects</title>
+    <title>DaviN3t - Build deck</title>
 </head>
 <body data-page="projects">
-    <header>
-        <div id="site-nav"></div>
-    </header>
-
-    <main class="constellation-main">
+    <main class="projects-main">
         <section class="heading">
             <p class="eyebrow">Build deck</p>
-            <h1>Scorpio Star Map</h1>
-            <p>Each project is a star in a Scorpius-inspired constellation. Hover any star to preview what it is, then click to jump to that project.</p>
+            <h1>My Contributions to the Cybernet</h1>
+            <p>Webisites and other things I have built and accomplished over the years</p>
         </section>
 
-        <section class="constellation-wrap" aria-label="Scorpius constellation projects map">
-            <svg class="constellation-lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-                <polyline points="10,16 24,27 34,38 46,50 57,57 69,66 82,73" />
-                <polyline points="57,57 60,44 67,36 77,34" />
-                <polyline points="69,66 64,78 75,87" />
-                <polyline points="57,57 76,52 90,58" />
-            </svg>
+        <!-- Curated project grid -->
+        <section class="projects-grid" aria-label="Project grid">
+                        <article class="project-card" data-github="https://github.com/Kingtutz/gritsquare-grupp1-fe25">
+                <a class="project-cover-link" href="https://kingtutz.github.io/gritsquare-grupp1-fe25/" target="_blank" rel="noopener noreferrer">
+                    <div class="project-thumbnail" style="background: url(pictures/Gatheringgarden.jpg) center/cover"></div>
+                </a>
+                <div class="project-info">
+                    <h3>Gathering Garden</h3>
+                    <p class="project-type">Group project where I contributed with styling and features like the cabin. Check it out rn!</p>
+                    <div class="project-actions">
+                        <a class="project-btn" href="https://kingtutz.github.io/gritsquare-grupp1-fe25/" target="_blank" rel="noopener noreferrer">Open site</a>
+                        <a class="project-btn project-btn-subtle" href="https://github.com/Kingtutz/gritsquare-grupp1-fe25" target="_blank" rel="noopener noreferrer">GitHub</a>
+                    </div>
+                </div>
+            </article>
 
-            <a class="star s1" href="https://davve420.github.io/fe25-js-slutuppgift-david-brolin/">
-                <span class="star-dot"></span>
-                <span class="star-label"><strong>MovieFinder</strong><small>JS movie search app</small></span>
-            </a>
+                        <article class="project-card" data-github="https://github.com/Davve420/fe25-js2-laslista-david-brolin">
+                <a class="project-cover-link" href="https://davireads.netlify.app/" target="_blank" rel="noopener noreferrer">
+                    <div class="project-thumbnail" style="background: url(pictures/Readinglist.jpg) center/cover"></div>
+                </a>
+                <div class="project-info">
+                    <h3>Reading List</h3>
+                    <p class="project-type">Interactive reading list with connected to a realtime database</p>
+                    <div class="project-actions">
+                        <a class="project-btn" href="https://davireads.netlify.app/" target="_blank" rel="noopener noreferrer">Open site</a>
+                        <a class="project-btn project-btn-subtle" href="https://github.com/Davve420/fe25-js2-laslista-david-brolin" target="_blank" rel="noopener noreferrer">GitHub</a>
+                    </div>
+                </div>
+            </article>
 
-            <a class="star s2" href="https://plushieworld.netlify.app/">
-                <span class="star-dot"></span>
-                <span class="star-label"><strong>PlushieWorld</strong><small>React shopping demo</small></span>
-            </a>
+            <article class="project-card" data-github="https://github.com/Davve420/fe25-js-slutuppgift-david-brolin">
+                <a class="project-cover-link" href="https://davve420.github.io/fe25-js-slutuppgift-david-brolin/" target="_blank" rel="noopener noreferrer">
+                    <div class="project-thumbnail" style="background: url(pictures/MovieFinder.jpg) center/cover"></div>
+                </a>
+                <div class="project-info">
+                    <h3>MovieFinder</h3>
+                    <p class="project-type">JS Movie app connected via API database</p>
+                    <div class="project-actions">
+                        <a class="project-btn" href="https://davve420.github.io/fe25-js-slutuppgift-david-brolin/" target="_blank" rel="noopener noreferrer">Open site</a>
+                        <a class="project-btn project-btn-subtle" href="https://github.com/davve420/fe25-js-slutuppgift-david-brolin" target="_blank" rel="noopener noreferrer">GitHub</a>
+                    </div>
+                </div>
+            </article>
 
-            <a class="star s3" href="https://fungidiet.netlify.app/">
-                <span class="star-dot"></span>
-                <span class="star-label"><strong>FungiDiet</strong><small>Niche themed site</small></span>
-            </a>
+            <article class="project-card" data-github="https://github.com/Davve420/Fungi.Diet">
+                <a class="project-cover-link" href="https://fungidiet.netlify.app/" target="_blank" rel="noopener noreferrer">
+                    <div class="project-thumbnail" style="background: url(pictures/fungistart.png) center/cover"></div>
+                </a>
+                <div class="project-info">
+                    <h3>FungiDiet</h3>
+                    <p class="project-type">Prototype webbshop for a personal brand</p>
+                    <div class="project-actions">
+                        <a class="project-btn" href="https://fungidiet.netlify.app/" target="_blank" rel="noopener noreferrer">Open site</a>
+                        <a class="project-btn project-btn-subtle" href="https://github.com/Davve420/Fungi.Diet" target="_blank" rel="noopener noreferrer">GitHub</a>
+                    </div>
+                </div>
+            </article>
 
-            <a class="star s4" href="https://hornetsilksong.netlify.app/">
-                <span class="star-dot"></span>
-                <span class="star-label"><strong>Hornet's Silk & Songs</strong><small>Design-forward game fan page</small></span>
-            </a>
+            <article class="project-card" data-github="https://github.com/Davve420/Hornet-HTMLdesign">
+                <a class="project-cover-link" href="https://hornetsilksong.netlify.app/" target="_blank" rel="noopener noreferrer">
+                    <div class="project-thumbnail" style="background: url(pictures/Silksong.png) center/cover"></div>
+                </a>
+                <div class="project-info">
+                    <h3>Hornet's Silk & Songs</h3>
+                    <p class="project-type">Design-forward game fan page</p>
+                    <div class="project-actions">
+                        <a class="project-btn" href="https://hornetsilksong.netlify.app/" target="_blank" rel="noopener noreferrer">Open site</a>
+                        <a class="project-btn project-btn-subtle" href="https://github.com/Davve420/Hornet-HTMLdesign" target="_blank" rel="noopener noreferrer">GitHub</a>
+                    </div>
+                </div>
+            </article>
 
-            <a class="star s5" href="https://github.com/MSvennerheim/TechEaseSolutions/tree/main">
-                <span class="star-dot"></span>
-                <span class="star-label"><strong>TechEase CRM</strong><small>Collaboration repo</small></span>
-            </a>
+                        <article class="project-card" data-github="https://github.com/Davve420/PlushieWorldClient">
+                <a class="project-cover-link" href="https://plushieworld.netlify.app/" target="_blank" rel="noopener noreferrer">
+                    <div class="project-thumbnail" style="background: url(pictures/PlushieWorld.png) center/cover"></div>
+                </a>
+                <div class="project-info">
+                    <h3>PlushieWorld</h3>
+                    <p class="project-type">React shopping demo</p>
+                    <div class="project-actions">
+                        <a class="project-btn" href="https://plushieworld.netlify.app/" target="_blank" rel="noopener noreferrer">Open site</a>
+                        <a class="project-btn project-btn-subtle" href="https://github.com/Davve420/PlushieWorldClient" target="_blank" rel="noopener noreferrer">GitHub</a>
+                    </div>
+                </div>
+            </article>
 
-            <a class="star s6" href="hangman/index.html">
-                <span class="star-dot"></span>
-                <span class="star-label"><strong>Hangman</strong><small>Mini game in browser</small></span>
-            </a>
+            <article class="project-card">
+                <a class="project-cover-link" href="hangman/index.html">
+                    <div class="project-thumbnail" style="background: url(pictures/hangman.jpg) center/cover"></div>
+                </a>
+                <div class="project-info">
+                    <h3>Hangman</h3>
+                    <p class="project-type">Mini game in browser</p>
+                    <div class="project-actions">
+                        <a class="project-btn" href="hangman/index.html">Open site</a>
+                    </div>
+                </div>
+            </article>
 
-            <a class="star s7" href="favorites.html">
-                <span class="star-dot"></span>
-                <span class="star-label"><strong>Favorites Wheel</strong><small>Music taste interface demo</small></span>
-            </a>
-
-            <a class="star s8" href="FirstPage/index.html">
-                <span class="star-dot"></span>
-                <span class="star-label"><strong>Time Capsule</strong><small>First web era archive</small></span>
-            </a>
-                
-            <a class="star s9" href="https://davireads.netlify.app/">
-                <span class="star-dot"></span>
-                <span class="star-label"><strong>Reading List</strong><small>Interactive reading list with database</small></span>
-            </a>
+            <article class="project-card">
+                <a class="project-cover-link" href="FirstPage/index.html">
+                    <div class="project-thumbnail" style="background: url(pictures/timcapsuleimg.jpg) center/cover"></div>
+                </a>
+                <div class="project-info">
+                    <h3>Time Capsule</h3>
+                    <p class="project-type">First web era archive</p>
+                    <div class="project-actions">
+                        <a class="project-btn" href="FirstPage/index.html">Open site</a>
+                    </div>
+                </div>
+            </article>
         </section>
 
         <section class="todo-widget" aria-label="Project planning todo list">
             <h2>Project TODOs</h2>
-            <p>Plan what to build next in your Scorpio map journey.</p>
+            <p>Plan what to build next.</p>
             <div class="todo-controls">
                 <input id="newItem" type="text" placeholder="Add a task..." aria-label="New todo item">
                 <button id="addTopBtn" type="button">Add Top</button>
@@ -105,10 +160,26 @@
                 </div>
             </div>
         </section>
+
+        <section class="credentials" aria-label="CV and certificates">
+            <h2>Credentials</h2>
+            <p>Quick access to my CV and training certificates.</p>
+            <div class="credentials-grid">
+                <a class="credential-card" href="https://1drv.ms/w/c/699bac1e0f916d0b/EecWXmWypo1GvTXfU5e92wQBg0q8Xwlhk0oFo7EepfRO9g?e=ROwcid" target="_blank" rel="noopener noreferrer">
+                    <img src="pictures/CV.png" alt="David CV preview" loading="lazy" decoding="async">
+                    <span class="credential-title">My CV</span>
+                </a>
+                <a class="credential-card" href="pictures/AIcertifikat.png" target="_blank" rel="noopener noreferrer">
+                    <img src="pictures/AIcertifikat.png" alt="AI certificate preview" loading="lazy" decoding="async">
+                    <span class="credential-title">AI Certificate</span>
+                </a>
+            </div>
+        </section>
     </main>
 
     <footer class="footercontainer" id="site-footer"></footer>
     <script src="shared-shell.js" defer></script>
+    <script src="projects.js" defer></script>
     <script src="todo.js" defer></script>
 </body>
 </html>

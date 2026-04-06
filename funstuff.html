@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Explore fun sections of DaviN3t: projects, music, art, wardrobe and creative deep dives.">
+    <meta name="description" content="Explore experiments, notes, visuals and creative deep dives from DaviN3t.">
     <meta property="og:type" content="website">
     <meta property="og:title" content="DaviN3t - Funstuff">
-    <meta property="og:description" content="Explore projects, music, art and wardrobe from DaviN3t in one playful hub.">
+    <meta property="og:description" content="Explore experiments, notes, music and visuals from DaviN3t in one playful hub.">
     <meta property="og:url" content="https://davinet.netlify.app/funstuff.html">
     <meta property="og:image" content="https://davinet.netlify.app/pictures/projectsstarmap.jpg">
     <meta property="og:site_name" content="DaviN3t">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="DaviN3t - Funstuff">
-    <meta name="twitter:description" content="Explore projects, music, art and wardrobe from DaviN3t in one playful hub.">
+    <meta name="twitter:description" content="Explore experiments, notes, music and visuals from DaviN3t in one playful hub.">
     <meta name="twitter:image" content="https://davinet.netlify.app/pictures/projectsstarmap.jpg">
     <link rel="icon" type="image/png" href="pictures/dvd.jpg">
     <link rel="stylesheet" href="globalstyle.css">
@@ -37,26 +37,39 @@
             <img src="pictures/projectsstarmap.jpg" alt="Projects preview" loading="lazy" decoding="async">
             <span class="hub-label">Projects</span>
         </a>
-        <a class="hub-card" href="favorites.html">
+        <a class="hub-card" href="vibedeck.html">
             <img src="pictures/VibeSystem.jpg" alt="Favorites preview" loading="lazy" decoding="async">
             <span class="hub-label">Music Wheel</span>
         </a>
     </section>
 
-    <section class="creative-hub" aria-label="Art and wardrobe destinations">
+    <section class="creative-hub" aria-label="Creative destinations">
         <a class="hub-card feature-card" href="art.html">
             <img src="pictures/brainwashed.jpg" alt="Art gallery preview" loading="lazy" decoding="async">
             <span class="hub-label">Art Gallery</span>
         </a>
-        <a class="hub-card feature-card" href="wardrobe.html">
-            <img src="pictures\personsoulmirror.jpeg" alt="Wardrobe gallery preview" loading="lazy" decoding="async">
-            <span class="hub-label">Wardrobe</span>
+        <a class="hub-card feature-card" href="messages.html">
+            <img src="pictures/projectsstarmap.jpg" alt="Star Notes preview" loading="lazy" decoding="async">
+            <span class="hub-label">Star Notes</span>
         </a>
     </section>
 
     <section class="section-intro">
         <h2>Deep Dives</h2>
         <p>Scroll for letters, achievements and perhaps my rants and other notes will be here in the future.</p>
+    </section>
+
+    <section class="pexels-section" aria-label="Cosmic Lens photo search">
+        <div class="pexels-intro">
+            <h2>Cosmic Lens</h2>
+            <p>Search for aesthetic photos from around the world. Powered by <a href="https://www.pexels.com" target="_blank" rel="noopener noreferrer">Pexels</a>.</p>
+        </div>
+        <div class="pexels-search-row">
+            <input type="search" id="pexels-input" placeholder="Try: space, goth, forest, neon…" autocomplete="off">
+            <button type="button" id="pexels-btn">Explore</button>
+        </div>
+        <div class="pexels-grid" id="pexels-grid" aria-live="polite"></div>
+        <p class="pexels-credit">Photos by <a href="https://www.pexels.com" target="_blank" rel="noopener noreferrer">Pexels</a></p>
     </section>
 
 
@@ -98,6 +111,7 @@
             <h3>My CV</h3>
         </a>
         </article>
+        </section>
         </details>
 
     </main>
@@ -105,5 +119,6 @@
     <footer class="footercontainer" id="site-footer">
     </footer>
     <script src="shared-shell.js" defer></script>
+    <script src="pexels.js" defer></script>
 </body>
 </html>

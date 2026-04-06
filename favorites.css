@@ -1,13 +1,15 @@
+*, *::before, *::after { box-sizing: border-box; }
 :root {
     --wheel-panel: rgba(7, 7, 7, 0.95);
     --wheel-border: rgba(255, 255, 255, 0.04);
 }
 
 .favorites-main {
-    margin-top: 8vh;
-    padding: 1rem;
-    min-height: calc(100vh - 8vh);
+    margin-top: 0.35rem;
+    padding: 1rem 0.75rem 1.4rem;
+    min-height: auto;
     display: grid;
+    overflow-x: clip;
     gap: 1.2rem;
     position: relative;
 }
@@ -55,7 +57,8 @@
 }
 
 .owner-top {
-    width: min(92vw, 760px);
+    width: 100%;
+    max-width: 760px;
     margin: 0 auto;
     padding: 0.9rem;
     border-radius: 1rem;
@@ -76,11 +79,13 @@
     padding: 0;
     list-style: none;
     display: grid;
+    overflow-x: clip;
     gap: 0.42rem;
 }
 
 .owner-top-list li {
     display: grid;
+    overflow-x: clip;
     grid-template-columns: 38px 1fr auto;
     align-items: center;
     gap: 0.55rem;
@@ -126,35 +131,187 @@
     justify-content: flex-end;
 }
 
-.owner-copy-btn {
-    background: transparent;
-    color: rgba(180, 197, 240, 0.55);
-    border: 1px dashed rgba(165, 186, 245, 0.25);
-    border-radius: 999px;
-    padding: 0.22rem 0.56rem;
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 0.62rem;
-    letter-spacing: 0.03em;
-    cursor: pointer;
-    transition: color 150ms ease, border-color 150ms ease, background-color 150ms ease;
+.recommend-widget {
+    width: 100%;
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 0.9rem;
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    background: linear-gradient(165deg, rgba(11, 11, 11, 0.9), rgba(4, 4, 4, 0.96));
+    box-shadow: 0 12px 34px rgba(0, 0, 0, 0.5), inset 0 0 22px rgba(255, 255, 255, 0.08), 0 0 18px rgba(255, 255, 255, 0.12);
 }
 
-.owner-copy-btn:hover,
-.owner-copy-btn:focus-visible {
-    color: rgba(223, 233, 255, 0.92);
-    border-color: rgba(165, 186, 245, 0.46);
-    background: rgba(165, 186, 245, 0.08);
+.recommend-widget h2 {
+    margin: 0;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.3rem, 4.6vw, 1.8rem);
+    color: #edf2ff;
+}
+
+.recommend-widget > p {
+    margin: 0.35rem 0 0.65rem;
+    color: rgba(197, 213, 255, 0.7);
+    font-size: 0.82rem;
+}
+
+.recommend-form {
+    display: grid;
+    gap: 0.5rem;
+    grid-template-columns: 1fr 1fr;
+}
+
+.recommend-form input,
+.recommend-form button {
+    min-height: 2.15rem;
+    border-radius: 0.7rem;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.78rem;
+}
+
+.recommend-form input {
+    background: rgba(7, 7, 7, 0.7);
+    color: #edf2ff;
+    padding: 0.45rem 0.6rem;
+}
+
+.recommend-form input::placeholder {
+    color: rgba(197, 213, 255, 0.5);
+}
+
+.recommend-form button {
+    grid-column: 1 / -1;
+    background: rgba(255, 255, 255, 0.1);
+    color: #f6f8ff;
+    cursor: pointer;
+    transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+}
+
+.recommend-form button:hover,
+.recommend-form button:focus-visible {
+    border-color: rgba(255, 255, 255, 0.65);
+    box-shadow: 0 0 16px rgba(255, 255, 255, 0.25), 0 0 18px rgba(122, 20, 40, 0.22);
+    transform: translateY(-1px);
     outline: none;
+}
+
+.recommend-status {
+    margin: 0.5rem 0 0;
+    min-height: 1rem;
+    color: rgba(188, 208, 255, 0.75);
+    font-size: 0.72rem;
+}
+
+.recommend-list {
+    margin: 0.4rem 0 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.4rem;
+}
+
+.recommend-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.45rem 0.6rem;
+    border-radius: 0.68rem;
+    border: 1px solid rgba(255, 255, 255, 0.02);
+    background: rgba(7, 7, 7, 0.7);
+}
+
+.recommend-content {
+    min-width: 0;
+    display: grid;
+    gap: 0.18rem;
+}
+
+.recommend-track {
+    color: #f3f6ff;
+    font-size: 0.78rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.recommend-meta {
+    color: rgba(182, 199, 245, 0.8);
+    font-size: 0.68rem;
+    white-space: nowrap;
+}
+
+.recommend-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-shrink: 0;
+}
+
+.recommend-like-btn,
+.recommend-delete-btn {
+    min-height: 2rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(255, 255, 255, 0.07);
+    color: #edf2ff;
+    padding: 0.34rem 0.72rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.7rem;
+    cursor: pointer;
+    transition: border-color 160ms ease, background-color 160ms ease, transform 160ms ease;
+}
+
+.recommend-like-btn:hover,
+.recommend-like-btn:focus-visible,
+.recommend-delete-btn:hover,
+.recommend-delete-btn:focus-visible {
+    border-color: rgba(255, 255, 255, 0.5);
+    background: rgba(255, 255, 255, 0.14);
+    transform: translateY(-1px);
+    outline: none;
+}
+
+.recommend-like-btn.is-liked,
+.recommend-like-btn:disabled {
+    cursor: default;
+    background: rgba(29, 185, 84, 0.16);
+    color: rgba(210, 255, 224, 0.96);
+    border-color: rgba(29, 185, 84, 0.32);
+    transform: none;
+}
+
+.recommend-empty {
+    color: rgba(182, 199, 245, 0.72);
+    font-size: 0.74rem;
+}
+
+.copy-shell {
+    position: fixed;
+    bottom: 0.55rem;
+    right: 0.6rem;
+    z-index: 60;
+}
+
+@media (min-width: 900px) {
+    .copy-shell {
+        bottom: auto;
+        top: 0.75rem;
+        right: 0.85rem;
+    }
 }
 
 .wheel-wrap {
     display: grid;
+    overflow-x: clip;
     place-items: center;
 }
 
 .song-wheel {
     position: relative;
-    width: min(92vw, 760px);
+    width: 100%;
+    max-width: 760px;
     aspect-ratio: 1 / 1;
     border-radius: 50%;
     border: 1px solid var(--wheel-border);
@@ -367,6 +524,29 @@
 @media (max-width: 740px) {
     .owner-top {
         padding: 0.75rem;
+    }
+
+    .recommend-widget {
+        padding: 0.75rem;
+    }
+
+    .recommend-form {
+        grid-template-columns: 1fr;
+    }
+
+    .recommend-list li {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .recommend-actions {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .recommend-list li {
+        flex-direction: column;
+        align-items: flex-start;
     }
 
     .owner-top-list li {

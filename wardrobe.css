@@ -1,0 +1,294 @@
+/* Wardrobe Page - Mobile-First Grid Layout */
+
+:root {
+    --card-gap: 0.85rem;
+    --card-cols: 2;
+    --card-hover: rgba(234, 233, 239, 0.1);
+}
+
+.wardrobe-main {
+    max-width: 100%;
+    padding: 1.5rem 1rem 1rem;
+}
+
+/* Header Section */
+.wardrobe-head {
+    text-align: center;
+    margin-bottom: 2rem;
+    animation: fadeInDown 0.8s ease-out;
+}
+
+.wardrobe-head h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0 0 0.8rem;
+    background: linear-gradient(135deg, #eae9ef 0%, #7a1428 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.03em;
+}
+
+.wardrobe-vibe {
+    font-size: 1rem;
+    color: rgba(234, 233, 239, 0.7);
+    font-style: italic;
+    margin: 0;
+    font-weight: 300;
+}
+
+/* Mobile Grid View */
+.wardrobe-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--card-cols), 1fr);
+    gap: var(--card-gap);
+    margin-bottom: 3rem;
+    animation: fadeInUp 0.8s ease-out 0.2s both;
+}
+
+.look-card {
+    display: flex;
+    flex-direction: column;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    background: rgba(234, 233, 239, 0.05);
+    border: 1px solid rgba(234, 233, 239, 0.15);
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    cursor: pointer;
+    backdrop-filter: blur(8px);
+    animation: slideUp 0.6s ease-out backwards;
+}
+
+/* Stagger animation for cards */
+.look-card:nth-child(1) { animation-delay: 0.1s; }
+.look-card:nth-child(2) { animation-delay: 0.12s; }
+.look-card:nth-child(3) { animation-delay: 0.14s; }
+.look-card:nth-child(4) { animation-delay: 0.16s; }
+.look-card:nth-child(5) { animation-delay: 0.18s; }
+.look-card:nth-child(6) { animation-delay: 0.20s; }
+.look-card:nth-child(7) { animation-delay: 0.22s; }
+.look-card:nth-child(8) { animation-delay: 0.24s; }
+.look-card:nth-child(9) { animation-delay: 0.26s; }
+.look-card:nth-child(10) { animation-delay: 0.28s; }
+.look-card:nth-child(11) { animation-delay: 0.30s; }
+.look-card:nth-child(12) { animation-delay: 0.32s; }
+.look-card:nth-child(13) { animation-delay: 0.34s; }
+.look-card:nth-child(14) { animation-delay: 0.36s; }
+.look-card:nth-child(15) { animation-delay: 0.38s; }
+.look-card:nth-child(16) { animation-delay: 0.40s; }
+
+@media (hover: hover) {
+    .look-card:hover {
+        transform: translateY(-6px);
+        border-color: rgba(234, 233, 239, 0.3);
+        background: rgba(234, 233, 239, 0.1);
+        box-shadow: 0 12px 32px rgba(122, 20, 40, 0.3);
+    }
+}
+
+@media (hover: none) {
+    .look-card:active {
+        transform: scale(0.98);
+        opacity: 0.9;
+    }
+}
+
+.look-image {
+    width: 100%;
+    aspect-ratio: 3 / 2;
+    background-size: cover;
+    background-position: center;
+    flex-shrink: 0;
+}
+
+.look-meta {
+    padding: 0.75rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.look-meta h3 {
+    margin: 0 0 0.3rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #eae9ef;
+    letter-spacing: 0.02em;
+}
+
+.look-type {
+    margin: 0;
+    font-size: 0.8rem;
+    color: rgba(234, 233, 239, 0.6);
+    font-weight: 400;
+    letter-spacing: 0.01em;
+}
+
+/* Desktop Carousel Fallback (hidden on mobile) */
+.gallery-carousel-fallback {
+    display: none;
+}
+
+/* Tablet: 3-column grid */
+@media (min-width: 768px) {
+    .wardrobe-main {
+        padding: 2rem 1.5rem 1.5rem;
+    }
+
+    .wardrobe-head h1 {
+        font-size: 3rem;
+    }
+
+    .wardrobe-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.2rem;
+        max-width: 1000px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .look-card {
+        border-radius: 0.75rem;
+    }
+}
+
+/* Desktop: Show carousel, hide grid */
+@media (min-width: 900px) {
+    .wardrobe-grid {
+        display: none;
+    }
+
+    .gallery-carousel-fallback {
+        display: block;
+        margin: 3rem auto;
+        max-width: 800px;
+        animation: fadeInUp 0.8s ease-out 0.2s both;
+    }
+
+    .carousel-viewport {
+        width: 100%;
+        aspect-ratio: 3 / 2;
+        overflow: hidden;
+        border-radius: 1rem;
+        border: 1px solid rgba(234, 233, 239, 0.15);
+        background: rgba(234, 233, 239, 0.05);
+        backdrop-filter: blur(8px);
+        cursor: grab;
+        user-select: none;
+        -webkit-user-select: none;
+    }
+
+    .carousel-viewport:active {
+        cursor: grabbing;
+    }
+
+    .carousel-track {
+        display: flex;
+        height: 100%;
+        transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .carousel-slide {
+        flex: 0 0 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    .carousel-slide img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+    }
+
+    .carousel-controls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1.5rem;
+        margin-top: 1.5rem;
+    }
+
+    .carousel-btn {
+        padding: 0.6rem 1.2rem;
+        border: 1px solid rgba(234, 233, 239, 0.3);
+        background: rgba(234, 233, 239, 0.08);
+        color: #eae9ef;
+        border-radius: 0.4rem;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(8px);
+    }
+
+    .carousel-btn:hover {
+        border-color: rgba(234, 233, 239, 0.5);
+        background: rgba(234, 233, 239, 0.12);
+    }
+
+    .carousel-btn:active {
+        transform: scale(0.95);
+    }
+
+    .carousel-status {
+        color: rgba(234, 233, 239, 0.7);
+        font-size: 0.9rem;
+        font-weight: 500;
+        min-width: 60px;
+        text-align: center;
+    }
+}
+
+/* Animations */
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+    .look-card,
+    .wardrobe-head,
+    .wardrobe-grid,
+    .gallery-carousel-fallback {
+        animation: none;
+        transition: background 0.2s ease, border 0.2s ease;
+    }
+
+    .look-card:hover {
+        transform: none;
+    }
+
+    .carousel-track {
+        transition: transform 0.2s ease;
+    }
+}

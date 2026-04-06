@@ -4,8 +4,8 @@
 //  1. Go to https://developer.spotify.com/dashboard and create a free app.
 //  2. Paste your Client ID into CLIENT_ID below.
 //  3. In your app settings → "Redirect URIs", add:
-//       http://localhost:<PORT>/favorites.html   ← for npm run dev
-//       https://yourdomain.com/favorites.html    ← for production
+//       http://localhost:<PORT>/vibedeck.html   ← for npm run dev
+//       https://yourdomain.com/vibedeck.html    ← for production
 //     (the exact URL you see in the browser when on the favorites page)
 //
 // ────────────────────────────────────────────────────────────────────────────
@@ -38,6 +38,12 @@ export async function login() {
     const verifier   = genVerifier();
     const challenge  = await genChallenge(verifier);
     sessionStorage.setItem('sp_cv', verifier);
+    const isAdminMode = new URLSearchParams(location.search).has('admin');
+    if (isAdminMode) {
+        sessionStorage.setItem('sp_return_to_admin', '1');
+    } else {
+        sessionStorage.removeItem('sp_return_to_admin');
+    }
 
     const url = new URL('https://accounts.spotify.com/authorize');
     url.searchParams.set('client_id',             CLIENT_ID);
@@ -72,9 +78,12 @@ export async function exchangeCode(code) {
 
     const { access_token, expires_in } = await res.json();
     sessionStorage.removeItem('sp_cv');
+    const adminMode = sessionStorage.getItem('sp_return_to_admin') === '1';
+    sessionStorage.removeItem('sp_return_to_admin');
     localStorage.setItem('sp_token',  access_token);
     localStorage.setItem('sp_expiry', Date.now() + expires_in * 1000);
-    history.replaceState({}, '', location.pathname);
+    const pathname = adminMode ? `${location.pathname}?admin=1` : location.pathname;
+    history.replaceState({}, '', pathname);
     return access_token;
 }
 
@@ -88,6 +97,7 @@ export function getToken() {
 export function clearToken() {
     localStorage.removeItem('sp_token');
     localStorage.removeItem('sp_expiry');
+    sessionStorage.removeItem('sp_return_to_admin');
 }
 
 // ── API ───────────────────────────────────────────────────────────────────────
@@ -105,5 +115,6 @@ export async function getTopTracks(token, { timeRange = 'short_term', limit = 6,
     );
     if (res.status === 401) { clearToken(); return null; }
     if (!res.ok) throw new Error(`Top tracks request failed: ${res.status}`);
-    return (await res.json()).items;
+    const data = await res.json();
+    return data.items;
 }

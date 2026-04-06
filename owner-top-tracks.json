@@ -1,38 +1,71 @@
 [
   {
-    "name": "Brutalist (remix)",
+    "name": "Oud For Greatness",
     "artists": [
-      { "name": "Cr1tter.n3t" }
-    ]
+      {
+        "name": "9090gate"
+      }
+    ],
+    "spotify_url": "https://open.spotify.com/track/2Vu17e6VBkrLDiJmcseOCP",
+    "image": "https://i.scdn.co/image/ab67616d00001e021638df4d3ab841d8f8b93926",
+    "preview_url": null
   },
   {
-    "name": "Add track name",
+    "name": "Cloudy Skymonade",
     "artists": [
-      { "name": "Artist" }
-    ]
+      {
+        "name": "fineart"
+      }
+    ],
+    "spotify_url": "https://open.spotify.com/track/536J2s68594jHJQS7Z39pl",
+    "image": "https://i.scdn.co/image/ab67616d00001e02013d7b21af73d848e2e7f2d9",
+    "preview_url": null
   },
   {
-    "name": "Add track name",
+    "name": "party",
     "artists": [
-      { "name": "Artist" }
-    ]
+      {
+        "name": "halfadedd"
+      }
+    ],
+    "spotify_url": "https://open.spotify.com/track/2b5Xp2O5L7qn1xWkfqM8sg",
+    "image": "https://i.scdn.co/image/ab67616d00001e0229a563bac49800a7669d3268",
+    "preview_url": null
   },
   {
-    "name": "Add track name",
+    "name": "Puhboistoner",
     "artists": [
-      { "name": "Artist" }
-    ]
+      {
+        "name": "yukan"
+      }
+    ],
+    "spotify_url": "https://open.spotify.com/track/0BXE2UmTq70y6UAlE50vqZ",
+    "image": "https://i.scdn.co/image/ab67616d00001e02f10abd04f819dccdab1bad16",
+    "preview_url": null
   },
   {
-    "name": "Add track name",
+    "name": "Vape Luv",
     "artists": [
-      { "name": "Artist" }
-    ]
+      {
+        "name": "Babe Dylan"
+      }
+    ],
+    "spotify_url": "https://open.spotify.com/track/13wTGwDNWWLr0I52ePwHAX",
+    "image": "https://i.scdn.co/image/ab67616d00001e0208769b0d918e84f4cadb09af",
+    "preview_url": null
   },
   {
-    "name": "Add track name",
+    "name": "The Hills (feat. DEELA)",
     "artists": [
-      { "name": "Artist" }
-    ]
+      {
+        "name": "Coco & Clair Clair"
+      },
+      {
+        "name": "DEELA"
+      }
+    ],
+    "spotify_url": "https://open.spotify.com/track/5MdJrRsDCF1dVsPrT4Jv2x",
+    "image": "https://i.scdn.co/image/ab67616d00001e02d332018fb989f11fb22cb6b1",
+    "preview_url": null
   }
 ]

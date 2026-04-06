@@ -228,6 +228,185 @@
     align-items:start;
     margin: 1.2rem 0;
 }
+
+/* ─── Star Notes hub card ─── */
+.explore-hub {
+    width: min(92vw, 900px);
+    margin: 0 auto 1.2rem;
+}
+
+/* ─── Cosmic Lens / Pexels section ─── */
+.pexels-section {
+    width: min(92vw, 900px);
+    margin: 0 auto 2rem;
+    padding: 1.5rem;
+    background: rgba(8, 8, 12, 0.7);
+    border: 1px solid rgba(234, 233, 239, 0.08);
+    border-radius: 1rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.pexels-intro {
+    text-align: center;
+    margin-bottom: 1.2rem;
+}
+
+.pexels-intro h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #eae9ef;
+    margin: 0 0 0.4rem;
+    letter-spacing: -0.01em;
+}
+
+.pexels-intro p {
+    color: rgba(234, 233, 239, 0.55);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+.pexels-intro a {
+    color: rgba(234, 233, 239, 0.75);
+    text-decoration: underline;
+}
+
+.pexels-search-row {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.2rem;
+}
+
+.pexels-search-row input {
+    flex: 1;
+    background: rgba(234, 233, 239, 0.06);
+    border: 1px solid rgba(234, 233, 239, 0.14);
+    border-radius: 0.5rem;
+    padding: 0.65rem 0.9rem;
+    color: #eae9ef;
+    font-size: 0.92rem;
+    font-family: inherit;
+    -webkit-appearance: none;
+}
+
+.pexels-search-row input::placeholder { color: rgba(234, 233, 239, 0.3); }
+.pexels-search-row input:focus { outline: none; border-color: rgba(234, 233, 239, 0.3); }
+
+.pexels-search-row button {
+    padding: 0.65rem 1.1rem;
+    background: linear-gradient(135deg, #7a1428 0%, #5c0f1e 100%);
+    border: 1px solid rgba(122, 20, 40, 0.5);
+    color: #eae9ef;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    font-family: inherit;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.pexels-search-row button:hover {
+    background: linear-gradient(135deg, #921829 0%, #6e1022 100%);
+    box-shadow: 0 0 12px rgba(122, 20, 40, 0.4);
+}
+
+.pexels-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.6rem;
+    margin-bottom: 0.75rem;
+}
+
+@media (min-width: 550px) { .pexels-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 900px) { .pexels-grid { grid-template-columns: repeat(4, 1fr); } }
+
+.pexels-photo {
+    position: relative;
+    display: block;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    border: 1px solid rgba(234, 233, 239, 0.08);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+@media (hover: hover) {
+    .pexels-photo:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .pexels-photo:hover .photo-credit { opacity: 1; }
+}
+
+.pexels-photo img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    display: block;
+}
+
+.photo-credit {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0.3rem 0.5rem;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.68rem;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.pexels-placeholder {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 1.5rem 1rem;
+    border: 1px dashed rgba(234, 233, 239, 0.12);
+    border-radius: 0.75rem;
+}
+
+.pexels-placeholder p {
+    color: rgba(234, 233, 239, 0.5);
+    margin: 0 0 0.4rem;
+    font-size: 0.9rem;
+}
+
+.pexels-placeholder a { color: rgba(234, 233, 239, 0.7); text-decoration: underline; }
+
+.pexels-placeholder code {
+    background: rgba(234, 233, 239, 0.08);
+    padding: 0.1rem 0.35rem;
+    border-radius: 0.25rem;
+    font-size: 0.85em;
+}
+
+.pexels-hint {
+    font-size: 0.8rem;
+    color: rgba(234, 233, 239, 0.3);
+    margin: 0;
+}
+
+.pexels-loading {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: rgba(234, 233, 239, 0.4);
+    font-size: 0.9rem;
+    padding: 1.5rem;
+    margin: 0;
+}
+
+.pexels-credit {
+    text-align: right;
+    font-size: 0.72rem;
+    color: rgba(234, 233, 239, 0.25);
+    margin: 0;
+}
+
+.pexels-credit a { color: inherit; text-decoration: underline; }
 .widget-box{
     padding:1rem;
     border-radius:0.8rem;

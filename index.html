@@ -16,42 +16,49 @@
     <meta name="twitter:description" content="A gothic-cosmic portfolio featuring style, music and interactive projects.">
     <meta name="twitter:image" content="https://davinet.netlify.app/pictures/GrungeDavi.JPEG">
     <meta name="twitter:card" content="summary_large_image">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&display=swap">
     <link rel="icon" type="image/png" href="pictures/dvd.jpg">
     <link rel="stylesheet" href="globalstyle.css">
     <link rel="stylesheet" href="indexstyle.css">
     <title>DaviN3t</title>
 </head>
 <body data-page="index">
-    <header>
-        <div id="site-nav"></div>
-    </header>
     <div class="warp-overlay" aria-hidden="true"></div>
     <main class="space-home">
+        <div class="home-brand" aria-label="Davi dot n3t">Davi.n3t</div>
         <section class="hero-shell" aria-label="Welcome section">
             <img class="hero-bg" src="pictures/GrungeDavi.JPEG" alt="" aria-hidden="true" fetchpriority="high" decoding="async">
             <div class="hero-content">
                 <p class="eyebrow">Welcome to my cyberspace</p>
                 <h1 class="hero-title">You just got pulled into Davi's orbit</h1>
-                <p class="hero-lead">Choose where you land next. Every card is a different zone in my cyberspace: style, music, showcases and other thingies</p>
+                <p class="hero-lead">I'm an aspiring artist and i love expressing myself in different ways but I'm also a big tech enthusiast who loves the idea of solarpunk. Every card is a different zone in my cyberspace: projects, style, music, showcases and other thingies</p>
             </div>
         </section>
 
         <section class="destination-grid" aria-label="Main destinations">
             <article class="destination-card" style="--delay: 0s">
-                <a class="card-link" href="funstuff.html">
-                    <img src="pictures/typeshi.JPG" alt="Style deck – Garderob" loading="lazy" decoding="async">
+                <a class="card-link" href="messages.html">
+                    <img src="pictures/Galaxy-note.png" alt="Community deck – Star Notes" loading="lazy" decoding="async">
                     <span class="card-label">
-                        <span class="card-eyebrow">Style deck</span>
-                        <span class="card-title">Wardrobe</span>
+                        <span class="card-eyebrow-row eyebrow-galaxy">
+                            <img class="card-eyebrow-icon" src="icons/Galaxy.png" alt="" aria-hidden="true" loading="lazy" decoding="async">
+                            <span class="card-eyebrow">Community deck</span>
+                        </span>
+                        <span class="card-title">Star Notes</span>
                     </span>
                 </a>
             </article>
 
             <article class="destination-card" style="--delay: 0.9s">
-                <a class="card-link" href="favorites.html">
+                <a class="card-link" href="vibedeck.html">
                     <img src="pictures/musiclife.jpg" alt="Vibe deck – Favorites" loading="lazy" decoding="async">
                     <span class="card-label">
-                        <span class="card-eyebrow">Vibe deck</span>
+                        <span class="card-eyebrow-row eyebrow-music">
+                            <img class="card-eyebrow-icon" src="icons/music.png" alt="" aria-hidden="true" loading="lazy" decoding="async">
+                            <span class="card-eyebrow">Vibe deck</span>
+                        </span>
                         <span class="card-title">Explore Music</span>
                     </span>
                 </a>
@@ -59,14 +66,48 @@
 
             <article class="destination-card" style="--delay: 1.8s">
                 <a class="card-link" href="projects.html">
-                    <img src="pictures/pinkproject.jpg" alt="Build deck – Scorpio Star Map" loading="lazy" decoding="async">
+                    <img src="pictures/pinkproject.jpg" alt="Build deck – Projects" loading="lazy" decoding="async">
                     <span class="card-label">
-                        <span class="card-eyebrow">Build deck</span>
+                        <span class="card-eyebrow-row eyebrow-portal">
+                            <img class="card-eyebrow-icon" src="icons/portal.png" alt="" aria-hidden="true" loading="lazy" decoding="async">
+                            <span class="card-eyebrow">Build deck</span>
+                        </span>
                         <span class="card-title">Projects</span>
                     </span>
                 </a>
             </article>
 
+            <article class="destination-card" style="--delay: 2.7s">
+                <a class="card-link" href="art.html">
+                    <img src="pictures/brainwashed.jpg" alt="Visual deck – Art Gallery" loading="lazy" decoding="async">
+                    <span class="card-label">
+                        <span class="card-eyebrow-row eyebrow-artistry">
+                            <img class="card-eyebrow-icon" src="icons/artistry.png" alt="" aria-hidden="true" loading="lazy" decoding="async">
+                            <span class="card-eyebrow">Visual deck</span>
+                        </span>
+                        <span class="card-title">Art Gallery. etc</span>
+                    </span>
+                </a>
+            </article>
+            <article class="destination-card music-card" style="--delay: 3.6s">
+                <div class="music-now-playing">
+                    <div class="music-bars" aria-hidden="true">
+                        <span></span><span></span><span></span><span></span><span></span>
+                    </div>
+                    <div class="music-info">
+                        <span class="card-eyebrow">Banger i found · han.irl<3 </span>
+                        <span class="card-title">Dopamine crash!</span>
+                    </div>
+                </div>
+                <div class="music-player-row">
+                    <img class="track-art" src="pictures/dopaminecrash!.gif" alt="dopaminecrash! album canvas from spotify" loading="lazy" decoding="async">
+                    <audio controls preload="none">
+                        <source src="sounds/dopaminecrash!.mp3">
+                    </audio>
+                </div>
+                <a class="card-cta" href="https://open.spotify.com/track/0rSgJtmd7NTrA3EHf6Uy1T?si=be26c8b7ee9b4abf" target="_blank" rel="noopener noreferrer">Open on Spotify</a>
+            </article>
+            
             <article class="destination-card music-card" style="--delay: 3.6s">
                 <div class="music-now-playing">
                     <div class="music-bars" aria-hidden="true">
@@ -80,11 +121,43 @@
                 <div class="music-player-row">
                     <img class="track-art" src="pictures/Cr1tterBrutalist.jpg" alt="Cr1tter Brutalist cover art" loading="lazy" decoding="async">
                     <audio controls preload="none">
-                        <source src="sounds/critter.mp3">
+                        <source src="sounds/cr1tter-brutalist(remix).mp3">
                     </audio>
                 </div>
-                <a class="card-cta" href="https://open.spotify.com/track/3tKZjK1LXF1RhQAv6MDUJr?si=e3e1e6f717b645d6">Open on Spotify</a>
+                <a class="card-cta" href="https://open.spotify.com/track/3tKZjK1LXF1RhQAv6MDUJr?si=e3e1e6f717b645d6" target="_blank" rel="noopener noreferrer">Open on Spotify</a>
             </article>
+
+            <article class="destination-card music-card" style="--delay: 3.6s">
+                <div class="music-now-playing">
+                    <div class="music-bars" aria-hidden="true">
+                        <span></span><span></span><span></span><span></span><span></span>
+                    </div>
+                    <div class="music-info">
+                        <span class="card-eyebrow">Lemme bless ya ears with · Asal</span>
+                        <span class="card-title">Lifeless</span>
+                    </div>
+                </div>
+                <div class="music-player-row">
+                    <img class="track-art" src="pictures/Asal-lifeless.jpg" alt="Asal lifeless album cover" loading="lazy" decoding="async">
+                    <audio controls preload="none">
+                        <source src="sounds/Asal-lifeless.mp3">
+                    </audio>
+                </div>
+                <a class="card-cta" href="https://open.spotify.com/track/001PaRmRvkAsAy6m6xOxTR?si=6eb9657af5d04a40" target="_blank" rel="noopener noreferrer">Open on Spotify</a>
+            </article>
+        </section>
+
+        <section class="pexels-section" aria-label="Cosmic Lens photo search">
+            <div class="pexels-intro">
+                <h2>Cosmic Lens</h2>
+                <p>Search for a mood, place or aesthetic with live photos from <a href="https://www.pexels.com" target="_blank" rel="noopener noreferrer">Pexels</a>.</p>
+            </div>
+            <div class="pexels-search-row">
+                <input type="search" id="pexels-input" placeholder="ex. Space, nature, animals" autocomplete="off">
+                <button type="button" id="pexels-btn">Explore</button>
+            </div>
+            <div class="pexels-grid" id="pexels-grid" aria-live="polite"></div>
+            <p class="pexels-credit">Photos by <a href="https://www.pexels.com" target="_blank" rel="noopener noreferrer">Pexels</a></p>
         </section>
 
 
@@ -92,6 +165,7 @@
     <footer class="footercontainer" id="site-footer">
     </footer>
     <script src="shared-shell.js" defer></script>
+    <script src="pexels.js" defer></script>
     <script src="index-effects.js" defer></script>
 </body>
 </html>

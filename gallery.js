@@ -3,6 +3,12 @@
         const root = document.querySelector('[data-carousel]');
         if (!root) return;
 
+        // Only initialize carousel if it's visible (skip on mobile where grid is shown)
+        if (root.className.includes('gallery-carousel-fallback')) {
+            const computed = window.getComputedStyle(root);
+            if (computed.display === 'none') return;
+        }
+
         const viewport = root.querySelector('.carousel-viewport');
         const track = root.querySelector('.carousel-track');
         const slides = Array.from(root.querySelectorAll('.carousel-slide'));
@@ -11,14 +17,14 @@
         const status = root.querySelector('[data-status]');
         const thumbsHost = document.querySelector('[data-thumbs]');
 
-        if (!viewport || !track || !slides.length || !thumbsHost) return;
+        if (!viewport || !track || !slides.length) return;
 
         let index = 0;
         let timer = null;
         let touchStartX = 0;
         let touchDeltaX = 0;
 
-        const thumbs = slides.map((slide, i) => {
+        const thumbs = thumbsHost ? slides.map((slide, i) => {
             const source = slide.querySelector('img');
             const btn = document.createElement('button');
             btn.type = 'button';
@@ -38,12 +44,14 @@
             });
             thumbsHost.appendChild(btn);
             return btn;
-        });
+        }) : [];
 
         function paint() {
             track.style.transform = `translateX(-${index * 100}%)`;
             if (status) status.textContent = `${index + 1} / ${slides.length}`;
-            thumbs.forEach((thumb, i) => thumb.classList.toggle('is-active', i === index));
+            if (thumbs.length) {
+                thumbs.forEach((thumb, i) => thumb.classList.toggle('is-active', i === index));
+            }
         }
 
         function goTo(next) {

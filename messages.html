@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Leave a message in the DaviN3t cosmos. Click anywhere to plant your star — every note lives on the map forever.">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="DaviN3t — Star Notes">
+    <meta property="og:description" content="Plant your star in the DaviN3t cosmos. Every note becomes a glowing star on the map.">
+    <meta property="og:url" content="https://davinet.netlify.app/messages.html">
+    <meta property="og:image" content="https://davinet.netlify.app/pictures/projectsstarmap.jpg">
+    <meta property="og:site_name" content="DaviN3t">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="DaviN3t — Star Notes">
+    <meta name="twitter:description" content="Plant your star in the DaviN3t cosmos.">
+    <meta name="twitter:image" content="https://davinet.netlify.app/pictures/projectsstarmap.jpg">
+    <link rel="icon" type="image/png" href="pictures/dvd.jpg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;500;600;700&family=Outfit:wght@400;500;600&display=swap">
+    <link rel="stylesheet" href="globalstyle.css">
+    <link rel="stylesheet" href="messages.css?v=20260406-4">
+    <title>DaviN3t — Community deck</title>
+</head>
+<body data-page="messages">
+    <header>
+        <div id="site-nav"></div>
+    </header>
+
+    <!-- Full-page interactive star map -->
+    <main class="starfield" id="starfield">
+        <!-- Decorative background stars (JS-generated) -->
+        <div class="bg-stars" id="bg-stars" aria-hidden="true"></div>
+
+        <!-- Center hint — fades once stars exist -->
+        <div class="field-hint" id="field-hint" aria-live="polite">
+            <p>Every star is a message from a visitor</p>
+        </div>
+
+        <!-- User-planted note stars -->
+        <div class="notes-layer" id="notes-layer" aria-label="Star notes on the map"></div>
+
+        <!-- Counter badge -->
+        <div class="star-counter" aria-live="polite" aria-atomic="true">
+            <span class="counter-number" id="counter-number">0</span>
+            <span class="counter-label">stars</span>
+            <button class="audio-toggle" id="audio-toggle" type="button" aria-label="Mute background music" aria-pressed="false" title="Mute background music">
+                <img class="audio-toggle-icon" id="audio-toggle-icon" src="pictures/mutebutton.png" alt="" aria-hidden="true">
+            </button>
+        </div>
+
+        <audio id="ambient-audio" loop preload="auto" playsinline>
+            <source src="sounds/spaceambient.mp3" type="audio/mpeg">
+        </audio>
+    </main>
+
+    <!-- Floating action button — triggers placement mode -->
+    <button class="plant-btn" id="plant-btn" aria-label="Create your star on the map">
+        <span class="plant-btn-icon" aria-hidden="true">✦</span>
+        <span class="plant-btn-label">Create a star</span>
+    </button>
+
+    <!-- Note form (bottom-sheet on mobile, centered modal on desktop) -->
+    <div class="note-overlay" id="note-overlay" hidden>
+        <div class="note-card" role="dialog" aria-modal="true" aria-labelledby="note-card-title">
+            <button class="close-btn" id="close-btn" aria-label="Close form">✕</button>
+            <h2 class="note-card-title" id="note-card-title">✦ Create your star</h2>
+
+            <form id="plant-form" novalidate>
+                <label for="note-author" class="sr-only">Your name</label>
+                <input type="text" id="note-author" placeholder="Callsign (optional)" maxlength="32" autocomplete="off" spellcheck="false">
+
+                <label for="note-message" class="sr-only">Message</label>
+                <textarea id="note-message" placeholder="Transmit your message…" maxlength="280" required rows="3"></textarea>
+                <small class="char-count"><span id="char-count">0</span>/280</small>
+
+                <!-- Optional GIF search -->
+                <div class="gif-section">
+                    <div class="gif-search-row">
+                        <input type="text" id="gif-query" placeholder="Search signal GIF (optional)" autocomplete="off">
+                        <button type="button" id="gif-search-btn" class="btn-secondary">GIF</button>
+                    </div>
+                    <div class="gif-results" id="gif-results" aria-live="polite"></div>
+                    <div class="gif-preview" id="gif-preview" hidden>
+                        <img id="gif-selected-img" alt="Selected GIF" loading="lazy">
+                        <button type="button" id="gif-clear" class="btn-clear">✕ Remove</button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-plant">✦ Create this star</button>
+            </form>
+        </div>
+    </div>
+
+    <footer class="footercontainer" id="site-footer"></footer>
+    <script src="shared-shell.js" defer></script>
+    <script type="module" src="messages.js?v=20260406-4"></script>
+</body>
+</html>

@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="DaviN3t Vibe System: explore favorite tracks and orbit through music selections.">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="DaviN3t - Vibe System">
+    <meta property="og:description" content="Orbit through favorite songs in the DaviN3t Vibe System.">
+    <meta property="og:url" content="https://davinet.netlify.app/vibedeck.html">
+    <meta property="og:image" content="https://davinet.netlify.app/pictures/VibeSystem.jpg">
+    <meta property="og:site_name" content="DaviN3t">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="DaviN3t - Vibe System">
+    <meta name="twitter:description" content="Orbit through favorite songs in the DaviN3t Vibe System.">
+    <meta name="twitter:image" content="https://davinet.netlify.app/pictures/VibeSystem.jpg">
+    <link rel="icon" type="image/png" href="pictures/dvd.jpg">
+    <link rel="stylesheet" href="globalstyle.css">
+    <link rel="stylesheet" href="favorites.css">
+    <title>DaviN3t - Vibe deck</title>
+</head>
+<body data-page="favorites">
+    <main class="favorites-main">
+        <section class="favorites-hero">
+            <p class="eyebrow">Vibe deck</p>
+            <h1>Vibe out with me</h1>
+            <p>The wheel displays my current favorites, feel free to drop a recommendation below :D</p>
+        </section>
+
+        <section class="wheel-wrap" aria-label="Favorite tracks">
+            <div class="song-wheel" id="song-wheel">
+                <div class="wheel-core" id="wheel-core">
+                    <span class="core-text">— your orbit —</span>
+                </div>
+            </div>
+        </section>
+
+        <section class="owner-top" aria-label="David top songs">
+            <h2>My current top songs</h2>
+            <ol class="owner-top-list" id="owner-top-list">
+                <li><span class="rank">01</span><span class="song">Add track name</span><span class="artist">Artist</span></li>
+                <li><span class="rank">02</span><span class="song">Add track name</span><span class="artist">Artist</span></li>
+                <li><span class="rank">03</span><span class="song">Add track name</span><span class="artist">Artist</span></li>
+                <li><span class="rank">04</span><span class="song">Add track name</span><span class="artist">Artist</span></li>
+                <li><span class="rank">05</span><span class="song">Add track name</span><span class="artist">Artist</span></li>
+                <li><span class="rank">06</span><span class="song">Add track name</span><span class="artist">Artist</span></li>
+            </ol>
+        </section>
+
+        <section class="recommend-widget" aria-label="Song recommendations">
+            <h2>Recommend a song to me</h2>
+            <p>Drop a track and artist below. If that song already exists, your submit turns into a like and helps build the ranking.</p>
+            <form class="recommend-form" id="recommend-form" autocomplete="off">
+                <input id="rec-song" type="text" maxlength="90" placeholder="Song title" required>
+                <input id="rec-artist" type="text" maxlength="90" placeholder="Artist" required>
+                <input id="rec-name" type="text" maxlength="40" placeholder="Your name (optional)">
+                <button type="submit">Add song or like it</button>
+            </form>
+            <ol class="recommend-list" id="recommend-list"></ol>
+        </section>
+    </main>
+
+    <footer class="footercontainer" id="site-footer"></footer>
+    <div class="copy-shell">
+        <button class="mini-btn mini-btn-icon-only" id="copy-owner-list" type="button" aria-label="Copy current top 6 tracks">
+            <svg aria-hidden="true" viewBox="0 0 20 20" fill="currentColor" class="mini-btn-image"><path d="M8 3a1 1 0 0 1 1-1h2a1 1 0 0 1 0 2H9a1 1 0 0 1-1-1Z"/><path d="M6 3a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2 3 3 0 0 1-3 3H9a3 3 0 0 1-3-3Z"/></svg>
+        </button>
+    </div>
+    <script type="module">
+        import { login, exchangeCode, getToken, clearToken, getTopTracks } from './spotify.js';
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js';
+        import { getFirestore, collection, doc, getDoc, getDocs, setDoc, deleteDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js';
+
+        const wheel = document.getElementById('song-wheel');
+        const core  = document.getElementById('wheel-core');
+        const ownerTopList = document.getElementById('owner-top-list');
+        const copyOwnerListBtn = document.getElementById('copy-owner-list');
+        const copyShell = document.querySelector('.copy-shell');
+        const recommendForm = document.getElementById('recommend-form');
+        const recommendList = document.getElementById('recommend-list');
+        const recommendStatus = document.getElementById('recommend-status');
+        const OWNER_TOP_JSON_URL = './owner-top-tracks.json';
+        const FALLBACK_COVER_URL = './pictures/VibeSystem.jpg';
+        const PERSONAL_MODE = true;
+        const PAGE_PARAMS = new URLSearchParams(location.search);
+        const PAGE_HAS_ADMIN = PAGE_PARAMS.has('admin');
+        const HAS_AUTH_RETURN = PAGE_PARAMS.has('code') || PAGE_PARAMS.has('error');
+        const ADMIN_MODE = PAGE_HAS_ADMIN || HAS_AUTH_RETURN;
+        const LOCAL_RECOMMEND_KEY = 'davinet-recommendations-v1';
+        const LOCAL_RECOMMEND_VOTES_KEY = 'davinet-recommend-votes-v1';
+        const RECOMMEND_LIMIT = 24;
+        const VISIBLE = 6;
+        const CAROUSEL_MS = 6000;
+        const PREVIEW_MS  = 5600;
+        const FIREBASE_TIMEOUT_MS = 2500;
+        const SPOTIFY_TIMEOUT_MS = 8000;
+
+        // Fill this config to switch recommendations from local mode to Firebase mode.
+const firebaseConfig = {
+  apiKey: "AIzaSyA88L7kP_pbqnufLHlmErHf7UVyhHRIB8Y",
+  authDomain: "davinetdb.firebaseapp.com",
+  projectId: "davinetdb",
+  storageBucket: "davinetdb.firebasestorage.app",
+  messagingSenderId: "11016090500",
+  appId: "1:11016090500:web:0e687a5ef41d135ca7e3d1"
+};
+
+
+        let orbitRing     = null;
+        let allTracks     = [];
+        let currentStart  = 0;
+        let rotationTimer = null;
+        let previewTimer  = null;
+        let activeAudio   = null;
+        let topIndex      = 0;
+        let recCollection = null;
+        let recUsesFirebase = false;
+        let currentRecommendations = [];
+
+        function makeRecommendationId(song, artist) {
+            return `${song} ${artist}`
+                .trim()
+                .toLowerCase()
+                .normalize('NFKD')
+                .replace(/[^a-z0-9]+/g, '-')
+                .replace(/^-+|-+$/g, '')
+                .slice(0, 120) || 'track';
+        }
+
+        function readLocalVotes() {
+            try {
+                const raw = localStorage.getItem(LOCAL_RECOMMEND_VOTES_KEY);
+                const parsed = raw ? JSON.parse(raw) : {};
+                return parsed && typeof parsed === 'object' ? parsed : {};
+            } catch {
+                return {};
+            }
+        }
+
+        function writeLocalVotes(votes) {
+            localStorage.setItem(LOCAL_RECOMMEND_VOTES_KEY, JSON.stringify(votes));
+        }
+
+        function hasLikedRecommendation(id) {
+            return Boolean(readLocalVotes()[id]);
+        }
+
+        function markRecommendationLiked(id) {
+            const votes = readLocalVotes();
+            votes[id] = true;
+            writeLocalVotes(votes);
+        }
+
+        function clearRecommendationLike(id) {
+            const votes = readLocalVotes();
+            delete votes[id];
+            writeLocalVotes(votes);
+        }
+
+        function reconcileLocalVotesWithRecommendations(items) {
+            const allowedIds = new Set(items.map((item) => item.id));
+            const votes = readLocalVotes();
+            const nextVotes = {};
+            for (const id of Object.keys(votes)) {
+                if (allowedIds.has(id)) {
+                    nextVotes[id] = true;
+                }
+            }
+            writeLocalVotes(nextVotes);
+        }
+
+        function sortRecommendations(items) {
+            return [...items].sort((left, right) => {
+                if ((right.likes || 0) !== (left.likes || 0)) {
+                    return (right.likes || 0) - (left.likes || 0);
+                }
+                return (right.createdAtMs || 0) - (left.createdAtMs || 0);
+            });
+        }
+
+        function normalizeRecommendation(item, fallbackId = '') {
+            const song = item.song || 'Untitled';
+            const artist = item.artist || 'Unknown artist';
+            const id = item.id || fallbackId || makeRecommendationId(song, artist);
+            const createdAtMs = Number(item.createdAtMs) || Date.now();
+            return {
+                id,
+                song,
+                artist,
+                by: item.by || '',
+                likes: Number(item.likes) || 1,
+                createdAt: item.createdAt || new Date(createdAtMs).toISOString(),
+                createdAtMs,
+                likedByCurrentUser: hasLikedRecommendation(id),
+            };
+        }
+
+        function withTimeout(promise, ms, label) {
+            let timeoutId = null;
+            const timeoutPromise = new Promise((_, reject) => {
+                timeoutId = setTimeout(() => reject(new Error(`${label} timed out after ${ms}ms`)), ms);
+            });
+
+            return Promise.race([promise, timeoutPromise]).finally(() => {
+                if (timeoutId) {
+                    clearTimeout(timeoutId);
+                }
+            });
+        }
+
+        function renderOwnerTopList(tracks) {
+            if (!ownerTopList) return;
+            ownerTopList.replaceChildren();
+
+            tracks.slice(0, 6).forEach((track, i) => {
+                const item = document.createElement('li');
+
+                const rank = document.createElement('span');
+                rank.className = 'rank';
+                rank.textContent = String(i + 1).padStart(2, '0');
+
+                const song = document.createElement('span');
+                song.className = 'song';
+                song.textContent = track.name;
+
+                const artist = document.createElement('span');
+                artist.className = 'artist';
+                artist.textContent = track.artists[0]?.name ?? 'Unknown artist';
+
+                item.append(rank, song, artist);
+                ownerTopList.appendChild(item);
+            });
+        }
+
+        async function loadOwnerTopFromJson() {
+            try {
+                const res = await fetch(OWNER_TOP_JSON_URL, { cache: 'no-store' });
+                if (!res.ok) return [];
+                const data = await res.json();
+                if (!Array.isArray(data)) return [];
+                return data
+                    .filter((track) => track && typeof track.name === 'string' && Array.isArray(track.artists))
+                    .map((track) => {
+                        const artistName = track.artists[0]?.name ?? 'Unknown artist';
+                        const spotifyUrl = track.external_urls?.spotify || track.spotify_url || '#';
+                        const imageUrl = track.album?.images?.[1]?.url || track.album?.images?.[0]?.url || track.image || FALLBACK_COVER_URL;
+                        return {
+                            name: track.name,
+                            artists: [{ name: artistName }],
+                            preview_url: track.preview_url ?? null,
+                            external_urls: { spotify: spotifyUrl },
+                            album: {
+                                name: track.album?.name || 'Curated track',
+                                images: [{ url: imageUrl }, { url: imageUrl }],
+                            },
+                        };
+                    });
+            } catch {
+                return [];
+            }
+        }
+
+        const COPY_ICON_SVG = '<svg aria-hidden="true" viewBox="0 0 20 20" fill="currentColor" class="mini-btn-image"><path d="M8 3a1 1 0 0 1 1-1h2a1 1 0 0 1 0 2H9a1 1 0 0 1-1-1Z"/><path d="M6 3a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2 3 3 0 0 1-3 3H9a3 3 0 0 1-3-3Z"/></svg>';
+        const CHECK_ICON_SVG = '<svg aria-hidden="true" viewBox="0 0 20 20" fill="currentColor" class="mini-btn-image"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 0 1 0 1.414l-8 8a1 1 0 0 1-1.414 0l-4-4a1 1 0 1 1 1.414-1.414L8 12.586l7.293-7.293a1 1 0 0 1 1.414 0Z" clip-rule="evenodd"/></svg>';
+
+        async function copyOwnerTopList() {
+            if (!copyOwnerListBtn) return;
+            if (!allTracks.length) {
+                copyOwnerListBtn.innerHTML = '?';
+                setTimeout(() => { copyOwnerListBtn.innerHTML = COPY_ICON_SVG; }, 1200);
+                return;
+            }
+
+            const jsonTracks = allTracks.slice(0, 6).map((track) => ({
+                name: track.name,
+                artists: track.artists.map((a) => ({ name: a.name })),
+                spotify_url: track.external_urls?.spotify || track.spotify_url || '#',
+                image: track.album?.images?.[1]?.url || track.album?.images?.[0]?.url || null,
+                preview_url: track.preview_url ?? null,
+            }));
+
+            try {
+                await navigator.clipboard.writeText(JSON.stringify(jsonTracks, null, 2));
+                copyOwnerListBtn.innerHTML = CHECK_ICON_SVG;
+            } catch {
+                copyOwnerListBtn.innerHTML = '✕';
+            }
+
+            setTimeout(() => {
+                copyOwnerListBtn.innerHTML = COPY_ICON_SVG;
+            }, 1200);
+        }
+
+        copyOwnerListBtn?.addEventListener('click', copyOwnerTopList);
+
+        function setRecommendStatus(text) {
+            if (recommendStatus) recommendStatus.textContent = text;
+        }
+
+        function hasFirebaseConfig() {
+            return Boolean(
+                firebaseConfig.apiKey &&
+                firebaseConfig.authDomain &&
+                firebaseConfig.projectId &&
+                firebaseConfig.appId
+            );
+        }
+
+        async function setupRecommendBackend() {
+            if (!hasFirebaseConfig()) {
+                console.log('[recommend] Firebase config missing, using local mode');
+                setRecommendStatus('Recommendation storage: local mode. Add Firebase config to sync globally.');
+                return;
+            }
+
+            try {
+                console.time('[recommend] firebase-init');
+                console.log('[recommend] Initializing Firebase backend...');
+                const app = initializeApp(firebaseConfig);
+                const db = getFirestore(app);
+                recCollection = collection(db, 'songRecommendations');
+                recUsesFirebase = true;
+                console.timeEnd('[recommend] firebase-init');
+                console.log('[recommend] Firebase ready, collection:', 'songRecommendations');
+                setRecommendStatus('Recommendation storage: shared Firebase mode.');
+            } catch {
+                recUsesFirebase = false;
+                console.warn('[recommend] Firebase init failed, falling back to local mode');
+                setRecommendStatus('Firebase setup failed. Falling back to local mode.');
+            }
+        }
+
+        function readLocalRecommendations() {
+            try {
+                const raw = localStorage.getItem(LOCAL_RECOMMEND_KEY);
+                const parsed = raw ? JSON.parse(raw) : [];
+                return Array.isArray(parsed)
+                    ? sortRecommendations(parsed.map((item) => normalizeRecommendation(item, item.id)))
+                    : [];
+            } catch {
+                return [];
+            }
+        }
+
+        function writeLocalRecommendations(items) {
+            localStorage.setItem(LOCAL_RECOMMEND_KEY, JSON.stringify(items));
+        }
+
+        function formatWhen(value) {
+            if (!value) return '';
+            const date = new Date(value);
+            if (Number.isNaN(date.getTime())) return '';
+            return date.toLocaleDateString();
+        }
+
+        function renderRecommendations(items) {
+            if (!recommendList) return;
+            currentRecommendations = sortRecommendations(items).slice(0, RECOMMEND_LIMIT);
+            recommendList.replaceChildren();
+
+            if (!currentRecommendations.length) {
+                const empty = document.createElement('li');
+                empty.className = 'recommend-empty';
+                empty.textContent = 'No recommendations yet. Be the first to send one.';
+                recommendList.appendChild(empty);
+                return;
+            }
+
+            currentRecommendations.forEach((item, index) => {
+                const li = document.createElement('li');
+                li.dataset.id = item.id;
+
+                const content = document.createElement('div');
+                content.className = 'recommend-content';
+
+                const title = document.createElement('span');
+                title.className = 'recommend-track';
+                title.textContent = `${item.song} - ${item.artist}`;
+
+                const meta = document.createElement('span');
+                meta.className = 'recommend-meta';
+                const who = item.by ? `added by ${item.by}` : 'added anonymously';
+                const when = formatWhen(item.createdAt);
+                meta.textContent = when ? `#${String(index + 1).padStart(2, '0')} · ${who} · ${when}` : `#${String(index + 1).padStart(2, '0')} · ${who}`;
+
+                const actions = document.createElement('div');
+                actions.className = 'recommend-actions';
+
+                const likeBtn = document.createElement('button');
+                likeBtn.type = 'button';
+                likeBtn.className = `recommend-like-btn${item.likedByCurrentUser ? ' is-liked' : ''}`;
+                likeBtn.dataset.action = 'like';
+                likeBtn.dataset.id = item.id;
+                likeBtn.disabled = item.likedByCurrentUser;
+                likeBtn.textContent = item.likedByCurrentUser ? `Liked · ${item.likes}` : `Like · ${item.likes}`;
+
+                actions.appendChild(likeBtn);
+
+                content.append(title, meta);
+                li.append(content, actions);
+                recommendList.appendChild(li);
+            });
+        }
+
+        async function loadRecommendations() {
+            const localItems = readLocalRecommendations();
+            if (localItems.length) {
+                console.log('[recommend] Rendering cached/local recommendations immediately:', localItems.length);
+                renderRecommendations(localItems);
+            }
+
+            if (recUsesFirebase && recCollection) {
+                try {
+                    console.time('[recommend] load');
+                    console.log('[recommend] Loading recommendations from Firebase...');
+                    const snap = await withTimeout(getDocs(recCollection), FIREBASE_TIMEOUT_MS, 'recommendation load');
+                    const rows = snap.docs.map((doc) => {
+                        const data = doc.data();
+                        const ts = data.createdAt?.toDate?.();
+                        return normalizeRecommendation({
+                            id: doc.id,
+                            song: data.song || 'Untitled',
+                            artist: data.artist || 'Unknown artist',
+                            by: data.by || '',
+                            likes: data.likes || 1,
+                            createdAt: ts ? ts.toISOString() : new Date().toISOString(),
+                            createdAtMs: data.createdAtMs || (ts ? ts.getTime() : Date.now()),
+                        }, doc.id);
+                    });
+                    console.timeEnd('[recommend] load');
+                    console.log('[recommend] Loaded recommendations:', rows.length);
+                    writeLocalRecommendations(rows);
+                    reconcileLocalVotesWithRecommendations(rows);
+                    renderRecommendations(rows);
+                    return;
+                } catch (error) {
+                    console.warn('[recommend] Firebase load failed or timed out:', error?.code || error?.message || error);
+                    console.warn('[recommend] Firebase load failed, showing local fallback');
+                    setRecommendStatus('Shared recommendations are slow right now. Showing cached list.');
+                }
+            }
+
+            console.log('[recommend] Loading recommendations from local storage');
+            renderRecommendations(localItems);
+        }
+
+        async function likeRecommendation(id) {
+            if (!id) return;
+            if (hasLikedRecommendation(id)) {
+                setRecommendStatus('You have already liked that song on this browser.');
+                return;
+            }
+
+            if (recUsesFirebase && recCollection) {
+                try {
+                    console.time(`[recommend] like:${id}`);
+                    console.log('[recommend] Sending like to Firebase for:', id);
+                    const recRef = doc(recCollection, id);
+                    const snap = await withTimeout(getDoc(recRef), FIREBASE_TIMEOUT_MS, `like lookup ${id}`);
+                    if (!snap.exists()) {
+                        console.warn('[recommend] Like target missing in Firebase:', id);
+                        setRecommendStatus('That recommendation no longer exists.');
+                        await loadRecommendations();
+                        return;
+                    }
+
+                    const data = snap.data();
+                    await withTimeout(setDoc(recRef, {
+                        likes: (Number(data.likes) || 1) + 1,
+                    }, { merge: true }), FIREBASE_TIMEOUT_MS, `like save ${id}`);
+
+                    console.timeEnd(`[recommend] like:${id}`);
+                    console.log('[recommend] Like saved:', id);
+                    markRecommendationLiked(id);
+                    setRecommendStatus('Like added.');
+                    await loadRecommendations();
+                    return;
+                } catch (error) {
+                    console.warn('[recommend] Firebase like failed, using local fallback for:', id, error?.code || error?.message || error);
+                    setRecommendStatus('Could not save like to Firebase. Falling back locally.');
+                }
+            }
+
+            const local = readLocalRecommendations();
+            const updated = local.map((item) => item.id === id ? { ...item, likes: (Number(item.likes) || 1) + 1 } : item);
+            writeLocalRecommendations(updated);
+            markRecommendationLiked(id);
+            setRecommendStatus('Like added locally on this browser.');
+            renderRecommendations(updated);
+        }
+
+        async function submitRecommendation(event) {
+            event.preventDefault();
+            if (!recommendForm) return;
+
+            const song = document.getElementById('rec-song')?.value.trim() || '';
+            const artist = document.getElementById('rec-artist')?.value.trim() || '';
+            const by = document.getElementById('rec-name')?.value.trim() || '';
+            const id = makeRecommendationId(song, artist);
+
+            if (!song || !artist) {
+                setRecommendStatus('Please add both song and artist.');
+                return;
+            }
+
+            const payload = normalizeRecommendation({
+                id,
+                song,
+                artist,
+                by,
+                createdAt: new Date().toISOString(),
+                createdAtMs: Date.now(),
+                likes: 1,
+            }, id);
+
+            if (recUsesFirebase && recCollection) {
+                try {
+                    console.time(`[recommend] submit:${id}`);
+                    console.log('[recommend] Submitting recommendation to Firebase:', { id, song, artist, by });
+                    const recRef = doc(recCollection, id);
+                    const snap = await withTimeout(getDoc(recRef), FIREBASE_TIMEOUT_MS, `submit lookup ${id}`);
+
+                    if (snap.exists()) {
+                        if (hasLikedRecommendation(id)) {
+                            console.log('[recommend] Duplicate submit blocked by local like state:', id);
+                            setRecommendStatus('You have already recommended or liked that song on this browser.');
+                            return;
+                        }
+
+                        const data = snap.data();
+                        await withTimeout(setDoc(recRef, {
+                            likes: (Number(data.likes) || 1) + 1,
+                        }, { merge: true }), FIREBASE_TIMEOUT_MS, `submit like ${id}`);
+                        console.timeEnd(`[recommend] submit:${id}`);
+                        console.log('[recommend] Recommendation existed, counted as like:', id);
+                        markRecommendationLiked(id);
+                        recommendForm.reset();
+                        setRecommendStatus('That song already exists, so your submit counted as a like.');
+                        await loadRecommendations();
+                        return;
+                    }
+
+                    await withTimeout(setDoc(recRef, {
+                        id,
+                        song,
+                        artist,
+                        by,
+                        likes: 1,
+                        createdAt: serverTimestamp(),
+                        createdAtMs: payload.createdAtMs,
+                    }), FIREBASE_TIMEOUT_MS, `submit save ${id}`);
+                    console.timeEnd(`[recommend] submit:${id}`);
+                    console.log('[recommend] New recommendation saved:', id);
+                    markRecommendationLiked(id);
+                    recommendForm.reset();
+                    setRecommendStatus('Recommendation added.');
+                    renderRecommendations([payload, ...currentRecommendations].slice(0, RECOMMEND_LIMIT));
+                    loadRecommendations().catch(() => {});
+                    return;
+                } catch (error) {
+                    console.warn('[recommend] Firebase submit failed, saving locally instead:', id, error?.code || error?.message || error);
+                    setRecommendStatus('Shared submit failed, saved locally instead.');
+                }
+            }
+
+            const local = readLocalRecommendations();
+
+            if (hasLikedRecommendation(id)) {
+                console.log('[recommend] Duplicate submit blocked by local like state:', id);
+                setRecommendStatus('You have already recommended or liked that song on this browser.');
+                return;
+            }
+
+            const existingIndex = local.findIndex((item) => item.id === id);
+            if (existingIndex >= 0) {
+                const existing = local[existingIndex];
+                const updated = [...local];
+                updated[existingIndex] = {
+                    ...existing,
+                    likes: (Number(existing.likes) || 1) + 1,
+                };
+                writeLocalRecommendations(sortRecommendations(updated).slice(0, RECOMMEND_LIMIT));
+                markRecommendationLiked(id);
+                recommendForm.reset();
+                setRecommendStatus('That song already exists, so your submit counted as a like.');
+                renderRecommendations(readLocalRecommendations());
+                return;
+            }
+
+            local.unshift(payload);
+            writeLocalRecommendations(sortRecommendations(local).slice(0, RECOMMEND_LIMIT));
+            markRecommendationLiked(id);
+            recommendForm.reset();
+            setRecommendStatus('Recommendation saved locally on this browser.');
+            renderRecommendations(readLocalRecommendations());
+        }
+
+        recommendForm?.addEventListener('submit', submitRecommendation);
+        recommendList?.addEventListener('click', async (event) => {
+            const button = event.target.closest('button[data-action]');
+            if (!button) return;
+
+            const { action, id } = button.dataset;
+            if (action === 'like') {
+                await likeRecommendation(id);
+            }
+        });
+
+        function getRing() {
+            if (!orbitRing) {
+                orbitRing = document.createElement('div');
+                orbitRing.className = 'orbit-ring';
+                wheel.insertBefore(orbitRing, core);
+            }
+            return orbitRing;
+        }
+
+        function stopAudio() {
+            if (previewTimer) {
+                clearTimeout(previewTimer);
+                previewTimer = null;
+            }
+            if (activeAudio) {
+                activeAudio.pause();
+                activeAudio.currentTime = 0;
+                activeAudio = null;
+            }
+        }
+
+        function stopCarousel() {
+            if (rotationTimer) {
+                clearInterval(rotationTimer);
+                rotationTimer = null;
+            }
+            stopAudio();
+        }
+
+        function getCurrentSlice() {
+            return allTracks.slice(currentStart, currentStart + VISIBLE);
+        }
+
+        function updateCoreStatus(text) {
+            const status = document.getElementById('core-status');
+            if (status) status.textContent = text;
+        }
+
+        function updateCoreSetInfo() {
+            const info = document.getElementById('core-set-info');
+            if (!info) return;
+
+            const end = Math.min(allTracks.length, currentStart + VISIBLE);
+            const slice = getCurrentSlice();
+            const previewCount = slice.filter(track => Boolean(track.preview_url)).length;
+            info.textContent = `Top ${currentStart + 1}-${end} • previews ${previewCount}/${slice.length || 0}`;
+        }
+
+        function updatePagerButtons() {
+            const prev = document.getElementById('sp-prev-set');
+            const next = document.getElementById('sp-next-set');
+            if (!prev || !next) return;
+
+            prev.disabled = currentStart <= 0;
+            next.disabled = currentStart + VISIBLE >= allTracks.length;
+        }
+
+        function playPreviewForTop(cards) {
+            cards.forEach((card, i) => card.classList.toggle('is-active', i === topIndex));
+            const topCard = cards[topIndex];
+            if (!topCard) return;
+
+            const trackTitle  = topCard.dataset.trackTitle ?? 'Track';
+            const trackArtist = topCard.dataset.trackArtist ?? '';
+            const previewUrl  = topCard.dataset.previewUrl ?? '';
+            updateCoreStatus(trackArtist ? `Now: ${trackTitle} - ${trackArtist}` : `Now: ${trackTitle}`);
+
+            stopAudio();
+            if (!previewUrl) {
+                updateCoreStatus(`Now: ${trackTitle} (no preview)`);
+                return;
+            }
+
+            const audio = new Audio(previewUrl);
+            audio.volume = 0.52;
+            activeAudio = audio;
+            previewTimer = setTimeout(() => {
+                if (activeAudio === audio) {
+                    audio.pause();
+                    audio.currentTime = 0;
+                    activeAudio = null;
+                }
+                previewTimer = null;
+            }, PREVIEW_MS);
+
+            audio.play().catch(() => {
+                if (previewTimer) {
+                    clearTimeout(previewTimer);
+                    previewTimer = null;
+                }
+                activeAudio = null;
+                updateCoreStatus('Preview blocked - click a card');
+            });
+        }
+
+        function applyCarouselStep() {
+            const cards = [...getRing().querySelectorAll('.song-card')];
+            if (!cards.length) return;
+
+            cards.forEach((card, cardIndex) => {
+                const slot = (cardIndex - topIndex + cards.length) % cards.length;
+                card.style.setProperty('--slot', String(slot));
+            });
+
+            playPreviewForTop(cards);
+        }
+
+        function startCarousel(cardCount) {
+            stopCarousel();
+            topIndex = 0;
+            applyCarouselStep();
+
+            if (cardCount < 2) {
+                return;
+            }
+
+            rotationTimer = setInterval(() => {
+                topIndex = (topIndex + 1) % cardCount;
+                applyCarouselStep();
+            }, CAROUSEL_MS);
+        }
+
+        function showConnect(statusText = 'Connect Spotify to load your top tracks') {
+            stopCarousel();
+            getRing().replaceChildren();
+            core.innerHTML = `<span class="core-text">${statusText}</span><button class="spotify-connect-btn" id="sp-connect">Connect Spotify</button>`;
+            const connectBtn = document.getElementById('sp-connect');
+            connectBtn?.addEventListener('click', login);
+        }
+
+        function renderTrackSet() {
+            const tracks = getCurrentSlice();
+            const ring = getRing();
+            const hasMultipleSets = allTracks.length > VISIBLE;
+            const canDisconnect = PAGE_HAS_ADMIN || HAS_AUTH_RETURN;
+            ring.replaceChildren();
+
+            if (!tracks.length) {
+                core.innerHTML = canDisconnect
+                    ? '<span class="core-text" id="core-status">No tracks found</span><button class="spotify-disconnect-btn" id="sp-disconnect">Disconnect</button>'
+                    : '<span class="core-text" id="core-status">No tracks found</span>';
+
+                if (canDisconnect) {
+                    document.getElementById('sp-disconnect').addEventListener('click', () => {
+                        stopCarousel();
+                        clearToken();
+                        ring.replaceChildren();
+                        showConnect();
+                    });
+                }
+                return;
+            }
+
+            tracks.forEach((track, i) => {
+                const a = document.createElement('a');
+                a.className = 'song-card';
+                const spotifyHref = track.external_urls?.spotify || '#';
+                a.href = spotifyHref;
+                if (spotifyHref !== '#') {
+                    a.target = '_blank';
+                    a.rel = 'noopener noreferrer';
+                }
+                a.style.setProperty('--slot', String(i));
+                a.setAttribute('aria-label', `${track.name} by ${track.artists.map(ar => ar.name).join(', ')}`);
+                a.dataset.previewUrl  = track.preview_url ?? '';
+                a.dataset.trackTitle  = track.name;
+                a.dataset.trackArtist = track.artists[0]?.name ?? '';
+
+                a.addEventListener('click', () => {
+                    if (activeAudio) {
+                        activeAudio.play().catch(() => {});
+                    }
+                });
+
+                const img = document.createElement('img');
+                img.className = 'track-art';
+                img.src       = track.album?.images?.[1]?.url ?? track.album?.images?.[0]?.url ?? FALLBACK_COVER_URL;
+                img.alt       = track.album?.name || `${track.name} cover`;
+                img.loading   = 'lazy';
+
+                const info   = document.createElement('span'); info.className = 'track-info';
+                const title  = document.createElement('span'); title.className  = 'title';  title.textContent  = track.name;
+                const artist = document.createElement('span'); artist.className = 'artist'; artist.textContent = track.artists[0].name;
+                info.append(title, artist);
+
+                a.append(img, info);
+                ring.appendChild(a);
+            });
+
+            core.innerHTML = `
+                <span class="core-text" id="core-status">This month</span>
+                <span class="core-sub" id="core-set-info">${hasMultipleSets ? '' : 'Current top 6'}</span>
+                ${hasMultipleSets ? `
+                <div class="core-controls">
+                    <button class="spotify-secondary-btn" id="sp-prev-set">Prev set</button>
+                    <button class="spotify-secondary-btn" id="sp-next-set">Next set</button>
+                </div>` : ''}
+                ${canDisconnect ? '<button class="spotify-disconnect-btn" id="sp-disconnect">Disconnect</button>' : ''}
+            `;
+
+            if (hasMultipleSets) {
+                document.getElementById('sp-prev-set').addEventListener('click', () => {
+                    if (currentStart <= 0) return;
+                    currentStart = Math.max(0, currentStart - VISIBLE);
+                    renderTrackSet();
+                });
+
+                document.getElementById('sp-next-set').addEventListener('click', () => {
+                    if (currentStart + VISIBLE >= allTracks.length) return;
+                    currentStart = Math.min(allTracks.length - VISIBLE, currentStart + VISIBLE);
+                    renderTrackSet();
+                });
+            }
+
+            if (canDisconnect) {
+                document.getElementById('sp-disconnect').addEventListener('click', () => {
+                    stopCarousel();
+                    clearToken();
+                    ring.replaceChildren();
+                    showConnect();
+                });
+            }
+
+            updateCoreSetInfo();
+            updatePagerButtons();
+            startCarousel(tracks.length);
+        }
+
+        async function loadTopTracks(token) {
+            console.time('[spotify-admin] top-tracks');
+            console.log('[spotify-admin] Loading top tracks from Spotify...');
+            let tracks = await withTimeout(
+                getTopTracks(token, { timeRange: 'short_term', limit: 50, offset: 0 }),
+                SPOTIFY_TIMEOUT_MS,
+                'spotify top tracks short_term'
+            );
+            if (!tracks || tracks.length === 0) {
+                console.log('[spotify-admin] short_term empty, trying medium_term');
+                tracks = await withTimeout(
+                    getTopTracks(token, { timeRange: 'medium_term', limit: 50, offset: 0 }),
+                    SPOTIFY_TIMEOUT_MS,
+                    'spotify top tracks medium_term'
+                );
+            }
+            console.timeEnd('[spotify-admin] top-tracks');
+            console.log('[spotify-admin] Loaded top tracks:', tracks?.length ?? 0);
+            return tracks ?? [];
+        }
+
+        async function init() {
+            if (copyShell) {
+                copyShell.hidden = !ADMIN_MODE;
+            }
+
+            const recommendationBoot = setupRecommendBackend()
+                .then(() => loadRecommendations())
+                .catch((error) => {
+                    console.warn('[recommend] Background boot failed:', error?.code || error?.message || error);
+                });
+
+            const ownerTracks = await loadOwnerTopFromJson();
+            if (ownerTracks.length) {
+                renderOwnerTopList(ownerTracks);
+            }
+
+            if (PERSONAL_MODE && !PAGE_HAS_ADMIN && !HAS_AUTH_RETURN) {
+                allTracks = ownerTracks;
+                currentStart = 0;
+                if (allTracks.length) {
+                    renderTrackSet();
+                } else {
+                    showConnect('Curated tracks are being updated.');
+                }
+            }
+
+            const params = new URLSearchParams(location.search);
+            if (HAS_AUTH_RETURN && params.get('error')) {
+                const reason = params.get('error');
+                history.replaceState({}, '', location.pathname);
+                if (reason === 'access_denied') {
+                    showConnect('Spotify login was cancelled or not approved for this app yet.');
+                } else {
+                    showConnect('Spotify authorization failed. Please try again.');
+                }
+                return;
+            }
+
+            const code  = params.get('code');
+            let   token = getToken();
+
+            if (HAS_AUTH_RETURN && code && !token) {
+                core.innerHTML = '<span class="core-text">Connecting…</span>';
+                try   { token = await exchangeCode(code); }
+                catch (err) { 
+                    showConnect('Could not complete Spotify login.'); 
+                    return; 
+                }
+            }
+
+            if ((HAS_AUTH_RETURN || PAGE_HAS_ADMIN) && token) {
+                core.innerHTML = '<span class="core-text">Loading…</span>';
+                try {
+                    allTracks = await loadTopTracks(token);
+                    currentStart = 0;
+                    if (allTracks.length) {
+                        renderTrackSet();
+                        return;
+                    } else {
+                        showConnect('No top tracks found yet on this Spotify account.');
+                        return;
+                    }
+                } catch (err) {
+                    showConnect('Spotify API error: ' + err.message);
+                    return;
+                }
+            }
+
+            if (!PERSONAL_MODE || PAGE_HAS_ADMIN || HAS_AUTH_RETURN) {
+                showConnect();
+            }
+
+            await recommendationBoot;
+        }
+
+        init();
+    </script>
+    <script src="shared-shell.js" defer></script>
+</body>
+</html>
