@@ -35,3 +35,22 @@
         card.addEventListener('blur', resetTilt);
     });
 })();
+
+// ── Hero scroll-fade ──────────────────────────────────────────────────────────
+(function () {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const heroShell   = document.querySelector('.hero-shell');
+    const heroContent = document.querySelector('.hero-content');
+    if (!heroShell || !heroContent) return;
+
+    function onScroll() {
+        const scrolled  = window.scrollY;
+        const heroH     = heroShell.offsetHeight;
+        const t         = Math.max(0, Math.min(scrolled / (heroH * 0.6), 1));
+        heroContent.style.opacity   = String(1 - t * 0.88);
+        heroContent.style.transform = `translateY(${t * -22}px)`;
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+})();

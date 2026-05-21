@@ -444,7 +444,7 @@ async function searchGiphy(searchQuery) {
     if (GIPHY_KEY === 'YOUR_GIPHY_API_KEY') {
         gifResults.innerHTML = `
             <p class="gif-note">
-                Get a free key at <a href="https://developers.giphy.com" target="_blank" rel="noopener">developers.giphy.com</a>
+                Get a free key at <a href="https://developers.giphy.com" target="_blank" rel="noopener noreferrer">developers.giphy.com</a>
                 and paste it in <code>messages.js</code>.
             </p>`;
         return;

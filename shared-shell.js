@@ -34,7 +34,7 @@
     if (footerTarget) {
         if (isHomePage) {
             footerTarget.innerHTML = [
-                '<a href="https://www.instagram.com/dav1den/"><img class="footericon" src="pictures/instagram-logo.png" alt="Instagram logo"></a>',
+                '<a href="https://www.instagram.com/dav1den/" target="_blank" rel="noopener noreferrer"><img class="footericon" src="pictures/instagram-logo.png" alt="Instagram logo"></a>',
                 '<a href="https://www.tiktok.com/@davin3t" target="_blank" rel="noopener noreferrer"><img class="footericon" src="pictures/tiktoklogo.png" alt="TikTok link"></a>',
                 '<a href="mailto:davidbrolin04@gmail.com"><img class="footericon" src="pictures/mail.png" alt="Email icon"></a>'
             ].join('');

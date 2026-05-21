@@ -418,6 +418,142 @@
     cursor: pointer;
 }
 
+/* Cosmic Lens widget moved from homepage */
+.pexels-section {
+    box-sizing: border-box;
+    width: min(100%, 1100px);
+    margin: 1.1rem auto 0;
+    padding: 1.15rem;
+    background: rgba(8, 8, 12, 0.72);
+    border: 1px solid rgba(234, 233, 239, 0.1);
+    border-radius: 1rem;
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.34);
+    position: relative;
+    z-index: 1;
+}
+
+.pexels-intro {
+    text-align: center;
+    margin-bottom: 0.9rem;
+}
+
+.pexels-intro h2 {
+    margin: 0 0 0.25rem;
+    font-size: clamp(1.16rem, 2.8vw, 1.46rem);
+    color: #eae9ef;
+}
+
+.pexels-intro p {
+    margin: 0;
+    color: rgba(234, 233, 239, 0.62);
+    font-size: 0.88rem;
+}
+
+.pexels-intro a,
+.pexels-credit a {
+    color: rgba(234, 233, 239, 0.8);
+    text-decoration: underline;
+}
+
+.pexels-search-row {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.95rem;
+}
+
+.pexels-search-row input {
+    flex: 1;
+    min-width: 0;
+    background: rgba(234, 233, 239, 0.06);
+    border: 1px solid rgba(234, 233, 239, 0.14);
+    border-radius: 0.55rem;
+    padding: 0.65rem 0.85rem;
+    color: #eae9ef;
+    font-size: 0.9rem;
+}
+
+.pexels-search-row button {
+    padding: 0.65rem 1.05rem;
+    background: rgba(14, 12, 20, 0.66);
+    border: 1px solid rgba(234, 233, 239, 0.28);
+    color: #f0f2fb;
+    border-radius: 0.55rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.86rem;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+}
+
+.pexels-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.58rem;
+    margin-bottom: 0.65rem;
+}
+
+.pexels-photo {
+    position: relative;
+    display: block;
+    border-radius: 0.55rem;
+    overflow: hidden;
+    border: 1px solid rgba(234, 233, 239, 0.1);
+    transition: transform 220ms ease, box-shadow 220ms ease;
+}
+
+.pexels-photo img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    display: block;
+}
+
+.photo-credit {
+    position: absolute;
+    inset: auto 0 0 0;
+    padding: 0.28rem 0.45rem;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.72));
+    color: rgba(255, 255, 255, 0.86);
+    font-size: 0.66rem;
+    opacity: 0;
+    transition: opacity 180ms ease;
+}
+
+.pexels-photo:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.48);
+}
+
+.pexels-photo:hover .photo-credit {
+    opacity: 1;
+}
+
+.pexels-loading,
+.pexels-placeholder {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: rgba(234, 233, 239, 0.52);
+    font-size: 0.86rem;
+}
+
+.pexels-credit {
+    margin: 0;
+    text-align: right;
+    font-size: 0.72rem;
+    color: rgba(234, 233, 239, 0.35);
+}
+
+@media (min-width: 740px) {
+    .pexels-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (min-width: 1100px) {
+    .pexels-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+}
+
 .todo-controls button:hover,
 .todo-controls button:focus-visible {
     box-shadow: 0 0 14px rgba(255, 255, 255, 0.26), 0 0 18px rgba(122, 20, 40, 0.32);

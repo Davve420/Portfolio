@@ -1,12 +1,190 @@
-Det behövs göras kort eller liknande klass för projekt uppvisning.
-Komma på lite innehåll till funstuff - kan vara både css/html saker och vanliga roliga saker.
-Det är en liten padding på section (den ska vara där) men den sträcker ut sig (fråga johan) 
-Lägga till hover effekt på bilderna i article
-Karusell på concert bilden 2.3 stycken
-Instagram länk osv i footer
+═══════════════════════════════════════════════════════════════════════════════
+                        DAVINET - PROJECT VISION & BUILD MAP
+═══════════════════════════════════════════════════════════════════════════════
 
-Funstuff:
-Kan vara konstverk, utmärkelser osv osv 
-typ Ai certifikatet, tekningar, annat jag är intresserad av. 
+🎯 CORE VISION
+───────────────────────────────────────────────────────────────────────────────
+Din webbsida är "en liten plats på nätet" som reflekterar:
+  • Olika delar av dig och vad du tror på
+  • Interaktiva & kreativt designade sidor med olika estetiker
+  • Både professionell målgrupp (LIA-sökande) och sociala media följare
+  • Gemenskapen och likasinnade individer som kan connecta med varandra
+
+Sidorna ska vara INTERAKTIVA - inte bara information. Exempel: Social counters,
+click-tracking, bidra-CTAs osv.
+
+
+📋 SIDOR & DERAS ROLL
+───────────────────────────────────────────────────────────────────────────────
+
+INDEX.HTML (Home/Start)
+  Purpose: Gateway till din helt vision - "cyberspace"
+  Contains:
+    - Hero-section med kort introduktion
+    - 4-5 kort som leder till: About, Projects, Music, Solar Punk, ?
+    - Social links (Instagram, TikTok, Email)
+  Updates:
+    ✗ Ta bort "Art Gallery" kortet
+    ✓ Behåll Star Notes (Community deck)
+    ✓ Behåll Projects (Build deck)
+    ~ Uppdatera "Vibe deck" → Musikspelare med Spotify
+
+ABOUT.HTML (Profile/Who I Am) — NYTT
+  Purpose: Målgrupp LIA + nya personer från social media
+  Must Include:
+    • "Who I am" — kort intro med professionell & kreativ sida
+    • "What I build" — utvalda projekt + resultat
+    • "What I'm looking for" — LIA-sökande, samarbeten, connections
+    • Social links (Instagram, TikTok, LinkedIn?, email)
+    • Contact form / CTA buttons
+    • "The Self" bref från art.html (expandable section eller featured)
+  Key: Tydlig, ovanför fold, med CTA för action
+
+PROJECTS.HTML (Build Deck)
+  Status: BEHÅLL SOM ÄR
+  Reason: Redan väldone
+  Future possibility: Länka från About-sidan
+
+MESSAGES.HTML (Community Deck / Star Notes)
+  Status: BEHÅLL SOM ÄR
+  Reason: Redan väldone
+
+VIBEDECK.HTML (Music Player) — UPPDATERA/BYTA
+  Old: Spinning wheel + favorite tracks
+  New: Musik spelare
+    • Spotify API integration (top-6 tracks)
+    • Song recommendations (form samma som innan, men snyggt design)
+    • Möjlighet att lyssna direkt (om Spotify API tillåter, annars fallback)
+    • Community engagement: Like-counter på låtar
+  Reference: "Tjej gjorde liknande app och delar Github" — hitta detta repo
+  Fallback: Om Spotify inte spelar upp: lista med Spotify links + "stream anywhere"
+
+SOLARPUNK.HTML (Interactive Lore) — NYTT
+  Purpose: Lär andra om Solar Punk MEDAN de interagerar + kan bidra
+  Design Inspiration: Brilliant.org (science sida) — scroll triggers animations
+  Must Include:
+    • Scroll-triggered animations/reveals när man scrollar ner
+    • Lore/information om Solar Punk
+    • "Hur kan DU bidra?" — action-oriented CTA
+    • Social counter — "X people have clicked this button" / shared intention
+    • Gemenskapskänsla: "Join the movement"
+  Aesthetic: Din vision, snygga animationer, interaktiv
+
+ART.HTML → DEPRECATED
+  ✗ Ta bort från index.html card grid
+  ✓ Spara "The Self" letter för About-sida eller Essays-sida senare
+
+LETTERS/ESSAYS SIDA — OPTIONAL (SENARE)
+  Future: Dedikerad plats för reflektioner som "The Self"
+  Just hålla detta i åtanke för senare expansion
+
+
+🔒 SECURITY FIXES (Parallellt arbete)
+───────────────────────────────────────────────────────────────────────────────
+
+Priority 1 (Do ASAP):
+  • XSS prevention: Gå igenom shared-shell.js & spotify.js
+    - Byt innerHTML → DOMPurify eller textContent där möjligt
+  • External links: rel="noopener noreferrer" på alla target="_blank"
+  • Form validation: recommend-form (vibedeck) + contact form (about)
+
+Priority 2 (Nice to have):
+  • CSRF tokens på formulär
+  • Content Security Policy (CSP) header via Netlify config
+  • Rate limiting på recommendations/contact
+
+Priority 3 (Future):
+  • DOMPurify library om vi injicerar HTML från users
+
+
+🎨 DESIGN & UX PRINCIPLES
+───────────────────────────────────────────────────────────────────────────────
+
+Gemensamma drag alla sidor:
+  • Konsekvent mörk estetik (behåll nuvarande)
+  • Scrollbar animations där relevant
+  • CTA-knappar är tydliga och actionable
+  • Interaktivitet visar engagement (counters, inputs, forms)
+  • Mobile-first responsive design
+  • Accessibility: alt-text, labels, semantic HTML
+
+Per sida:
+  About: Clean, Stark, professional + warm
+  Solar Punk: Expressive, animated, hopeful, community-focused
+  Music: Groove, interactive, playlist vibes
+  Projects: Showcase, resultat-fokuserad
+
+
+📊 CONTENT REQUIREMENTS
+───────────────────────────────────────────────────────────────────────────────
+
+For About.html:
+  • CV (länk eller embed)
+  • Social media handles (Instagram, TikTok, eventuell LinkedIn)
+  • Software development background
+  • Spiritual/creator connections (readings, collaborations)
+  • Contact email
+  • "The Self" essay (från art.html)
+
+For Solar Punk:
+  • Lore/education om Solar Punk
+  • Contribution ideas (för users)
+  • Visual som passar temat
+  • Social counter för engagemang
+
+For Music Player:
+  • Spotify top-6 integration (eller fallback list)
+  • Recommendation form
+  • Möjlighet att lyssna/streama (Spotify links)
+  • Community likes/shares
+
+
+🛠️ BUILD CHECKLIST (I ordning)
+───────────────────────────────────────────────────────────────────────────────
+
+Phase 1: CLEANUP
+  □ Extrahera "The Self" från art.html
+  □ Ta bort art.html referens från index.html
+  □ Rensa up gamla scripts/oanvända filer
+
+Phase 2: ABOUT PAGE
+  □ Scaffold about.html med struktur
+  □ Lägg in "Who I am + what I build + what I'm looking for"
+  □ Lägg in social links + contact form
+  □ Lägg in "The Self" essay
+  □ Style med nuvarande vibes
+
+Phase 3: MUSIC PLAYER UPGRADE
+  □ Uppdatera vibedeck.html layout
+  □ Integrera Spotify API (eller fallback)
+  □ Lägg till like-counter
+  □ Test på mobile
+
+Phase 4: SOLAR PUNK PAGE
+  □ Scaffold solarpunk.html
+  □ Design scroll animations
+  □ Lägg in lore + contribution CTA
+  □ Implementera social counter
+  □ Style med Solar Punk estetik
+
+Phase 5: SECURITY HARDENING
+  □ XSS review på alla JS
+  □ Add rel="noopener noreferrer"
+  □ Form validation
+  □ CSP header (om möjligt)
+
+Phase 6: INDEX UPDATES
+  □ Uppdatera card grid (remove art, add about/solar punk)
+  □ Test alla links
+  □ Responsive check
+
+
+💡 DESIGN NOTES
+───────────────────────────────────────────────────────────────────────────────
+• Solar Punk sidan ska kännas gemensam — inte bara info AT du
+• Music player ska vara interactive & fun, inte bara en lista
+• About sidan är FIRST IMPRESSION för LIA + nya sociala followers
+• Varje sida ska ha en clear CTA eller interaction point
+• Animations ska förbättra UX, inte bara vara flashy
 
 
