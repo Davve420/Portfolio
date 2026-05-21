@@ -2,7 +2,7 @@
 // messages.js — Star Note Board
 //
 // Requires two things to go fully live:
-//  1. Firebase Realtime Database (free tier)
+//  1. Firebase Firestore (free tier)
 //     → console.firebase.google.com → create project
 //     → paste your config below
 //  2. Giphy API key (free) for GIF search
@@ -14,17 +14,16 @@
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
-import { getDatabase, ref, push, onValue, query, limitToLast } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js';
+import { getFirestore, collection, addDoc, getDocs, onSnapshot, query, orderBy, limit, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
 
 // ── CONFIG ─────────────────────────────────
 const firebaseConfig = {
-  apiKey: "AIzaSyA88L7kP_pbqnufLHlmErHf7UVyhHRIB8Y",
-  authDomain: "davinetdb.firebaseapp.com",
-        databaseURL: "https://davinetdb-default-rtdb.europe-west1.firebasedatabase.app",
-  projectId: "davinetdb",
-  storageBucket: "davinetdb.firebasestorage.app",
-  messagingSenderId: "11016090500",
-  appId: "1:11016090500:web:0e687a5ef41d135ca7e3d1"
+    apiKey: "AIzaSyB3alvPDXcZswkuRPsoSyC1ANE9yrStPAc",
+    authDomain: "davin3t.firebaseapp.com",
+    projectId: "davin3t",
+    storageBucket: "davin3t.firebasestorage.app",
+    messagingSenderId: "658896745127",
+    appId: "1:658896745127:web:29f1082849c034c1b86182"
 };
 
 const GIPHY_KEY = 'RHhtjkTyAhj23zDDN4N8ndWMLbTCfCy6';
@@ -33,6 +32,7 @@ const GIPHY_KEY = 'RHhtjkTyAhj23zDDN4N8ndWMLbTCfCy6';
 // State
 let db            = null;
 let firebaseReady = false;
+let notesCollection = null;
 let pendingPos    = null;   // { x, y } as percentages of the starfield
 let selectedGif   = '';
 const LOCAL_NOTES_KEY = 'davi_star_notes_local';
@@ -52,7 +52,8 @@ function withTimeout(promise, ms) {
 try {
     if (!firebaseConfig.apiKey.startsWith('YOUR')) {
         const app = initializeApp(firebaseConfig);
-        db            = getDatabase(app);
+        db            = getFirestore(app);
+        notesCollection = collection(db, 'notes');
         firebaseReady = true;
     }
 } catch (e) {
@@ -278,18 +279,29 @@ function loadNotes() {
         return;
     }
 
-    const q = query(ref(db, 'notes'), limitToLast(200));
-    onValue(q, snapshot => {
-        const data  = snapshot.val();
-        let   count = 0;
-        if (data) {
-            Object.entries(data).forEach(([id, note]) => {
-                renderNote(id, note);
-                count++;
+    const notesQuery = query(notesCollection, orderBy('timestamp', 'desc'), limit(200));
+
+    getDocs(notesQuery)
+        .then((snapshot) => {
+            snapshot.forEach((docSnap) => {
+                renderNote(docSnap.id, docSnap.data());
             });
-        }
-        counterNumber.textContent = count;
-        if (count > 0) fieldHint.classList.add('hint-hide');
+            counterNumber.textContent = snapshot.size;
+            if (snapshot.size > 0) fieldHint.classList.add('hint-hide');
+        })
+        .catch(() => {
+            firebaseReady = false;
+            renderLocalNotes();
+        });
+
+    onSnapshot(notesQuery, snapshot => {
+        snapshot.docChanges().forEach((change) => {
+            if (change.type === 'added' || change.type === 'modified') {
+                renderNote(change.doc.id, change.doc.data());
+            }
+        });
+        counterNumber.textContent = snapshot.size;
+        if (snapshot.size > 0) fieldHint.classList.add('hint-hide');
     }, () => {
         firebaseReady = false;
         renderLocalNotes();
@@ -399,6 +411,7 @@ plantForm.addEventListener('submit', async e => {
         x:         pendingPos?.x ?? +(Math.random() * 75 + 10).toFixed(2),
         y:         pendingPos?.y ?? +(Math.random() * 70 + 10).toFixed(2),
         timestamp: Date.now(),
+        createdAt: serverTimestamp(),
     };
 
     const submitBtn = plantForm.querySelector('.btn-plant');
@@ -419,7 +432,7 @@ plantForm.addEventListener('submit', async e => {
     }
 
     try {
-        await withTimeout(push(ref(db, 'notes'), noteData), FIREBASE_WRITE_TIMEOUT_MS);
+        await withTimeout(addDoc(notesCollection, noteData), FIREBASE_WRITE_TIMEOUT_MS);
         markPost();
         closeForm();
     } catch (err) {
