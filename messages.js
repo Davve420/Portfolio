@@ -83,6 +83,26 @@ const ambientAudio   = document.getElementById('ambient-audio');
 const audioToggle    = document.getElementById('audio-toggle');
 const audioToggleIcon = document.getElementById('audio-toggle-icon');
 
+const mobileNoteOverlay = document.createElement('div');
+mobileNoteOverlay.className = 'mobile-note-overlay';
+mobileNoteOverlay.hidden = true;
+mobileNoteOverlay.innerHTML = `
+    <div class="mobile-note-card" role="dialog" aria-modal="true" aria-label="Star note details">
+        <button type="button" class="mobile-note-close" aria-label="Close note">✕</button>
+        <p class="mobile-note-author"></p>
+        <p class="mobile-note-message"></p>
+        <img class="mobile-note-gif" alt="" hidden>
+        <small class="mobile-note-time"></small>
+    </div>
+`;
+document.body.appendChild(mobileNoteOverlay);
+
+const mobileNoteClose = mobileNoteOverlay.querySelector('.mobile-note-close');
+const mobileNoteAuthor = mobileNoteOverlay.querySelector('.mobile-note-author');
+const mobileNoteMessage = mobileNoteOverlay.querySelector('.mobile-note-message');
+const mobileNoteGif = mobileNoteOverlay.querySelector('.mobile-note-gif');
+const mobileNoteTime = mobileNoteOverlay.querySelector('.mobile-note-time');
+
 if (!starfield || !notesLayer || !noteOverlay || !closeBtn || !plantBtn || !plantForm || !noteMessage || !noteAuthor || !charCount || !gifQuery || !gifSearchBtn || !gifResults || !gifPreview || !gifSelectedImg || !gifClear || !counterNumber || !fieldHint || !ambientAudio || !audioToggle || !audioToggleIcon) {
     throw new Error('Star Notes markup is incomplete.');
 }
@@ -216,11 +236,16 @@ function saveLocalNote(noteData) {
     return note;
 }
 
+function renderNotesCollection(notes) {
+    notesLayer.replaceChildren();
+    notes.forEach((note) => renderNote(note.id, note));
+    counterNumber.textContent = notes.length;
+    fieldHint.classList.toggle('hint-hide', notes.length > 0);
+}
+
 function renderLocalNotes() {
     const notes = getLocalNotes();
-    notes.forEach(note => renderNote(note.id, note));
-    counterNumber.textContent = notes.length;
-    if (notes.length > 0) fieldHint.classList.add('hint-hide');
+    renderNotesCollection(notes);
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -254,11 +279,48 @@ function renderNote(id, data) {
         </div>
     `;
 
+    const popup = star.querySelector('.star-popup');
+
+    function clampPopupToViewport() {
+        if (!popup) return;
+
+        popup.style.setProperty('--popup-shift-x', '0px');
+        popup.style.setProperty('--popup-shift-y', '0px');
+
+        const margin = 10;
+        const rect = popup.getBoundingClientRect();
+        let shiftX = 0;
+        let shiftY = 0;
+
+        if (rect.left < margin) {
+            shiftX += margin - rect.left;
+        }
+        if (rect.right > window.innerWidth - margin) {
+            shiftX -= rect.right - (window.innerWidth - margin);
+        }
+        if (rect.top < margin) {
+            shiftY += margin - rect.top;
+        }
+        if (rect.bottom > window.innerHeight - margin) {
+            shiftY -= rect.bottom - (window.innerHeight - margin);
+        }
+
+        popup.style.setProperty('--popup-shift-x', `${Math.round(shiftX)}px`);
+        popup.style.setProperty('--popup-shift-y', `${Math.round(shiftY)}px`);
+    }
+
     const toggle = () => {
         const wasOpen = star.classList.contains('is-open');
+        if (window.matchMedia('(max-width: 899px)').matches) {
+            openMobileNote(data);
+            return;
+        }
         // Close all other open notes
         notesLayer.querySelectorAll('.note-star.is-open').forEach(s => s.classList.remove('is-open'));
-        if (!wasOpen) star.classList.add('is-open');
+        if (!wasOpen) {
+            star.classList.add('is-open');
+            requestAnimationFrame(clampPopupToViewport);
+        }
     };
 
     star.addEventListener('click',   e => { e.stopPropagation(); toggle(); });
@@ -268,6 +330,32 @@ function renderNote(id, data) {
     });
 
     notesLayer.appendChild(star);
+
+    window.addEventListener('resize', () => {
+        if (star.classList.contains('is-open')) {
+            clampPopupToViewport();
+        }
+    });
+}
+
+function openMobileNote(data) {
+    mobileNoteAuthor.textContent = data.author || 'Anonymous';
+    mobileNoteMessage.textContent = data.message || '';
+    mobileNoteTime.textContent = relativeTime(data.timestamp);
+
+    if (data.gifUrl) {
+        mobileNoteGif.src = data.gifUrl;
+        mobileNoteGif.hidden = false;
+    } else {
+        mobileNoteGif.hidden = true;
+        mobileNoteGif.removeAttribute('src');
+    }
+
+    mobileNoteOverlay.hidden = false;
+}
+
+function closeMobileNote() {
+    mobileNoteOverlay.hidden = true;
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -283,11 +371,8 @@ function loadNotes() {
 
     getDocs(notesQuery)
         .then((snapshot) => {
-            snapshot.forEach((docSnap) => {
-                renderNote(docSnap.id, docSnap.data());
-            });
-            counterNumber.textContent = snapshot.size;
-            if (snapshot.size > 0) fieldHint.classList.add('hint-hide');
+            const notes = snapshot.docs.map((docSnap) => ({ id: docSnap.id, ...docSnap.data() }));
+            renderNotesCollection(notes);
         })
         .catch(() => {
             firebaseReady = false;
@@ -295,13 +380,8 @@ function loadNotes() {
         });
 
     onSnapshot(notesQuery, snapshot => {
-        snapshot.docChanges().forEach((change) => {
-            if (change.type === 'added' || change.type === 'modified') {
-                renderNote(change.doc.id, change.doc.data());
-            }
-        });
-        counterNumber.textContent = snapshot.size;
-        if (snapshot.size > 0) fieldHint.classList.add('hint-hide');
+        const notes = snapshot.docs.map((docSnap) => ({ id: docSnap.id, ...docSnap.data() }));
+        renderNotesCollection(notes);
     }, () => {
         firebaseReady = false;
         renderLocalNotes();
@@ -361,10 +441,15 @@ starfield.addEventListener('click', e => {
 });
 
 closeBtn.addEventListener('click', closeForm);
+mobileNoteClose?.addEventListener('click', closeMobileNote);
 noteOverlay.addEventListener('click', e => { if (e.target === noteOverlay) closeForm(); });
+mobileNoteOverlay.addEventListener('click', (e) => {
+    if (e.target === mobileNoteOverlay) closeMobileNote();
+});
 document.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
         if (!noteOverlay.hidden) closeForm();
+        else if (!mobileNoteOverlay.hidden) closeMobileNote();
         else if (placementMode) exitPlacementMode();
     }
 });
@@ -421,9 +506,7 @@ plantForm.addEventListener('submit', async e => {
     if (!firebaseReady) {
         // Local fallback mode — note persists in this browser
         const localNote = saveLocalNote(noteData);
-        renderNote(localNote.id, localNote);
-        counterNumber.textContent = +counterNumber.textContent + 1;
-        fieldHint.classList.add('hint-hide');
+        renderNotesCollection(getLocalNotes());
         markPost();
         closeForm();
         submitBtn.disabled    = false;
@@ -439,9 +522,7 @@ plantForm.addEventListener('submit', async e => {
         console.error('Failed to save note:', err);
         firebaseReady = false;
         const localNote = saveLocalNote(noteData);
-        renderNote(localNote.id, localNote);
-        counterNumber.textContent = +counterNumber.textContent + 1;
-        fieldHint.classList.add('hint-hide');
+        renderNotesCollection(getLocalNotes());
         markPost();
         closeForm();
     } finally {

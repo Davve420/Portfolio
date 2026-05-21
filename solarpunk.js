@@ -188,7 +188,7 @@ function setupJoinButton() {
         joinButton.textContent = '✓ Already registered';
         if (joinFeedback) {
             joinFeedback.className = 'join-feedback is-info';
-            joinFeedback.textContent = 'Din registrering finns redan i denna browser.';
+            joinFeedback.textContent = 'Your sign-up is already saved in this browser.';
         }
     };
 
@@ -207,7 +207,7 @@ function setupJoinButton() {
         const email = normalizeEmail(joinEmail.value);
         if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
             joinFeedback.className = 'join-feedback is-error';
-            joinFeedback.textContent = 'Skriv en giltig e-postadress.';
+            joinFeedback.textContent = 'Please enter a valid email address.';
             return;
         }
 
@@ -240,7 +240,7 @@ function setupJoinButton() {
                 joinEmail.disabled = true;
                 if (joinFeedback) {
                     joinFeedback.className = 'join-feedback is-success';
-                    joinFeedback.textContent = 'Tack! Du ar nu registrerad i Solar Punk-raknaren.';
+                    joinFeedback.textContent = 'Thank you. You are now part of the Solar Punk counter.';
                 }
                 return;
             }
@@ -252,14 +252,14 @@ function setupJoinButton() {
             joinEmail.disabled = true;
             if (joinFeedback) {
                 joinFeedback.className = 'join-feedback is-success';
-                joinFeedback.textContent = 'Sparad lokalt (Firebase ej tillgangligt just nu).';
+                joinFeedback.textContent = 'Saved locally for now. Firebase is not available at the moment.';
             }
         } catch (error) {
             joinButton.disabled = false;
             joinButton.textContent = 'Sign up ✨';
             if (joinFeedback) {
                 joinFeedback.className = 'join-feedback is-error';
-                joinFeedback.textContent = 'Kunde inte spara just nu, prova igen.';
+                joinFeedback.textContent = 'Could not save your sign-up right now. Please try again.';
             }
             console.error('Solar Punk sign-up failed:', error);
         }

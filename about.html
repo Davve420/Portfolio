@@ -27,7 +27,6 @@
         <!-- HERO SECTION -->
         <section class="about-hero" aria-label="Profile introduction">
             <div class="about-hero-content">
-                <p class="eyebrow">Welcome to my profile</p>
                 <h1 class="about-title">Who I am</h1>
                 <p class="about-lead">
                     I'm Davi — a software developer, creative thinker, and digital community builder. 
@@ -167,6 +166,17 @@
             </form>
             <div id="contact-feedback" class="contact-feedback" aria-live="polite" aria-atomic="true"></div>
         </section>
+
+        <div class="thanks-modal" id="thanks-modal" hidden>
+            <div class="thanks-modal-card" role="dialog" aria-modal="true" aria-labelledby="thanks-title">
+                <button class="thanks-close" id="thanks-close" type="button" aria-label="Close thank you message">✕</button>
+                <div class="thanks-badge" aria-hidden="true">✦</div>
+                <h2 id="thanks-title">Message Received</h2>
+                <p class="thanks-lead">Thanks for reaching out.</p>
+                <p class="thanks-copy">Your message is on its way, and I will get back to you as soon as I can.</p>
+                <button class="thanks-cta" id="thanks-cta" type="button">Back to the page</button>
+            </div>
+        </div>
 
         <!-- THE SELF ESSAY -->
         <section class="essay-section" aria-label="Personal reflection">

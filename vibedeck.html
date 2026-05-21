@@ -92,7 +92,9 @@
             <form class="recommend-form" id="recommend-form" autocomplete="off">
                 <input id="rec-song" type="text" maxlength="90" placeholder="Song title" required>
                 <input id="rec-artist" type="text" maxlength="90" placeholder="Artist" required>
+                <input id="rec-spotify" type="url" maxlength="240" placeholder="Spotify link (optional)">
                 <input id="rec-name" type="text" maxlength="40" placeholder="Your name (optional)">
+                <textarea id="rec-description" maxlength="220" rows="3" placeholder="Short note about the song (optional)"></textarea>
                 <button type="submit">Add song or like it</button>
             </form>
             <p class="recommend-status" id="recommend-status" aria-live="polite"></p>
@@ -194,11 +196,25 @@
                 song,
                 artist,
                 by: item.by || '',
+                description: item.description || '',
+                spotifyUrl: item.spotifyUrl || '',
                 likes: Number(item.likes) || 1,
                 createdAt: item.createdAt || new Date(createdAtMs).toISOString(),
                 createdAtMs,
                 likedByCurrentUser: hasLikedRecommendation(id)
             };
+        }
+
+        function normalizeSpotifyUrl(value) {
+            const raw = String(value || '').trim();
+            if (!raw) return '';
+            const candidate = /^https?:\/\//i.test(raw) ? raw : `https://${raw}`;
+            try {
+                const url = new URL(candidate);
+                return url.href;
+            } catch {
+                return null;
+            }
         }
 
         function withTimeout(promise, ms, label) {
@@ -298,6 +314,19 @@
                 const when = formatWhen(item.createdAt);
                 meta.textContent = when ? `#${String(index + 1).padStart(2, '0')} · ${who} · ${when}` : `#${String(index + 1).padStart(2, '0')} · ${who}`;
 
+                const description = document.createElement('p');
+                description.className = 'recommend-description';
+                description.textContent = item.description || '';
+                description.hidden = !item.description;
+
+                const spotifyLink = document.createElement('a');
+                spotifyLink.className = 'recommend-spotify-link';
+                spotifyLink.href = item.spotifyUrl || '#';
+                spotifyLink.target = '_blank';
+                spotifyLink.rel = 'noopener noreferrer';
+                spotifyLink.textContent = 'Open on Spotify';
+                spotifyLink.hidden = !item.spotifyUrl;
+
                 const actions = document.createElement('div');
                 actions.className = 'recommend-actions';
 
@@ -310,7 +339,7 @@
                 likeBtn.textContent = item.likedByCurrentUser ? `Liked · ${item.likes}` : `Like · ${item.likes}`;
 
                 actions.appendChild(likeBtn);
-                content.append(title, meta);
+                content.append(title, meta, description, spotifyLink);
                 li.append(content, actions);
                 recommendList.appendChild(li);
             });
@@ -333,6 +362,8 @@
                             song: data.song || 'Untitled',
                             artist: data.artist || 'Unknown artist',
                             by: data.by || '',
+                            description: data.description || '',
+                            spotifyUrl: data.spotifyUrl || '',
                             likes: data.likes || 1,
                             createdAt: ts ? ts.toISOString() : new Date().toISOString(),
                             createdAtMs: data.createdAtMs || (ts ? ts.getTime() : Date.now())
@@ -395,11 +426,18 @@
 
             const song = document.getElementById('rec-song')?.value.trim() || '';
             const artist = document.getElementById('rec-artist')?.value.trim() || '';
+            const spotifyUrl = normalizeSpotifyUrl(document.getElementById('rec-spotify')?.value || '');
             const by = document.getElementById('rec-name')?.value.trim() || '';
+            const description = document.getElementById('rec-description')?.value.trim() || '';
             const id = makeRecommendationId(song, artist);
 
             if (!song || !artist) {
                 setRecommendStatus('Please add both song and artist.');
+                return;
+            }
+
+            if (spotifyUrl === null) {
+                setRecommendStatus('Spotify link must be a valid URL if you add one.');
                 return;
             }
 
@@ -408,6 +446,8 @@
                 song,
                 artist,
                 by,
+                description,
+                spotifyUrl,
                 createdAt: new Date().toISOString(),
                 createdAtMs: Date.now(),
                 likes: 1
@@ -441,6 +481,8 @@
                         song,
                         artist,
                         by,
+                        description,
+                        spotifyUrl,
                         likes: 1,
                         createdAt: serverTimestamp(),
                         createdAtMs: payload.createdAtMs

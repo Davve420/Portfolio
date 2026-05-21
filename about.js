@@ -4,10 +4,27 @@
 
 const contactForm = document.getElementById('contact-form');
 const contactFeedback = document.getElementById('contact-feedback');
+const thanksModal = document.getElementById('thanks-modal');
+const thanksClose = document.getElementById('thanks-close');
+const thanksCta = document.getElementById('thanks-cta');
 
 if (contactForm) {
     contactForm.addEventListener('submit', handleContactSubmit);
 }
+
+thanksClose?.addEventListener('click', closeThanksModal);
+thanksCta?.addEventListener('click', closeThanksModal);
+thanksModal?.addEventListener('click', (event) => {
+    if (event.target === thanksModal) {
+        closeThanksModal();
+    }
+});
+
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && thanksModal && !thanksModal.hidden) {
+        closeThanksModal();
+    }
+});
 
 /**
  * Handle contact form submission.
@@ -52,8 +69,9 @@ async function handleContactSubmit(event) {
         await submitContact(data);
 
         // Success feedback
-        showFeedback('success', '✓ Message sent! I\'ll get back to you soon.');
+        showFeedback('', '');
         contactForm.reset();
+        openThanksModal();
 
         // Log to console (for debugging)
         console.log('Contact form submitted:', data);
@@ -132,7 +150,7 @@ function saveContactToLocalStorage(data) {
  */
 function showFeedback(type, message) {
     contactFeedback.textContent = message;
-    contactFeedback.className = `contact-feedback ${type}`;
+    contactFeedback.className = type ? `contact-feedback ${type}` : 'contact-feedback';
 
     // Auto-clear after 6 seconds if success
     if (type === 'success') {
@@ -141,6 +159,18 @@ function showFeedback(type, message) {
             contactFeedback.className = 'contact-feedback';
         }, 6000);
     }
+}
+
+function openThanksModal() {
+    if (!thanksModal) return;
+    thanksModal.hidden = false;
+    document.body.classList.add('thanks-open');
+}
+
+function closeThanksModal() {
+    if (!thanksModal) return;
+    thanksModal.hidden = true;
+    document.body.classList.remove('thanks-open');
 }
 
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

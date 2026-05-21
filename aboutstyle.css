@@ -344,6 +344,11 @@
     transition: all 0.3s ease;
 }
 
+.contact-form select option {
+    background: #0d0d10;
+    color: #f5f5f7;
+}
+
 .contact-form input:focus,
 .contact-form select:focus,
 .contact-form textarea:focus {
@@ -402,6 +407,131 @@
     background: rgba(244, 67, 54, 0.2);
     color: #f44336;
     border: 1px solid rgba(244, 67, 54, 0.4);
+}
+
+body.thanks-open {
+    overflow: hidden;
+}
+
+.thanks-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 80;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background: rgba(2, 2, 5, 0.68);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.thanks-modal[hidden] {
+    display: none !important;
+}
+
+.thanks-modal-card {
+    width: min(520px, 100%);
+    position: relative;
+    padding: 2.4rem 2rem 2rem;
+    border-radius: 1.15rem;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background:
+        radial-gradient(circle at 50% 0%, rgba(122, 20, 40, 0.28), transparent 40%),
+        linear-gradient(180deg, rgba(18, 18, 24, 0.98), rgba(8, 8, 12, 0.98));
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.58), 0 0 24px rgba(122, 20, 40, 0.18);
+    text-align: center;
+    animation: thanks-pop-in 480ms cubic-bezier(0.2, 0.9, 0.2, 1);
+}
+
+.thanks-close {
+    position: absolute;
+    top: 0.85rem;
+    right: 0.85rem;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.04);
+    color: rgba(255, 255, 255, 0.78);
+    cursor: pointer;
+}
+
+.thanks-badge {
+    width: 4rem;
+    height: 4rem;
+    margin: 0 auto 1rem;
+    border-radius: 999px;
+    display: grid;
+    place-items: center;
+    font-size: 1.8rem;
+    color: #fff7fb;
+    background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.32), rgba(122, 20, 40, 0.9));
+    box-shadow: 0 0 0 10px rgba(122, 20, 40, 0.12), 0 0 24px rgba(122, 20, 40, 0.26);
+    animation: thanks-badge-float 2.6s ease-in-out infinite;
+}
+
+.thanks-modal-card h2 {
+    margin: 0 0 0.4rem;
+    color: var(--text-primary);
+    font-size: clamp(1.7rem, 4vw, 2.5rem);
+}
+
+.thanks-lead {
+    margin: 0 0 0.45rem;
+    color: rgba(255, 255, 255, 0.92);
+    font-size: 1.05rem;
+}
+
+.thanks-copy {
+    margin: 0 auto 1.3rem;
+    max-width: 32ch;
+    color: rgba(255, 255, 255, 0.72);
+    line-height: 1.65;
+}
+
+.thanks-cta {
+    min-width: 190px;
+    padding: 0.9rem 1.25rem;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(122, 20, 40, 0.5);
+    color: var(--text-primary);
+    font-family: var(--display-font);
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+}
+
+.thanks-cta:hover,
+.thanks-close:hover {
+    transform: translateY(-1px);
+}
+
+.thanks-cta:hover {
+    background: rgba(122, 20, 40, 0.68);
+    border-color: rgba(122, 20, 40, 0.88);
+}
+
+@keyframes thanks-pop-in {
+    from {
+        opacity: 0;
+        transform: translateY(24px) scale(0.94);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes thanks-badge-float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-4px);
+    }
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */

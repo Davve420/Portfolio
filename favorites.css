@@ -84,6 +84,7 @@
 }
 
 .recommend-form input,
+.recommend-form textarea,
 .recommend-form button {
     min-height: 2.15rem;
     border-radius: 0.7rem;
@@ -98,8 +99,25 @@
     padding: 0.45rem 0.6rem;
 }
 
-.recommend-form input::placeholder {
+.recommend-form textarea {
+    grid-column: 1 / -1;
+    background: rgba(7, 7, 7, 0.7);
+    color: #edf2ff;
+    padding: 0.7rem 0.75rem;
+    resize: vertical;
+    min-height: 5rem;
+}
+
+.recommend-form input::placeholder,
+.recommend-form textarea::placeholder {
     color: rgba(197, 213, 255, 0.5);
+}
+
+.recommend-form input:focus,
+.recommend-form textarea:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.35);
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.08);
 }
 
 .recommend-form button {
@@ -170,6 +188,38 @@
     color: rgba(182, 199, 245, 0.8);
     font-size: 0.68rem;
     white-space: nowrap;
+}
+
+.recommend-description {
+    margin: 0.2rem 0 0;
+    color: rgba(214, 223, 248, 0.82);
+    font-size: 0.74rem;
+    line-height: 1.45;
+}
+
+.recommend-spotify-link {
+    display: inline-flex;
+    width: fit-content;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0.35rem;
+    padding: 0.38rem 0.72rem;
+    border-radius: 999px;
+    border: 1px solid rgba(29, 185, 84, 0.45);
+    color: #1db954;
+    text-decoration: none;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.68rem;
+    font-weight: 600;
+    transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease;
+}
+
+.recommend-spotify-link:hover,
+.recommend-spotify-link:focus-visible {
+    background: #1db954;
+    color: #050505;
+    border-color: #1db954;
+    outline: none;
 }
 
 .recommend-actions {
