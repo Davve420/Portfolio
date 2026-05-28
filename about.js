@@ -2,6 +2,7 @@
     const modal = document.getElementById('thanks-modal');
     const closeButton = document.getElementById('thanks-close');
     const ctaButton = document.getElementById('thanks-cta');
+    const contactSection = document.getElementById('contact-section');
 
     if (!modal) {
         return;
@@ -20,6 +21,16 @@
         document.body.classList.add('thanks-open');
     }
 
+    function keepViewAtForm() {
+        if (!contactSection) {
+            return;
+        }
+
+        requestAnimationFrame(() => {
+            contactSection.scrollIntoView({ block: 'start' });
+        });
+    }
+
     function clearSuccessParam() {
         currentUrl.searchParams.delete('submitted');
         const nextPath = currentUrl.pathname + currentUrl.search + currentUrl.hash;
@@ -28,6 +39,7 @@
 
     if (shouldOpenPopup) {
         openPopup();
+        keepViewAtForm();
         clearSuccessParam();
     }
 
