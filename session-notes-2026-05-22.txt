@@ -1,0 +1,123 @@
+Session notes - 2026-05-22
+Project: Portfolio (DaviN3t)
+
+==================================================
+1) CORE VISION (MOST IMPORTANT)
+==================================================
+Main issue is not only technical. It is identity + structure:
+- Site must feel authentic to Davi, not "AI polished but fake".
+- Show many sides (tech, creative, spiritual) without becoming fragmented.
+- Present WHY first (values, path, mission), then WHAT (projects, pages, content).
+
+The red thread for the site:
+- self-awareness
+- self-love as a choice/practice
+- helping people recognize their own power
+- creativity + tech as tools (not identity itself)
+
+Important personal framing:
+- Not "I save/fix people"
+- More: illuminate, guide, remind others of their own capacity
+- Quote close to heart: "I love the Universe therefore I must love myself"
+
+The Self should have real weight:
+- Not a tiny side note
+- Should be a clear section / route in site structure
+- It carries the spiritual/philosophical voice
+
+==================================================
+2) CONTENT PRINCIPLES AGREED
+==================================================
+- Keep Davi's own words where possible
+- AI should mainly structure/edit, not replace voice
+- Raw text from Davi is preferred input for final copy
+- Tone should be human, honest, slightly raw (not over-corporate)
+
+==================================================
+3) STARTPAGE DIRECTION AGREED
+==================================================
+Desired first impression:
+- More immersive welcome
+- Guided sequence before normal card-grid
+- Values before portfolio map
+
+Flow concept:
+Step 1: Welcome gate
+Step 2: Values / why / The Self direction
+Step 3: Hero bridge into site map
+Step 4: Main cards/content
+
+CTA direction:
+- Main CTA to The Self
+- Secondary to Projects (optional, less dominant)
+- Include hint text like: "Scroll to check out more about me and other interesting stuff"
+
+==================================================
+4) WHAT WAS IMPLEMENTED TODAY
+==================================================
+- Added welcome gate section at top of index.
+- Added values block with quote + CTA links.
+- Updated hero copy away from old "aspiring artist" text.
+- Added direct anchor support for The Self in about page.
+- Implemented intro progression logic in JS (wheel/touch/keyboard interactions).
+- Added slide-like behavior and visual states for intro panels.
+- Reintroduced floating feeling for destination cards after intro.
+
+==================================================
+5) CURRENT KNOWN BUG (NOT SOLVED YET)
+==================================================
+Critical unresolved issue:
+- Empty/gap behavior is still present after first scroll sequence.
+- Welcome gate becomes visually empty but still causes navigation/flow weirdness.
+- Reload while scrolled can place user in broken/empty region.
+
+User description summary:
+- Gap appears directly after first progression.
+- Gate can still be reached as if slide exists, but content appears gone.
+- It persists further down as a layout/flow artifact.
+
+==================================================
+6) NEXT SESSION - START HERE
+==================================================
+Priority order:
+1) Fix intro lifecycle state machine first (before any copy polish)
+2) Ensure no ghost slide / no residual height after gate exit
+3) Ensure reload behavior is deterministic at any scroll position
+4) Keep float motion on cards when intro sequence ends
+5) Only then continue copy refinement for welcome + values
+
+Technical fix checklist for next session:
+- Review intro state classes: intro-locked / intro-unlocked / intro-slides-active
+- Confirm when welcome gate should:
+  a) stay visible
+  b) animate out
+  c) be removed from flow
+- Verify scroll-snap is only active during intended intro phase
+- Add safe initialization on load:
+  - if page loads below intro range -> disable intro mode cleanly
+- Validate with manual scenarios:
+  - fresh load top
+  - scroll down once
+  - continue down to cards
+  - scroll up back
+  - reload at mid page
+  - reload near bottom
+  - mobile touch test
+
+==================================================
+7) COPY / TONE TODO (AFTER BUGFIX)
+==================================================
+- Replace placeholder welcome text with Davi-authored version
+- Tune values headline/body to be less "cocky" and more invitational
+- Keep mission language clear but humble
+- Align final wording with The Self voice
+
+==================================================
+8) REMINDER FOR COLLAB WORKSTYLE
+==================================================
+Preferred workflow from user:
+- Ask more questions during build phase (not only after)
+- Iterate in collaboration while implementing
+- Preserve ideas/vision continuity between sessions
+
+End of notes.

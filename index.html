@@ -27,17 +27,44 @@
 <body data-page="index">
     <div class="warp-overlay" aria-hidden="true"></div>
     <main class="space-home">
+        <section class="welcome-gate intro-slide" id="welcome-gate" aria-label="Immersive welcome">
+            <p class="eyebrow">Welcome to my space</p>
+            <h1 class="gate-title">This is a space for becoming.</h1>
+            <p class="gate-lead">
+                I build digital experiences around growth, creativity, and self awareness.
+                Start here, then move deeper into what I stand for and what I create.
+            </p>
+            <div class="gate-actions">
+                <button class="gate-enter" id="begin-journey" type="button">Enter the journey</button>
+                <a class="gate-skip" href="#home-values">or scroll to begin</a>
+            </div>
+        </section>
         <div class="home-brand" aria-label="Davi dot n3t">Davi.n3t</div>
-        <section class="hero-shell" aria-label="Welcome section">
+
+        <section class="values-step intro-slide" id="home-values" aria-label="Values and direction">
+            <p class="eyebrow">What I stand for</p>
+            <h2 class="values-title">A path toward self-trust, self-love, and conscious creation.</h2>
+            <p class="values-lead">
+                My work lives between creativity, spirituality, and tech. I want to guide people toward
+                self love, self trust, and their truest potential. This is the root of everything I build.
+            </p>
+            <blockquote class="values-quote">I love the Universe therefore I must love myself.</blockquote>
+            <div class="values-actions">
+                <a class="values-primary" href="about.html#the-self">Read The Self</a>
+                <a class="values-secondary" href="projects.html">Explore Projects</a>
+            </div>
+            <p class="values-scroll-hint">Scroll to check out more about me and other interesting stuff.</p>
+        </section>
+        <section class="hero-shell intro-slide" aria-label="Welcome section">
             <img class="hero-bg" src="pictures/GrungeDavi.JPEG" alt="" aria-hidden="true" fetchpriority="high" decoding="async">
             <div class="hero-content">
-                <p class="eyebrow">Welcome to my cyberspace</p>
-                <h1 class="hero-title">You just got pulled into Davi's orbit</h1>
-                <p class="hero-lead">I'm an aspiring artist and i love expressing myself in different ways but I'm also a big tech enthusiast who loves the idea of solarpunk. Every card is a different zone in my cyberspace: projects, style, music, showcases and other thingies</p>
+                <p class="eyebrow">What I build</p>
+                <h2 class="hero-title">From inner work to digital worlds.</h2>
+                <p class="hero-lead">Scroll into the map below to explore my pages, projects, and communities.</p>
             </div>
         </section>
 
-        <section class="destination-grid" aria-label="Main destinations">
+        <section class="destination-grid" id="home-map" aria-label="Main destinations">
             <article class="destination-card" style="--delay: 0s">
                 <a class="card-link" href="about.html">
                     <img src="pictures/GrungeDavi.JPEG" alt="About – Who I am, what I build, what I'm looking for" loading="lazy" decoding="async">
