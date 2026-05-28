@@ -9,12 +9,11 @@
 
 ### What we already tested
 - Reduced the About page to a canonical native Netlify form flow.
-- Added a simple `thanks.html` success page.
 - Kept `contact-test.html` as a minimal debug page only.
 
 ### What to test next (in order)
 1. Submit the About page form in Incognito with extensions disabled.
-2. In DevTools Network, verify a native `POST` form request to `/thanks.html` and status `200`/`303`.
+2. In DevTools Network, verify a native `POST` form request to `/about.html` and status `200`/`303`.
 3. If needed, compare with `contact-test.html` as an isolated parser check.
 4. Check Netlify deploy logs for form detection in the current deploy.
 5. In Netlify UI -> Forms, verify `contact` is present in the latest deploy.
