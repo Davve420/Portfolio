@@ -98,7 +98,12 @@ Do this:
 - Keep the visual direction calm and intentional (readability first, atmospheric styling second).
 - Add a tiny attribution pattern: `You` or named source when applicable.
 
-### 3) Legacy page cleanup (space + maintainability)
+### 3) Atmosphere / labyrinth direction
+- Explore a more magical, early-stage feeling with slow reveals, layered sections, and a sense of journey.
+- Use the House of Labyrinth inspiration as a reference for mood and pacing, not as a template to copy.
+- Favor spatial storytelling over dense content so the page feels immersive without becoming heavy.
+
+### 4) Legacy page cleanup (space + maintainability)
 - Inventory all older HTML pages and classify each page as:
    - keep (linked in live nav/flow)
    - archive (historic but worth saving)
