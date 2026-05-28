@@ -35,7 +35,7 @@
         footerTarget.innerHTML = [
             '<div class="footer-copy">',
             '<p class="footer-kicker"><a class="footer-brand-link" href="index.html">DaviN3t</a></p>',
-            '<p class="footer-text">Building digital spaces with curiosity, self-trust, and intention.</p>',
+            '<p class="footer-text">Building digital spaces with curiosity, creativity, and intention.</p>',
             '</div>',
             '<div class="footer-links" aria-label="Social links and contact">',
             '<a href="https://www.instagram.com/dav1den/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img class="footericon" src="pictures/instagram-logo.png" alt="Instagram logo"></a>',
