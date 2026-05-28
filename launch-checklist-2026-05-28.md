@@ -9,14 +9,14 @@
 
 ### What we already tested
 - Added explicit Netlify attributes (`data-netlify`, honeypot fields, hidden `form-name`).
-- Added backup hidden form in HTML for parser stability.
 - Tested posting with JS `fetch('/')`.
 - Tested native `contactForm.submit()` via JS.
 - Final fallback now applied: no JS intercept for Netlify forms (pure browser-native form post).
+- Simplified to a canonical static form flow with a real success page at `thanks.html`.
 
 ### What to test next (in order)
 1. Submit in Incognito with all extensions disabled.
-2. In DevTools Network, verify a native `POST` form request to `/` and status `200`/`303`.
+2. In DevTools Network, verify a native `POST` form request to `/thanks.html` and status `200`/`303`.
 3. Check Netlify deploy logs for form detection in current deploy.
 4. In Netlify UI -> Forms, verify `contact` form is detected in latest deploy (not only historical form data).
 5. If still failing: add a minimal isolated `contact-test.html` with a plain Netlify form (no JS, no shared shell) to confirm platform-level behavior.
