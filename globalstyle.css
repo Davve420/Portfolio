@@ -189,15 +189,64 @@ header{
 
 .footercontainer{
     display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.95rem;
+    background:
+        linear-gradient(to bottom, transparent 0%, rgba(5, 5, 5, 0.68) 20%, var(--surface-bg) 42%),
+        radial-gradient(circle at 50% 0%, rgba(122, 20, 40, 0.14), transparent 46%);
+    padding: 1.65rem 1rem 2.1rem;
+    margin-top: 2.5rem;
+    width: 100%;
+    color: var(--text-primary);
+    text-align: center;
+}
+
+.footer-copy {
+    display: grid;
+    gap: 0.28rem;
+    max-width: 34rem;
+}
+
+.footer-kicker {
+    margin: 0;
+    font-family: var(--headline-font);
+    font-size: 0.88rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: rgba(242, 244, 252, 0.78);
+}
+
+.footer-brand-link {
+    color: rgba(242, 244, 252, 0.82);
+    text-decoration: none;
+    display: inline;
+    transition: transform 180ms ease, color 180ms ease, text-shadow 220ms ease;
+}
+
+.footer-brand-link:hover,
+.footer-brand-link:focus-visible {
+    color: #ffffff;
+    transform: scale(1.03);
+    text-shadow: 0 0 9px rgba(255, 255, 255, 0.34), 0 0 15px rgba(122, 20, 40, 0.34);
+    outline: none;
+}
+
+.footer-text {
+    margin: 0;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: rgba(234, 233, 239, 0.7);
+    text-wrap: balance;
+}
+
+.footer-links {
+    display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     gap: 0.8rem;
-    background: linear-gradient(to bottom, transparent 0%, var(--surface-bg) 30%);
-    padding: 1.25rem 0.8rem 2.1rem;
-    margin-top: 2vh;
-    width: 100%;
-    color: var(--text-primary);
 }
 
 .footercontainer a {
@@ -209,6 +258,10 @@ header{
     border: 1px solid rgba(234, 233, 239, 0.14);
     background: rgba(234, 233, 239, 0.03);
     transition: transform 220ms ease, border-color 220ms ease, background 220ms ease;
+}
+
+.footercontainer a[aria-label="Email David"] {
+    background: rgba(122, 20, 40, 0.08);
 }
 
 .footericon{
@@ -339,6 +392,14 @@ a:has(.footericon):focus-visible .footericon {
     .mini-btn-image {
         width: 1.42rem;
         height: 1.42rem;
+    }
+
+    .footercontainer {
+        padding-top: 2rem;
+    }
+
+    .footer-text {
+        font-size: 0.98rem;
     }
 }
 

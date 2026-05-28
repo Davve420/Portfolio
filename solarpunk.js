@@ -279,8 +279,6 @@ async function initializeCounter() {
 // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('🌱 Solar Punk page loaded');
-
     initScrollReveal();
 
     setupFirebase()

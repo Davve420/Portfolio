@@ -27,6 +27,7 @@ const firebaseConfig = {
 };
 
 const GIPHY_KEY = 'RHhtjkTyAhj23zDDN4N8ndWMLbTCfCy6';
+const GIPHY_TIMEOUT_MS = 9000;
 // ───────────────────────────────────────────
 
 // State
@@ -38,6 +39,7 @@ let selectedGif   = '';
 const LOCAL_NOTES_KEY = 'davi_star_notes_local';
 const FIREBASE_WRITE_TIMEOUT_MS = 9000;
 let   placementMode   = false; // true while user is picking a spot on the map
+let hintResetTimer = null;
 
 function withTimeout(promise, ms) {
     return Promise.race([
@@ -377,6 +379,7 @@ function loadNotes() {
         .catch(() => {
             firebaseReady = false;
             renderLocalNotes();
+            showTemporaryHint('Live sync is unavailable right now. Showing locally saved stars.');
         });
 
     onSnapshot(notesQuery, snapshot => {
@@ -385,6 +388,7 @@ function loadNotes() {
     }, () => {
         firebaseReady = false;
         renderLocalNotes();
+        showTemporaryHint('Cloud sync paused. New stars will still save locally.');
     });
 }
 
@@ -428,6 +432,23 @@ function exitPlacementMode() {
     const hintP = fieldHint.querySelector('p');
     if (hintP) hintP.textContent = 'Every star is a message from a visitor';
     if (+counterNumber.textContent > 0) fieldHint.classList.add('hint-hide');
+}
+
+function showTemporaryHint(message, ms = 4200) {
+    const hintP = fieldHint.querySelector('p');
+    if (!hintP) return;
+
+    const previous = hintP.textContent;
+    hintP.textContent = message;
+    fieldHint.classList.remove('hint-hide');
+
+    if (hintResetTimer) clearTimeout(hintResetTimer);
+    hintResetTimer = setTimeout(() => {
+        hintP.textContent = previous;
+        if (+counterNumber.textContent > 0 && !placementMode) {
+            fieldHint.classList.add('hint-hide');
+        }
+    }, ms);
 }
 
 // ── Click on starfield to place a note ──
@@ -525,6 +546,7 @@ plantForm.addEventListener('submit', async e => {
         renderNotesCollection(getLocalNotes());
         markPost();
         closeForm();
+        showTemporaryHint('Saved locally because cloud write failed.');
     } finally {
         submitBtn.disabled    = false;
         submitBtn.textContent = '✦ Create this star';
@@ -545,6 +567,8 @@ async function searchGiphy(searchQuery) {
     }
 
     gifResults.innerHTML = '<p class="gif-note">Searching…</p>';
+    gifSearchBtn.disabled = true;
+    gifSearchBtn.textContent = 'Searching...';
 
     try {
         const url = new URL('https://api.giphy.com/v1/gifs/search');
@@ -553,9 +577,16 @@ async function searchGiphy(searchQuery) {
         url.searchParams.set('limit',   '9');
         url.searchParams.set('rating',  'pg-13');
 
-        const res  = await fetch(url);
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), GIPHY_TIMEOUT_MS);
+
+        const res  = await fetch(url, { signal: controller.signal });
+        clearTimeout(timeoutId);
         if (!res.ok) {
-            throw new Error(`Giphy API error: ${res.status}`);
+            if (res.status === 401 || res.status === 403) throw new Error('invalid_key');
+            if (res.status === 429) throw new Error('rate_limited');
+            if (res.status >= 500) throw new Error('server_unavailable');
+            throw new Error(`api_${res.status}`);
         }
         const json = await res.json();
 
@@ -582,8 +613,21 @@ async function searchGiphy(searchQuery) {
 
             gifResults.appendChild(img);
         });
-    } catch {
-        gifResults.innerHTML = '<p class="gif-note">GIF search failed. Try again.</p>';
+    } catch (err) {
+        if (err?.name === 'AbortError') {
+            gifResults.innerHTML = '<p class="gif-note">GIF search timed out. Try again.</p>';
+        } else if (err?.message === 'invalid_key') {
+            gifResults.innerHTML = '<p class="gif-note">GIF search is temporarily unavailable (API key issue).</p>';
+        } else if (err?.message === 'rate_limited') {
+            gifResults.innerHTML = '<p class="gif-note">Too many GIF requests right now. Try again in a moment.</p>';
+        } else if (err?.message === 'server_unavailable') {
+            gifResults.innerHTML = '<p class="gif-note">Giphy is temporarily unavailable. Try again soon.</p>';
+        } else {
+            gifResults.innerHTML = '<p class="gif-note">GIF search failed. Try again.</p>';
+        }
+    } finally {
+        gifSearchBtn.disabled = false;
+        gifSearchBtn.textContent = 'Search';
     }
 }
 

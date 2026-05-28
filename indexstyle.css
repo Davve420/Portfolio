@@ -34,8 +34,7 @@
     transform: scale(1.08) translateY(20px);
 }
 
-body.intro-locked .space-home,
-body.intro-unlocked .space-home {
+body.intro-slides-active .space-home {
     scroll-snap-type: y mandatory;
 }
 
@@ -53,8 +52,43 @@ body.intro-slides-active .intro-slide.is-active {
     filter: saturate(1) brightness(1);
 }
 
-body:not(.intro-slides-active) .welcome-gate {
+body.intro-gate-dismissed .welcome-gate {
     display: none;
+}
+
+body.intro-post-layout .values-step {
+    min-height: auto;
+    align-content: start;
+    gap: 0.45rem;
+    padding: 0.9rem 1rem;
+    border-radius: 0.85rem;
+    background:
+        radial-gradient(circle at 90% 18%, rgba(122, 20, 40, 0.2), transparent 34%),
+        linear-gradient(160deg, rgba(9, 9, 12, 0.94), rgba(5, 5, 7, 0.92));
+}
+
+body.intro-post-layout .values-title {
+    font-size: clamp(1.15rem, 4.2vw, 1.55rem);
+}
+
+body.intro-post-layout .values-lead {
+    font-size: clamp(0.9rem, 2.7vw, 0.98rem);
+    max-width: 88ch;
+    color: #dbe1fa;
+}
+
+body.intro-post-layout .values-quote {
+    margin: 0.1rem 0 0;
+    font-size: clamp(1rem, 2.8vw, 1.14rem);
+    padding-left: 0.62rem;
+}
+
+body.intro-post-layout .values-scroll-hint {
+    display: none;
+}
+
+body.intro-post-layout .values-actions {
+    margin-top: 0.15rem;
 }
 
 body:not(.intro-slides-active) .destination-card {
@@ -112,6 +146,14 @@ body.intro-unlocked .welcome-gate {
     box-shadow: 0 0 28px rgba(255, 255, 255, 0.1), 0 16px 42px rgba(0, 0, 0, 0.62);
 }
 
+body.intro-slides-active .welcome-gate {
+    background:
+        linear-gradient(118deg, rgba(5, 5, 7, 0.94) 0%, rgba(5, 5, 7, 0.76) 42%, rgba(10, 8, 14, 0.55) 72%, rgba(10, 8, 14, 0.4) 100%),
+        radial-gradient(circle at 14% 20%, rgba(122, 20, 40, 0.28), transparent 42%),
+        radial-gradient(circle at 84% 12%, rgba(238, 240, 255, 0.12), transparent 36%),
+    url("pictures/aesthetic/pentaclecode.jpg") 88% 54% / 46% auto no-repeat;
+}
+
 .gate-title {
     margin: 0;
     font-family: 'Cormorant Garamond', serif;
@@ -136,6 +178,49 @@ body.intro-unlocked .welcome-gate {
     align-items: center;
 }
 
+.gate-paths {
+    margin-top: 0.3rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.62rem;
+}
+
+.gate-route {
+    text-decoration: none;
+    border-radius: 999px;
+    padding: 0.45rem 0.9rem;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.8rem;
+    color: #e7eaf8;
+    border: 1px solid rgba(230, 234, 255, 0.22);
+    background: rgba(255, 255, 255, 0.02);
+    transition: transform 180ms ease, box-shadow 200ms ease, background 200ms ease;
+}
+
+.gate-route:hover,
+.gate-route:focus-visible {
+    transform: translateY(-2px);
+    box-shadow: 0 0 14px rgba(255, 255, 255, 0.2), 0 0 18px rgba(122, 20, 40, 0.2);
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.gate-route-lia {
+    background: linear-gradient(135deg, #f8f8f8, #e6e8f2);
+    color: #08090b;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.gate-scroll-hint {
+    margin: 0.45rem 0 0;
+    color: rgba(230, 235, 250, 0.56);
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.82rem;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    animation: scroll-hint-float 2.8s ease-in-out infinite;
+    width: fit-content;
+}
+
 .gate-enter {
     appearance: none;
     border: 1px solid rgba(255, 255, 255, 0.24);
@@ -157,13 +242,6 @@ body.intro-unlocked .welcome-gate {
     box-shadow: 0 0 18px rgba(255, 255, 255, 0.36), 0 0 20px rgba(122, 20, 40, 0.3);
 }
 
-.gate-skip {
-    color: rgba(229, 232, 248, 0.8);
-    text-decoration: none;
-    font-size: 0.9rem;
-    border-bottom: 1px solid rgba(229, 232, 248, 0.32);
-}
-
 .values-step {
     display: grid;
     gap: 0.7rem;
@@ -175,6 +253,13 @@ body.intro-unlocked .welcome-gate {
         linear-gradient(160deg, rgba(8, 8, 10, 0.92), rgba(5, 5, 7, 0.9));
     min-height: calc(var(--vh, 1vh) * 100);
     align-content: center;
+}
+
+body.intro-slides-active .values-step {
+    background:
+        linear-gradient(122deg, rgba(6, 7, 10, 0.94) 0%, rgba(6, 7, 10, 0.8) 44%, rgba(10, 11, 16, 0.56) 74%, rgba(10, 11, 16, 0.4) 100%),
+        radial-gradient(circle at 78% 18%, rgba(122, 20, 40, 0.2), transparent 40%),
+    url("pictures/aesthetic/brainprogramming1.PNG") 88% 50% / auto 82% no-repeat;
 }
 
 .values-title {
@@ -377,9 +462,10 @@ body.intro-unlocked .welcome-gate {
 
 .hero-lead {
     margin: 0;
-    color: #d6dcff;
+    color: #ebefff;
     font-size: clamp(1.03rem, 3.6vw, 1.2rem);
     max-width: 58ch;
+    text-shadow: 0 0 12px rgba(0, 0, 0, 0.45);
 }
 
 
@@ -773,6 +859,11 @@ audio::-webkit-media-controls-mute-button {
     to { transform: translateY(-12px) translateX(6px); }
 }
 
+@keyframes scroll-hint-float {
+    0%, 100% { transform: translateY(0); opacity: 0.56; }
+    50% { transform: translateY(-4px); opacity: 0.85; }
+}
+
 @media (min-width: 760px) {
     .space-home {
         padding: 1.3rem 1.3rem 2.5rem;
@@ -916,7 +1007,7 @@ audio::-webkit-media-controls-mute-button {
         filter: none;
     }
 
-    body:not(.intro-slides-active) .welcome-gate {
+    body.intro-gate-dismissed .welcome-gate {
         display: block;
     }
 }
@@ -933,13 +1024,57 @@ audio::-webkit-media-controls-mute-button {
 }
 
 @media (max-width: 430px) {
+    body.intro-slides-active .welcome-gate {
+        align-content: end;
+        background:
+            linear-gradient(180deg,
+                rgba(5, 5, 7, 0.12) 0%,
+                rgba(5, 5, 7, 0.24) 26%,
+                rgba(5, 5, 7, 0.7) 42%,
+                rgba(5, 5, 7, 0.94) 55%,
+                rgba(10, 8, 14, 0.98) 100%),
+            linear-gradient(180deg,
+                transparent 0%,
+                transparent 42%,
+                rgba(236, 239, 255, 0.12) 42.4%,
+                transparent 43.2%),
+            radial-gradient(circle at 14% 20%, rgba(122, 20, 40, 0.28), transparent 42%),
+            radial-gradient(circle at 84% 12%, rgba(238, 240, 255, 0.12), transparent 36%),
+            url("pictures/aesthetic/pentaclecode.jpg") 50% 8% / 72% auto no-repeat;
+    }
+
+    body.intro-slides-active .values-step {
+        align-content: end;
+        background:
+            linear-gradient(180deg,
+                rgba(6, 7, 10, 0.12) 0%,
+                rgba(6, 7, 10, 0.22) 28%,
+                rgba(6, 7, 10, 0.68) 42%,
+                rgba(6, 7, 10, 0.94) 56%,
+                rgba(10, 11, 16, 0.98) 100%),
+            linear-gradient(180deg,
+                transparent 0%,
+                transparent 42%,
+                rgba(236, 239, 255, 0.1) 42.4%,
+                transparent 43.2%),
+            radial-gradient(circle at 78% 18%, rgba(122, 20, 40, 0.2), transparent 40%),
+            url("pictures/aesthetic/brainprogramming1.PNG") 50% 8% / auto 50% no-repeat;
+    }
+
     .welcome-gate {
         min-height: 88svh;
-        padding: 1.1rem;
+        padding: 1.1rem 1.1rem 1.25rem;
     }
 
     .values-step {
         min-height: 88svh;
+        padding-top: 1.1rem;
+        padding-bottom: 1.25rem;
+    }
+
+    body.intro-post-layout .values-step {
+        min-height: auto;
+        padding: 0.78rem 0.82rem;
     }
 
     .hero-shell {

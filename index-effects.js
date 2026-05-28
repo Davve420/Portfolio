@@ -1,8 +1,8 @@
 (function () {
     const gate = document.getElementById('welcome-gate');
     const startButton = document.getElementById('begin-journey');
-    const skipLink = document.querySelector('.gate-skip');
     const valuesStep = document.getElementById('home-values');
+    const heroStep = document.querySelector('.hero-shell');
     const slides = Array.from(document.querySelectorAll('.intro-slide'));
 
     if (!gate || !valuesStep || slides.length === 0) return;
@@ -10,9 +10,19 @@
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const body = document.body;
     const root = document.documentElement;
+    const navigationEntry = performance.getEntriesByType('navigation')[0];
+    const isReloadNavigation = navigationEntry && navigationEntry.type === 'reload';
     let isTweening = false;
     let currentSlideIndex = 0;
     let touchStartY = null;
+
+    if ('scrollRestoration' in history) {
+        history.scrollRestoration = isReloadNavigation ? 'manual' : 'auto';
+    }
+
+    if (isReloadNavigation && !window.location.hash) {
+        window.scrollTo(0, 0);
+    }
 
     if (prefersReducedMotion) {
         body.classList.add('intro-unlocked');
@@ -105,26 +115,39 @@
         body.classList.add('intro-unlocked');
     }
 
-    function unlockAndGoToSlide(index, event) {
-        if (event) event.preventDefault();
-
-        unlockIntro();
-        goToSlide(index);
+    function dismissGate() {
+        body.classList.add('intro-gate-dismissed');
+        body.classList.add('intro-post-layout');
     }
 
-    if (window.location.hash && window.location.hash !== '#welcome-gate') {
+    function disableIntroSlides() {
+        body.classList.remove('intro-slides-active');
+    }
+
+    const hasExternalHash = window.location.hash && window.location.hash !== '#welcome-gate';
+    const isLoadedBelowGate = window.scrollY > Math.max(window.innerHeight * 0.25, 180);
+
+    if (hasExternalHash || isLoadedBelowGate) {
         unlockIntro();
+        disableIntroSlides();
+        dismissGate();
         currentSlideIndex = getClosestSlideIndex();
+        setActiveSlide(currentSlideIndex);
     } else {
         setActiveSlide(0);
     }
 
     if (startButton) {
-        startButton.addEventListener('click', (event) => unlockAndGoToSlide(1, event));
-    }
+        startButton.addEventListener('click', async (event) => {
+            event.preventDefault();
+            unlockIntro();
+            disableIntroSlides();
+            dismissGate();
 
-    if (skipLink) {
-        skipLink.addEventListener('click', (event) => unlockAndGoToSlide(1, event));
+            if (heroStep) {
+                await tweenToY(heroStep.offsetTop, 700);
+            }
+        });
     }
 
     function tryStepSlides(direction) {
@@ -138,7 +161,8 @@
 
         if (nextIndex === currentSlideIndex) {
             if (currentSlideIndex === slides.length - 1 && direction > 0) {
-                body.classList.remove('intro-slides-active');
+                disableIntroSlides();
+                dismissGate();
             }
             return;
         }
@@ -205,7 +229,8 @@
 
         const lastSlideBottom = slides[slides.length - 1].offsetTop + slides[slides.length - 1].offsetHeight;
         if (window.scrollY > lastSlideBottom - Math.max(window.innerHeight * 0.7, 320)) {
-            body.classList.remove('intro-slides-active');
+            disableIntroSlides();
+            dismissGate();
         }
     }, { passive: true });
 
@@ -262,13 +287,19 @@
     const heroContent = document.querySelector('.hero-content');
     if (!heroShell || !heroContent) return;
 
+    function clamp(num, min, max) {
+        return Math.max(min, Math.min(num, max));
+    }
+
     function onScroll() {
-        const scrolled  = window.scrollY;
-        const heroH     = heroShell.offsetHeight;
-        const t         = Math.max(0, Math.min(scrolled / (heroH * 0.6), 1));
+        const heroRect = heroShell.getBoundingClientRect();
+        const heroH = heroShell.offsetHeight;
+        const distancePastTop = Math.max(0, -heroRect.top);
+        const t = clamp(distancePastTop / (heroH * 0.6), 0, 1);
         heroContent.style.opacity   = String(1 - t * 0.88);
         heroContent.style.transform = `translateY(${t * -22}px)`;
     }
 
     window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
 })();

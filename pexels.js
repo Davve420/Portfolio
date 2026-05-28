@@ -10,6 +10,7 @@
 
 const PEXELS_KEY = '6pOyMGqbNYmoOe1rWJKjUnPgbjf6EMENCZuiODL0cpnv2A5Je4MLYmry';
 const DEFAULT_QUERY = 'night sky';
+const PEXELS_TIMEOUT_MS = 9000;
 
 const searchInput = document.getElementById('pexels-input');
 const searchBtn   = document.getElementById('pexels-btn');
@@ -39,7 +40,21 @@ async function searchPexels(query) {
         return;
     }
 
+    if (!navigator.onLine) {
+        photoGrid.innerHTML = '<p class="pexels-loading">You appear to be offline. Reconnect and try again.</p>';
+        return;
+    }
+
+    if (!query || !query.trim()) {
+        photoGrid.innerHTML = '<p class="pexels-loading">Write a search first, then press Explore.</p>';
+        return;
+    }
+
     photoGrid.innerHTML = '<p class="pexels-loading">Searching…</p>';
+    if (searchBtn) {
+        searchBtn.disabled = true;
+        searchBtn.textContent = 'Searching...';
+    }
 
     try {
         const url = new URL('https://api.pexels.com/v1/search');
@@ -47,11 +62,27 @@ async function searchPexels(query) {
         url.searchParams.set('per_page',    '12');
         url.searchParams.set('orientation', 'square');
 
-        const res = await fetch(url, {
-            headers: { Authorization: PEXELS_KEY }
-        });
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), PEXELS_TIMEOUT_MS);
 
-        if (!res.ok) throw new Error(`Pexels API error: ${res.status}`);
+        const res = await fetch(url, {
+            headers: { Authorization: PEXELS_KEY },
+            signal: controller.signal
+        });
+        clearTimeout(timeoutId);
+
+        if (!res.ok) {
+            if (res.status === 401 || res.status === 403) {
+                throw new Error('invalid_key');
+            }
+            if (res.status === 429) {
+                throw new Error('rate_limited');
+            }
+            if (res.status >= 500) {
+                throw new Error('server_unavailable');
+            }
+            throw new Error(`api_${res.status}`);
+        }
 
         const json = await res.json();
 
@@ -86,8 +117,23 @@ async function searchPexels(query) {
         });
 
     } catch (err) {
-        photoGrid.innerHTML = '<p class="pexels-loading">Search failed. Check your API key and try again.</p>';
+        if (err?.name === 'AbortError') {
+            photoGrid.innerHTML = '<p class="pexels-loading">Search timed out. Please try again.</p>';
+        } else if (err?.message === 'invalid_key') {
+            photoGrid.innerHTML = '<p class="pexels-loading">Photo search is temporarily unavailable (API key issue).</p>';
+        } else if (err?.message === 'rate_limited') {
+            photoGrid.innerHTML = '<p class="pexels-loading">Too many searches right now. Please wait a moment and try again.</p>';
+        } else if (err?.message === 'server_unavailable') {
+            photoGrid.innerHTML = '<p class="pexels-loading">Pexels is temporarily unavailable. Please try again soon.</p>';
+        } else {
+            photoGrid.innerHTML = '<p class="pexels-loading">Search failed. Please try again.</p>';
+        }
         console.error(err);
+    } finally {
+        if (searchBtn) {
+            searchBtn.disabled = false;
+            searchBtn.textContent = 'Explore';
+        }
     }
 }
 

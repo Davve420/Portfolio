@@ -32,15 +32,20 @@
     }
 
     if (footerTarget) {
-        if (isHomePage) {
-            footerTarget.innerHTML = [
-                '<a href="https://www.instagram.com/dav1den/" target="_blank" rel="noopener noreferrer"><img class="footericon" src="pictures/instagram-logo.png" alt="Instagram logo"></a>',
-                '<a href="https://www.tiktok.com/@davin3t" target="_blank" rel="noopener noreferrer"><img class="footericon" src="pictures/tiktoklogo.png" alt="TikTok link"></a>',
-                '<a href="mailto:davidbrolin04@gmail.com"><img class="footericon" src="pictures/mail.png" alt="Email icon"></a>'
-            ].join('');
-        } else {
-            footerTarget.innerHTML = '';
-            footerTarget.style.display = 'none';
+        footerTarget.innerHTML = [
+            '<div class="footer-copy">',
+            '<p class="footer-kicker"><a class="footer-brand-link" href="index.html">DaviN3t</a></p>',
+            '<p class="footer-text">Building digital spaces with curiosity, self-trust, and intention.</p>',
+            '</div>',
+            '<div class="footer-links" aria-label="Social links and contact">',
+            '<a href="https://www.instagram.com/dav1den/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><img class="footericon" src="pictures/instagram-logo.png" alt="Instagram logo"></a>',
+            '<a href="https://www.tiktok.com/@davin3t" target="_blank" rel="noopener noreferrer" aria-label="TikTok"><img class="footericon" src="pictures/tiktoklogo.png" alt="TikTok link"></a>',
+            '<a href="mailto:davidbrolin04@gmail.com" aria-label="Email David"><img class="footericon" src="pictures/mail.png" alt="Email icon"></a>',
+            '</div>'
+        ].join('');
+
+        if (!isHomePage) {
+            footerTarget.style.display = '';
         }
     }
 

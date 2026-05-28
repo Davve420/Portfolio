@@ -60,6 +60,67 @@
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* MORE ABOUT ME */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+.more-about-me {
+    margin-bottom: 4rem;
+}
+
+.identity-flow {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.identity-step {
+    padding: 1.25rem 1.2rem;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    border-radius: 10px;
+    background:
+        radial-gradient(circle at 88% 18%, rgba(122, 20, 40, 0.14), transparent 40%),
+        rgba(255, 255, 255, 0.03);
+    animation: fadeInUp 0.55s ease-out both;
+}
+
+.identity-step:nth-child(2) {
+    animation-delay: 0.08s;
+}
+
+.identity-step:nth-child(3) {
+    animation-delay: 0.16s;
+}
+
+.identity-step h3 {
+    margin: 0 0 0.45rem;
+    color: rgba(255, 255, 255, 0.95);
+    font-size: clamp(1.05rem, 3.2vw, 1.25rem);
+}
+
+.identity-step p {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.84);
+    line-height: 1.7;
+    font-size: 0.98rem;
+}
+
+.about-bridge-actions {
+    margin-top: 1.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+}
+
+.about-bridge-alt {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.about-bridge-alt:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 /* SECTION HEADERS */
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
@@ -101,6 +162,11 @@
     .project-highlight-grid {
         grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
         gap: 2.5rem;
+    }
+
+    .identity-flow {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1.15rem;
     }
 }
 
@@ -237,60 +303,6 @@
     text-transform: uppercase;
     letter-spacing: 0.5px;
     width: fit-content;
-}
-
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-/* SOCIAL LINKS */
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-
-.social-links-section {
-    text-align: center;
-    margin-bottom: 4rem;
-    padding: 3rem 0;
-}
-
-.social-links-section h2 {
-    font-size: 1.8rem;
-    margin: 0 0 2rem 0;
-}
-
-.social-links-grid {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    flex-wrap: wrap;
-}
-
-.social-link {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 1.5rem;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.02);
-    text-decoration: none;
-    transition: all 0.3s ease;
-    min-width: 140px;
-}
-
-.social-link:hover {
-    border-color: rgba(255, 255, 255, 0.4);
-    background: rgba(255, 255, 255, 0.08);
-    transform: translateY(-4px);
-}
-
-.social-link img {
-    width: 40px;
-    height: 40px;
-    object-fit: contain;
-}
-
-.social-link span {
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: var(--text-primary);
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
@@ -645,22 +657,143 @@ body.thanks-open {
 
 @media (max-width: 600px) {
     .about-main {
-        padding: 1rem 0.75rem;
+        padding: 1rem 0.78rem 0;
+    }
+
+    .about-hero {
+        gap: 1.2rem;
+        margin-bottom: 2.6rem;
+        padding: 1rem 0 0.5rem;
+    }
+
+    .about-hero-content {
+        gap: 1rem;
     }
 
     .about-title {
-        font-size: 2rem;
+        font-size: clamp(2.1rem, 9vw, 2.6rem);
+        line-height: 1.08;
+    }
+
+    .about-lead {
+        font-size: 1.02rem;
+        line-height: 1.75;
+    }
+
+    .about-hero-img {
+        aspect-ratio: 1.08;
+        border-radius: 14px;
+    }
+
+    .more-about-me,
+    .what-i-build,
+    .what-im-looking-for,
+    .contact-section,
+    .essay-section {
+        margin-bottom: 2.75rem;
     }
 
     .contact-section {
-        padding: 2rem 1rem;
+        padding: 1.7rem 1rem;
+        border-radius: 16px;
     }
 
     .section-header {
-        margin-bottom: 2rem;
+        margin-bottom: 1.35rem;
+        padding-bottom: 1rem;
+        text-align: left;
     }
 
     .section-header h2 {
-        font-size: 1.5rem;
+        font-size: 1.72rem;
+        margin-bottom: 0.55rem;
+    }
+
+    .section-subtitle {
+        font-size: 0.98rem;
+        line-height: 1.6;
+    }
+
+    .identity-flow,
+    .project-highlight-grid,
+    .opportunity-grid {
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    .identity-step,
+    .highlight-card,
+    .opportunity-card {
+        padding: 1.05rem 1rem;
+        border-radius: 14px;
+    }
+
+    .identity-step h3,
+    .highlight-card h3,
+    .opportunity-card h3 {
+        font-size: 1.15rem;
+        line-height: 1.25;
+    }
+
+    .identity-step p,
+    .highlight-card p,
+    .opportunity-card p {
+        font-size: 1rem;
+        line-height: 1.72;
+    }
+
+    .highlight-icon {
+        font-size: 2rem;
+    }
+
+    .about-bridge-actions {
+        margin-top: 1rem;
+        gap: 0.6rem;
+    }
+
+    .card-link-btn {
+        width: 100%;
+        box-sizing: border-box;
+        text-align: center;
+        padding: 0.9rem 1rem;
+        border-radius: 999px;
+        font-size: 0.95rem;
+    }
+
+    .contact-form {
+        margin-top: 1.2rem;
+    }
+
+    .form-group {
+        margin-bottom: 1rem;
+    }
+
+    .contact-form input,
+    .contact-form select,
+    .contact-form textarea {
+        font-size: 1rem;
+        padding: 0.88rem 0.95rem;
+    }
+
+    .essay-details {
+        padding: 1.15rem 1rem;
+        border-radius: 16px;
+    }
+
+    .essay-summary {
+        align-items: flex-start;
+        font-size: 1rem;
+        line-height: 1.5;
+    }
+
+    .essay-content h2 {
+        font-size: 1.35rem;
+        margin-bottom: 1rem;
+    }
+
+    .essay-content p {
+        font-size: 1rem;
+        line-height: 1.86;
+        margin-bottom: 1.15rem;
     }
 }

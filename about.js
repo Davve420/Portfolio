@@ -7,6 +7,7 @@ const contactFeedback = document.getElementById('contact-feedback');
 const thanksModal = document.getElementById('thanks-modal');
 const thanksClose = document.getElementById('thanks-close');
 const thanksCta = document.getElementById('thanks-cta');
+const CONTACT_SUBMIT_TIMEOUT_MS = 12000;
 
 if (contactForm) {
     contactForm.addEventListener('submit', handleContactSubmit);
@@ -72,11 +73,8 @@ async function handleContactSubmit(event) {
         showFeedback('', '');
         contactForm.reset();
         openThanksModal();
-
-        // Log to console (for debugging)
-        console.log('Contact form submitted:', data);
     } catch (error) {
-        showFeedback('error', '✗ Something went wrong. Please try again.');
+        showFeedback('error', '✗ Could not send right now. Please try again or email davidbrolin04@gmail.com.');
         console.error('Contact form error:', error);
     } finally {
         submitBtn.disabled = false;
@@ -103,16 +101,26 @@ function submitContactToNetlify(data) {
         timestamp: data.timestamp,
     });
 
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), CONTACT_SUBMIT_TIMEOUT_MS);
+
     return fetch('/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
         },
         body: payload.toString(),
+        signal: controller.signal,
     }).then((response) => {
+        clearTimeout(timeoutId);
         if (!response.ok) {
             throw new Error(`Netlify submit failed: ${response.status}`);
         }
+    }).catch((err) => {
+        if (err?.name === 'AbortError') {
+            throw new Error('Netlify submit timed out');
+        }
+        throw err;
     });
 }
 
@@ -126,7 +134,7 @@ function isValidEmail(email) {
 
 /**
  * Save contact to localStorage (demo only)
- * TODO: Replace with actual server-side submission
+ * Used only when Netlify submission is not active.
  */
 function saveContactToLocalStorage(data) {
     return new Promise((resolve, reject) => {
@@ -171,12 +179,4 @@ function closeThanksModal() {
     if (!thanksModal) return;
     thanksModal.hidden = true;
     document.body.classList.remove('thanks-open');
-}
-
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-// Optional: Log saved messages to console (for debugging)
-// ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-if (window.location.search.includes('debug')) {
-    console.log('📧 Saved contact messages:', JSON.parse(localStorage.getItem('contact_messages') || '[]'));
 }
