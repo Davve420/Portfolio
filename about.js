@@ -7,8 +7,6 @@ const contactFeedback = document.getElementById('contact-feedback');
 const thanksModal = document.getElementById('thanks-modal');
 const thanksClose = document.getElementById('thanks-close');
 const thanksCta = document.getElementById('thanks-cta');
-const CONTACT_SUBMIT_TIMEOUT_MS = 12000;
-
 if (contactForm) {
     contactForm.addEventListener('submit', handleContactSubmit);
 }
@@ -31,7 +29,7 @@ document.addEventListener('keydown', (event) => {
  * Handle contact form submission.
  * Uses Netlify Forms when enabled on the form element, with localStorage fallback.
  */
-async function handleContactSubmit(event) {
+function handleContactSubmit(event) {
     event.preventDefault();
 
     // Get form data
@@ -66,63 +64,58 @@ async function handleContactSubmit(event) {
     submitBtn.disabled = true;
     submitBtn.textContent = 'Sending...';
 
-    try {
-        await submitContact(data);
+    const isNetlifyForm = contactForm?.hasAttribute('data-netlify');
 
-        // Success feedback
-        showFeedback('', '');
-        contactForm.reset();
-        openThanksModal();
-    } catch (error) {
-        showFeedback('error', '✗ Could not send right now. Please try again or email davidbrolin04@gmail.com.');
-        console.error('Contact form error:', error);
-    } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = originalText;
+    if (isNetlifyForm) {
+        try {
+            submitContactToNetlifyNative(data);
+            return;
+        } catch (error) {
+            showFeedback('error', '✗ Could not send right now. Please try again or email davidbrolin04@gmail.com.');
+            console.error('Contact form error:', error);
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
+            return;
+        }
     }
+
+    submitContact(data)
+        .then(() => {
+            // Success feedback
+            showFeedback('', '');
+            contactForm.reset();
+            openThanksModal();
+        })
+        .catch((error) => {
+            showFeedback('error', '✗ Could not send right now. Please try again or email davidbrolin04@gmail.com.');
+            console.error('Contact form error:', error);
+        })
+        .finally(() => {
+            submitBtn.disabled = false;
+            submitBtn.textContent = originalText;
+        });
 }
 
 function submitContact(data) {
-    if (contactForm?.hasAttribute('data-netlify')) {
-        return submitContactToNetlify(data);
-    }
-
     return saveContactToLocalStorage(data);
 }
 
-function submitContactToNetlify(data) {
-    const payload = new URLSearchParams({
-        'form-name': contactForm.getAttribute('name') || 'contact',
-        'bot-field': '',
-        name: data.name,
-        email: data.email,
-        subject: data.subject,
-        message: data.message,
-        timestamp: data.timestamp,
-    });
+function submitContactToNetlifyNative(data) {
+    setOrCreateHiddenField('form-name', contactForm.getAttribute('name') || 'contact');
+    setOrCreateHiddenField('timestamp', data.timestamp);
+    setOrCreateHiddenField('bot-field', '');
+    contactForm.submit();
+}
 
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), CONTACT_SUBMIT_TIMEOUT_MS);
-    const submitTarget = '/';
-
-    return fetch(submitTarget, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: payload.toString(),
-        signal: controller.signal,
-    }).then((response) => {
-        clearTimeout(timeoutId);
-        if (!response.ok) {
-            throw new Error(`Netlify submit failed: ${response.status}`);
-        }
-    }).catch((err) => {
-        if (err?.name === 'AbortError') {
-            throw new Error('Netlify submit timed out');
-        }
-        throw err;
-    });
+function setOrCreateHiddenField(name, value) {
+    let field = contactForm.querySelector(`input[name="${name}"]`);
+    if (!field) {
+        field = document.createElement('input');
+        field.type = 'hidden';
+        field.name = name;
+        contactForm.appendChild(field);
+    }
+    field.value = value;
 }
 
 /**
