@@ -7,7 +7,9 @@ const contactFeedback = document.getElementById('contact-feedback');
 const thanksModal = document.getElementById('thanks-modal');
 const thanksClose = document.getElementById('thanks-close');
 const thanksCta = document.getElementById('thanks-cta');
-if (contactForm) {
+const isNetlifyFormEnabled = Boolean(contactForm?.hasAttribute('data-netlify'));
+
+if (contactForm && !isNetlifyFormEnabled) {
     contactForm.addEventListener('submit', handleContactSubmit);
 }
 
@@ -64,21 +66,6 @@ function handleContactSubmit(event) {
     submitBtn.disabled = true;
     submitBtn.textContent = 'Sending...';
 
-    const isNetlifyForm = contactForm?.hasAttribute('data-netlify');
-
-    if (isNetlifyForm) {
-        try {
-            submitContactToNetlifyNative(data);
-            return;
-        } catch (error) {
-            showFeedback('error', '✗ Could not send right now. Please try again or email davidbrolin04@gmail.com.');
-            console.error('Contact form error:', error);
-            submitBtn.disabled = false;
-            submitBtn.textContent = originalText;
-            return;
-        }
-    }
-
     submitContact(data)
         .then(() => {
             // Success feedback
@@ -98,24 +85,6 @@ function handleContactSubmit(event) {
 
 function submitContact(data) {
     return saveContactToLocalStorage(data);
-}
-
-function submitContactToNetlifyNative(data) {
-    setOrCreateHiddenField('form-name', contactForm.getAttribute('name') || 'contact');
-    setOrCreateHiddenField('timestamp', data.timestamp);
-    setOrCreateHiddenField('bot-field', '');
-    contactForm.submit();
-}
-
-function setOrCreateHiddenField(name, value) {
-    let field = contactForm.querySelector(`input[name="${name}"]`);
-    if (!field) {
-        field = document.createElement('input');
-        field.type = 'hidden';
-        field.name = name;
-        contactForm.appendChild(field);
-    }
-    field.value = value;
 }
 
 /**

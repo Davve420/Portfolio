@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Form Test</title>
+</head>
+<body>
+    <main>
+        <h1>Netlify Form Test</h1>
+        <p>This is an isolated Netlify form test page with no JavaScript.</p>
+
+        <form name="contact" method="POST" action="/" data-netlify="true" netlify-honeypot="bot-field">
+            <input type="hidden" name="form-name" value="contact">
+            <p style="display:none;">
+                <label>Do not fill this out: <input name="bot-field"></label>
+            </p>
+            <p>
+                <label>Name <input type="text" name="name" required></label>
+            </p>
+            <p>
+                <label>Email <input type="email" name="email" required></label>
+            </p>
+            <p>
+                <label>Subject <input type="text" name="subject" required></label>
+            </p>
+            <p>
+                <label>Message <textarea name="message" required></textarea></label>
+            </p>
+            <p>
+                <button type="submit">Send test submission</button>
+            </p>
+        </form>
+    </main>
+</body>
+</html>
