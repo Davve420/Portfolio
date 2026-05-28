@@ -3,23 +3,21 @@
 ## NEXT ITERATION - TOP PRIORITY INCIDENT: Netlify Forms Not Receiving New Submissions
 
 ### What seems wrong
-- Contact form UI accepts submit flow, but Netlify Forms only shows older submissions.
-- Browser reported: request may be blocked (`Network request blocking panel`).
-- Console noise observed: `No Listener: tabs:outgoing.message.ready` (likely extension-related).
+- The About page form is the primary user-facing contact flow.
+- A previous Netlify Forms setup intermittently failed to register new submissions.
+- Browser reported request-blocking noise during earlier tests, likely extension-related.
 
 ### What we already tested
-- Added explicit Netlify attributes (`data-netlify`, honeypot fields, hidden `form-name`).
-- Tested posting with JS `fetch('/')`.
-- Tested native `contactForm.submit()` via JS.
-- Final fallback now applied: no JS intercept for Netlify forms (pure browser-native form post).
-- Simplified to a canonical static form flow with a real success page at `thanks.html`.
+- Reduced the About page to a canonical native Netlify form flow.
+- Added a simple `thanks.html` success page.
+- Kept `contact-test.html` as a minimal debug page only.
 
 ### What to test next (in order)
-1. Submit in Incognito with all extensions disabled.
+1. Submit the About page form in Incognito with extensions disabled.
 2. In DevTools Network, verify a native `POST` form request to `/thanks.html` and status `200`/`303`.
-3. Check Netlify deploy logs for form detection in current deploy.
-4. In Netlify UI -> Forms, verify `contact` form is detected in latest deploy (not only historical form data).
-5. If still failing: add a minimal isolated `contact-test.html` with a plain Netlify form (no JS, no shared shell) to confirm platform-level behavior.
+3. If needed, compare with `contact-test.html` as an isolated parser check.
+4. Check Netlify deploy logs for form detection in the current deploy.
+5. In Netlify UI -> Forms, verify `contact` is present in the latest deploy.
 
 ### Current workaround during launch window
 - Keep email CTA visible and usable (`mailto`) while Netlify capture is being finalized.
