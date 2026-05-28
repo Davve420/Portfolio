@@ -163,10 +163,11 @@
                 id="contact-form"
                 name="contact"
                 method="POST"
-                action="/about.html"
+                action="/"
                 data-netlify="true"
                 data-netlify-honeypot="bot-field"
                 netlify-honeypot="bot-field"
+                accept-charset="UTF-8"
                 autocomplete="off"
             >
                 <input type="hidden" name="form-name" value="contact">
@@ -239,6 +240,16 @@
     </main>
 
     <footer class="footercontainer" id="site-footer"></footer>
+
+    <form name="contact" data-netlify="true" netlify-honeypot="bot-field" hidden>
+        <input type="text" name="name">
+        <input type="email" name="email">
+        <input type="text" name="subject">
+        <textarea name="message"></textarea>
+        <input type="text" name="timestamp">
+        <input type="text" name="bot-field">
+    </form>
+
     <script src="shared-shell.js" defer></script>
     <script src="about.js" defer></script>
 </body>

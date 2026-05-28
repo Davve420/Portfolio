@@ -103,7 +103,7 @@ function submitContactToNetlify(data) {
 
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), CONTACT_SUBMIT_TIMEOUT_MS);
-    const submitTarget = contactForm.getAttribute('action') || window.location.pathname || '/';
+    const submitTarget = '/';
 
     return fetch(submitTarget, {
         method: 'POST',
