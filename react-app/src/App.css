@@ -1,0 +1,488 @@
+/*
+ * App.css ar den gemensamma stilmallen for React-appen.
+ * Borja under "LANDING PAGE" nar du vill forma startsidan.
+ */
+
+:root {
+  --background: #080808;
+  --surface: #111111;
+  --surface-soft: #171717;
+  --border: rgba(255, 255, 255, 0.16);
+  --text: #f5f5f5;
+  --muted: rgba(245, 245, 245, 0.68);
+  --accent: #ffffff;
+  --content-width: 1100px;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: radial-gradient(ellipse at 30% 40%, #120a18 0%, #08080f 60%, #020208 100%);
+  color: var(--text);
+  font-family: 'Manrope', 'Segoe UI', sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; }
+h1, h2, h3, p { margin-top: 0; }
+h1, h2, h3 { font-family: 'Cinzel', Georgia, serif; font-weight: 600; }
+
+/* APP-SHELL */
+
+.site-shell {
+  position: relative;
+  z-index: 1;
+  width: min(100% - 2rem, var(--content-width));
+  margin: 0 auto;
+}
+
+/* En liten fast orienteringspunkt i stället för ett vanligt toppnav. */
+.home-portal-button {
+  position: fixed;
+  top: 1.1rem;
+  left: 1.1rem;
+  z-index: 10;
+  display: grid;
+  width: 3rem;
+  height: 3rem;
+  place-items: center;
+  border: 1px solid rgba(245, 245, 245, 0.16);
+  border-radius: 50%;
+  background: rgba(5, 5, 10, 0.38);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.34);
+  backdrop-filter: blur(8px);
+  transition: border-color 220ms ease, box-shadow 220ms ease, transform 220ms ease;
+}
+
+.home-portal-button img {
+  width: 2.2rem;
+  height: 2.2rem;
+  object-fit: contain;
+  mix-blend-mode: screen;
+  filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.24));
+}
+
+.home-portal-button:hover,
+.home-portal-button:focus-visible {
+  border-color: rgba(245, 245, 245, 0.72);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.42), 0 0 18px rgba(255, 255, 255, 0.18);
+  outline: none;
+  transform: translateY(-2px) rotate(-4deg);
+}
+
+.site-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 0;
+}
+
+.brand {
+  font-family: 'Cinzel', Georgia, serif;
+  font-size: 1.4rem;
+  letter-spacing: 0.06em;
+  text-decoration: none;
+}
+
+.nav-links,
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.nav-links a,
+.footer-links a,
+.button,
+.portal-card__link {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-family: 'Space Grotesk', sans-serif;
+  text-decoration: none;
+}
+
+.nav-links a:hover,
+.nav-links a:focus-visible,
+.nav-links a.is-active,
+.footer-links a:hover,
+.footer-links a:focus-visible { color: var(--text); }
+
+.eyebrow {
+  margin-bottom: 0.7rem;
+  color: var(--muted);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+/* SHARED SPACE BACKDROP
+ * Detta är samma typ av dekorativa lager som Star Notes använder.
+ * Lagret ligger bakom alla routes, så varje route känns som en ny plats
+ * i samma solsystem.
+ */
+
+.universe-backdrop,
+.universe-nebula,
+.universe-stars {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+.universe-backdrop { z-index: 0; overflow: hidden; }
+
+.universe-nebula {
+  background:
+    radial-gradient(circle at 22% 32%, rgba(93, 73, 145, 0.22), transparent 22%),
+    radial-gradient(circle at 78% 62%, rgba(25, 83, 132, 0.18), transparent 25%),
+    radial-gradient(circle at 52% 88%, rgba(117, 45, 86, 0.15), transparent 28%);
+  filter: blur(28px);
+  animation: nebula-drift 18s ease-in-out infinite alternate;
+}
+
+.universe-stars span {
+  position: absolute;
+  top: var(--star-y);
+  left: var(--star-x);
+  width: var(--star-size);
+  height: var(--star-size);
+  border-radius: 50%;
+  background: rgba(234, 233, 239, 0.7);
+  box-shadow: 0 0 8px rgba(210, 224, 255, 0.42);
+  animation: star-twinkle var(--star-duration) ease-in-out var(--star-delay) infinite;
+}
+
+.universe-stars span:nth-child(3n) { --star-x: 8%; --star-y: 14%; --star-size: 2px; --star-duration: 3.8s; --star-delay: -1.1s; }
+.universe-stars span:nth-child(3n + 1) { --star-x: 54%; --star-y: 24%; --star-size: 1px; --star-duration: 5.4s; --star-delay: -2.8s; }
+.universe-stars span:nth-child(3n + 2) { --star-x: 82%; --star-y: 68%; --star-size: 1.5px; --star-duration: 4.6s; --star-delay: -0.7s; }
+.universe-stars span:nth-child(5n) { --star-x: 24%; --star-y: 76%; }
+.universe-stars span:nth-child(7n) { --star-x: 91%; --star-y: 18%; --star-size: 2px; }
+.universe-stars span:nth-child(11n) { --star-x: 42%; --star-y: 52%; --star-size: 2.5px; }
+
+/* LANDING PAGE
+ *
+ * Detta ar medvetet bara layout:
+ * 1. .space-intro centrerar texten.
+ * 2. .space-prompt ar valkomsttexten.
+ * 3. .portal-grid placerar de tre portalerna.
+ * 4. .portal-card ar den enklaste ytan att designa vidare.
+ */
+
+.space-landing {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: calc(100vh - 5rem);
+  padding: 10vh 0 12vh;
+}
+
+.space-intro {
+  max-width: 680px;
+  margin: 0 auto 5rem;
+  text-align: center;
+}
+
+.space-intro h1 {
+  margin-bottom: 1.5rem;
+  color: #ffffff;
+  font-size: clamp(2.7rem, 9vw, 5.4rem);
+  line-height: 0.82;
+  text-shadow: 0 0 28px rgba(255, 255, 255, 0.18);
+}
+
+.space-prompt {
+  max-width: 480px;
+  margin: 0 auto;
+  color: rgba(245, 245, 245, 0.82);
+  font-size: clamp(0.96rem, 2vw, 1.1rem);
+  line-height: 1.7;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.8);
+}
+
+.space-subtext {
+  max-width: 360px;
+  margin: 1rem auto 0;
+  color: rgba(245, 245, 245, 0.5);
+  font-size: 0.82rem;
+  line-height: 1.7;
+}
+
+.portal-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: end;
+  gap: clamp(1.2rem, 4vw, 3.5rem);
+}
+
+.portal-card {
+  position: relative;
+  min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  border: 0;
+  background: transparent;
+  text-decoration: none;
+  isolation: isolate;
+  transition: transform 320ms cubic-bezier(0.2, 0.8, 0.2, 1), filter 320ms ease;
+}
+
+.portal-card:hover,
+.portal-card:focus-visible {
+  outline: none;
+  transform: translateY(-10px) scale(1.04);
+  filter: brightness(1.15) drop-shadow(0 18px 22px rgba(255, 255, 255, 0.12));
+}
+
+.portal-image {
+  width: min(100%, 220px);
+  height: 220px;
+  object-fit: contain;
+  filter: drop-shadow(0 18px 20px rgba(0, 0, 0, 0.5));
+  transition: transform 420ms cubic-bezier(0.2, 0.8, 0.2, 1), filter 420ms ease;
+}
+
+.portal-card:hover .portal-image,
+.portal-card:focus-visible .portal-image {
+  transform: translateY(-8px) rotate(-2deg) scale(1.06);
+  filter: drop-shadow(0 25px 25px rgba(0, 0, 0, 0.58)) drop-shadow(0 0 22px rgba(255, 255, 255, 0.18));
+}
+
+.portal-card__eyebrow {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: rgba(245, 245, 245, 0.56);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.portal-card__content {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  text-align: center;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.9);
+}
+
+.portal-card__title {
+  display: block;
+  color: var(--text);
+  font-family: 'Cinzel', Georgia, serif;
+  font-size: clamp(1.45rem, 3.2vw, 2rem);
+  line-height: 0.95;
+}
+
+.portal-card__link {
+  display: block;
+  margin-top: 0.55rem;
+  color: rgba(245, 245, 245, 0.46);
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 220ms ease, transform 220ms ease;
+}
+
+.portal-card:hover .portal-card__link,
+.portal-card:focus-visible .portal-card__link {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* OVRIIGA REACT-VYER
+ * Dessa regler haller de andra vyerna anvandbara medan startsidan designas.
+ */
+
+.route-transition { animation: route-fade-in 260ms ease-out; }
+
+.portal-view,
+.page-intro,
+.hero-section,
+.values-section,
+.work-section,
+.soundtrack-section,
+.contact-section,
+.credentials-section { padding: 3rem 0; }
+
+.portal-view__content,
+.project-grid,
+.story-grid,
+.credentials-grid { display: grid; gap: 1rem; }
+
+.portal-panel,
+.project-card,
+.contact-form,
+.credential-card {
+  padding: 1.2rem;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background: var(--surface);
+}
+
+.portal-panel p,
+.portal-panel li,
+.page-intro > p:last-child,
+.hero-description,
+.story-grid p,
+.contact-copy p:last-child { color: var(--muted); line-height: 1.7; }
+
+.mini-project-list,
+.project-actions,
+.hero-actions,
+.value-list { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+
+.mini-project-list a,
+.button,
+.value-list span {
+  padding: 0.55rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  text-decoration: none;
+}
+
+.button-primary { background: var(--accent); color: #080808; }
+.button-quiet { color: var(--text); }
+.hero-section { position: relative; min-height: 70vh; }
+.hero-image { max-width: 100%; border-radius: 0.75rem; opacity: 0.7; }
+.project-card { position: relative; overflow: hidden; min-height: 260px; }
+.project-card img { width: 100%; height: 150px; object-fit: cover; border-radius: 0.5rem; }
+.project-overlay { display: none; }
+.project-content { padding-top: 1rem; }
+.project-content h3 { font-size: 1.8rem; }
+.project-type { color: var(--muted); }
+.contact-form { display: grid; gap: 1rem; }
+.form-group { display: grid; gap: 0.4rem; }
+.form-group input,
+.form-group select,
+.form-group textarea { width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 0.4rem; background: var(--surface-soft); color: var(--text); font: inherit; }
+.contact-submit { border: 0; cursor: pointer; }
+.credential-card { display: grid; gap: 0.7rem; text-decoration: none; }
+.credential-card img { width: 100%; height: 160px; object-fit: cover; border-radius: 0.4rem; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); }
+
+/* ABOUT PAGE
+ * Strukturen följer den gamla about-sidan, men klasserna är React-specifika.
+ * Det gör att legacy-projektets CSS kan fortsätta vara orörd.
+ */
+
+.about-hero {
+  display: grid;
+  gap: 2rem;
+  align-items: center;
+  padding: 3rem 0 4rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.about-hero h1 { max-width: 12ch; margin-bottom: 1rem; font-size: clamp(2.5rem, 7vw, 4.2rem); line-height: 0.95; }
+.about-hero p:not(.eyebrow) { max-width: 58ch; color: var(--muted); line-height: 1.75; }
+.about-hero img { width: 100%; max-height: 520px; object-fit: cover; border-radius: 0.75rem; }
+
+.about-section { padding: 4rem 0; border-bottom: 1px solid var(--border); }
+.section-heading { max-width: 680px; margin-bottom: 2rem; }
+.section-heading h2 { margin-bottom: 0; font-size: clamp(1.7rem, 5vw, 2.8rem); }
+.identity-grid { display: grid; gap: 1rem; }
+.info-card { display: flex; flex-direction: column; gap: 0.7rem; padding: 1.25rem; border: 1px solid var(--border); border-radius: 0.75rem; background: var(--surface); }
+.info-card h3 { margin-bottom: 0; font-size: 1.5rem; }
+.info-card p { margin-bottom: 0; color: var(--muted); line-height: 1.7; }
+.card-tag { width: fit-content; padding: 0.3rem 0.6rem; border-radius: 999px; background: var(--surface-soft); color: var(--muted); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; }
+
+.project-preview {
+  display: grid;
+  justify-items: center;
+  gap: 0.8rem;
+  padding: 3rem 0;
+  text-align: center;
+}
+
+.project-preview__link {
+  display: block;
+  width: min(12rem, 55vw);
+  aspect-ratio: 1;
+  transition: transform 220ms ease, filter 220ms ease;
+}
+
+.project-preview__link img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.project-preview__link:hover,
+.project-preview__link:focus-visible {
+  filter: drop-shadow(0 0 1rem rgba(255, 255, 255, 0.3));
+  outline: none;
+  transform: scale(1.04);
+}
+
+.essay-section { padding: 3rem 0 4rem; }
+.essay-details { padding: 1.2rem; border: 1px solid var(--border); border-radius: 0.75rem; background: var(--surface); }
+.essay-details summary { cursor: pointer; font-family: 'Cinzel', Georgia, serif; font-size: 1.5rem; }
+.essay-details p { max-width: 65ch; margin: 1.2rem 0 0; color: var(--muted); line-height: 1.8; }
+
+.site-footer {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 2rem 0;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.75rem;
+}
+
+.footer-note { color: rgba(245, 245, 245, 0.62); }
+.footer-links { justify-content: center; }
+.social-link { display: inline-flex; align-items: center; gap: 0.38rem; }
+.social-mark { display: inline-grid; place-items: center; width: 1.3rem; height: 1.3rem; border: 1px solid rgba(245, 245, 245, 0.3); border-radius: 50%; color: rgba(245, 245, 245, 0.75); font-family: 'Space Grotesk', sans-serif; font-size: 0.6rem; letter-spacing: 0; transition: border-color 180ms ease, color 180ms ease, transform 180ms ease; }
+.social-link:hover .social-mark, .social-link:focus-visible .social-mark { border-color: var(--text); color: var(--text); transform: translateY(-2px); }
+
+@keyframes route-fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes star-twinkle {
+  0%, 100% { opacity: 0.22; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.6); }
+}
+
+@keyframes nebula-drift {
+  from { transform: translate3d(-2%, -1%, 0) scale(1); }
+  to { transform: translate3d(2%, 1%, 0) scale(1.08); }
+}
+
+@media (max-width: 720px) {
+  .space-landing { padding-top: 5vh; }
+  .space-intro { margin-bottom: 3.5rem; }
+  .portal-grid { grid-template-columns: 1fr; }
+  .portal-card { min-height: 250px; }
+  .portal-image { width: 210px; height: 210px; }
+  .site-footer { align-items: flex-start; flex-direction: column; }
+  .portal-view__content,
+  .credentials-grid { grid-template-columns: 1fr; }
+}
+
+@media (min-width: 720px) {
+  .about-hero { grid-template-columns: 1.05fr 0.95fr; }
+  .identity-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .portal-view__content,
+  .credentials-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .project-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
