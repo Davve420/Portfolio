@@ -5,7 +5,7 @@ import cvPreview from '../assets/previewCV-png.png'
 export const siteContent = {
   brand: 'Davi.n3t',
   space: {
-    intro: 'Welcome to Davin3t. This is my little part of the vast network we call the internet. In the digital realm we can create freely and express ourselves without the confines of social media. This is me on display in boutique window for everyone to watch. This is my stage where I direct the play. Now I encourage you to explore my world while also exploring your innerworld and souls truest desires',
+    intro: 'Welcome to Davin3t. This is my little part of the vast network we call the internet. In the digital realm we can create freely and express ourselves without the confines of social media. This is me on display in the boutique window for everyone to watch. This is me on stage where I direct the play. Now I encourage you to explore my digital world while also exploring your own innerworld.',
     portals: [
       {
         id: 'music',
