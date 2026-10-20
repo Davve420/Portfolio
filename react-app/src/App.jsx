@@ -1,7 +1,39 @@
 import { useEffect, useState } from 'react'
 import { siteContent } from './data/siteContent'
+import { shrineCategories } from './data/shrineCategories'
+import shrineEntries from './data/shrineEntries.json'
 import projectsPortal from './assets/projects-portal.gif'
 import './App.css'
+
+function isVisibleShrineEntry(entry) {
+  if (entry && typeof entry === 'object' && Object.values(entry).every((value) => value === '')) {
+    return false
+  }
+
+  const isValid = entry &&
+    typeof entry.id === 'string' &&
+    entry.id.trim() &&
+    typeof entry.title === 'string' &&
+    entry.title.trim() &&
+    shrineCategories.some((category) => category.id === entry.category)
+
+  if (!isValid) {
+    console.error('Skipping an incomplete Digital Shrine entry. Each entry needs an id, title, and valid category.', entry)
+  }
+
+  return Boolean(isValid)
+}
+
+const publishedShrineEntries = shrineEntries.filter(isVisibleShrineEntry)
+const seriesFormats = [
+  'Live action',
+  'Anime',
+  'Western animation',
+  'Documentary/Nature',
+  'Reality/unscripted',
+  'Stop motion',
+  'Anthology',
+]
 
 // Den här hooken läser nuvarande hash i URL:en, exempelvis #music eller #portfolio.
 // Det gör att vi kan navigera mellan olika "rum" i appen utan att ladda om sidan.
@@ -94,36 +126,260 @@ function SpaceLandingPage() {
   )
 }
 
-// Music-room är medvetet en enkel väntsal i första lanseringen.
-// Senare kan spellistor, Spotify-data och annan interaktivitet läggas här.
+function spotifyEmbedUrl(link) {
+  try {
+    const url = new URL(link)
+    if (url.protocol !== 'https:' || url.hostname !== 'open.spotify.com') {
+      return ''
+    }
+
+    const match = url.pathname.match(/^\/(track|album|playlist|artist|episode|show)\/([A-Za-z0-9]+)\/?$/)
+    return match ? `https://open.spotify.com/embed/${match[1]}/${match[2]}?utm_source=generator` : ''
+  } catch {
+    return ''
+  }
+}
+
+function spotifyEmbedHeight(link) {
+  try {
+    return /^\/(album|artist|playlist|show)\//.test(new URL(link).pathname) ? 352 : 152
+  } catch {
+    return 152
+  }
+}
+
+function sourceLinkLabel(link) {
+  try {
+    const hostname = new URL(link).hostname
+    if (hostname === 'youtube.com' || hostname.endsWith('.youtube.com')) return 'YouTube'
+    if (hostname === 'open.spotify.com') return 'Spotify'
+  } catch {
+    return 'Visit source'
+  }
+
+  return 'Visit source'
+}
+
 function MusicRoom() {
+  const [activeCategory, setActiveCategory] = useState('all')
+  const [activeSeriesFormat, setActiveSeriesFormat] = useState('all')
+  const [activeMusicId, setActiveMusicId] = useState('')
+  const entries = publishedShrineEntries
+  const categoryEntries = activeCategory === 'all'
+    ? entries
+    : entries.filter((entry) => entry.category === activeCategory)
+  const filteredEntries = activeCategory === 'series' && activeSeriesFormat !== 'all'
+    ? categoryEntries.filter((entry) => (
+      activeSeriesFormat === 'favorites'
+        ? entry.favorite === true
+        : entry.formats?.includes(activeSeriesFormat)
+    ))
+    : categoryEntries
+  const listeningEntry = entries.find((entry) => entry.id === activeMusicId && spotifyEmbedUrl(entry.link)) ||
+    entries.find((entry) => entry.category === 'music' && spotifyEmbedUrl(entry.link))
+  const activeCategoryDetails = shrineCategories.find((category) => category.id === activeCategory)
+  const seriesEntries = entries.filter((entry) => entry.category === 'series')
+
   return (
-    <section className="portal-view portal-view--music" aria-labelledby="music-title">
-      <div className="portal-view__header">
-        <p className="eyebrow">Digital shrine</p>
-        <h1 id="music-title">Digital shrine room under construction.</h1>
-      </div>
-
-      <div className="portal-view__content">
-        <article className="portal-panel">
-          <h2>A listening room in orbit</h2>
+    <section className="shrine-page" aria-labelledby="music-title">
+      <header className="shrine-hero">
+        <div className="shrine-hero__copy">
+          <p className="eyebrow">A living archive · {shrineCategories.length} little worlds</p>
+          <h1 id="music-title">Things that keep the light on.</h1>
           <p>
-            An evolving collection of sounds, artists, and little discoveries that shape my inner
-            worlds. Drift through the music I return to and the moods that move my creative work. Explore what world I dream about and what truly inspires my soul. 
-            Here is my collection of sacred inspiration and divine callings. 
+            A growing collection of the stories, sounds, and souls that have shaped me.
+            Not just what I love, but what each thing has helped me find in myself.
           </p>
-        </article>
+          <a className="shrine-scroll-link" href="#shrine-collection">Wander through the collection <span aria-hidden="true">↓</span></a>
+        </div>
+        <div className="shrine-orbit" aria-hidden="true">
+          <span className="shrine-orbit__ring" />
+          <span className="shrine-orbit__moon">✳</span>
+          <span className="shrine-orbit__caption">a little altar<br />to what moves me</span>
+        </div>
+      </header>
 
-        <article className="portal-panel">
-          <h2>Gathered here</h2>
-          <ul>
-            <li>Playlists for different moods and moments</li>
-            <li>A music wheel for wandering between sounds and public recommendations</li>
-            <li>A list of people, places, ideas, creative work and things that have moved my heart. All things relatable where I have created my own meaning behind them and connected to my own life.</li>
-            <li>Star Notes for souls passing by that want to leave a mark in my shrine</li>
-          </ul>
-        </article>
-      </div>
+      <section className="shrine-listening" aria-labelledby="listening-title">
+        <div className="shrine-listening__intro">
+          <p className="eyebrow">The listening nook</p>
+          <h2 id="listening-title">Let something play.</h2>
+          <p>
+            Pick an artist or album from the music shelf to listen here.
+          </p>
+          {listeningEntry?.link && (
+            <a className="text-link" href={listeningEntry.link} target="_blank" rel="noreferrer">
+              Open {listeningEntry.title} on Spotify <span aria-hidden="true">↗</span>
+            </a>
+          )}
+        </div>
+        <div className="shrine-player">
+          {listeningEntry ? (
+            <iframe
+              title={`Spotify player for ${listeningEntry.title}`}
+              src={spotifyEmbedUrl(listeningEntry.link)}
+              width="100%"
+              height={spotifyEmbedHeight(listeningEntry.link)}
+              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+              loading="lazy"
+            />
+          ) : (
+            <div className="shrine-player__empty">
+              <span aria-hidden="true">♫</span>
+              <p>Choose something from the music shelf to begin.</p>
+            </div>
+          )}
+        </div>
+      </section>
+
+      <section className="shrine-collection" id="shrine-collection" aria-labelledby="collection-title">
+        <div className="shrine-collection__heading">
+          <div>
+            <p className="eyebrow">Collected with care</p>
+            <h2 id="collection-title">The shelves</h2>
+          </div>
+        </div>
+
+        <div className="shrine-category-list" role="group" aria-label="Filter by inspiration category">
+          <button
+            className={`shrine-category ${activeCategory === 'all' ? 'is-active' : ''}`}
+            type="button"
+            aria-pressed={activeCategory === 'all'}
+            onClick={() => setActiveCategory('all')}
+          >
+            All <span>{entries.length}</span>
+          </button>
+          {shrineCategories.map((category) => {
+            const count = entries.filter((entry) => entry.category === category.id).length
+            return (
+              <button
+                className={`shrine-category ${activeCategory === category.id ? 'is-active' : ''}`}
+                type="button"
+                aria-pressed={activeCategory === category.id}
+                onClick={() => setActiveCategory(category.id)}
+                key={category.id}
+              >
+                <span aria-hidden="true">{category.symbol}</span> {category.label} <span>{count}</span>
+              </button>
+            )
+          })}
+        </div>
+
+        {activeCategory === 'series' && (
+          <div className="shrine-series-filters">
+            <p className="eyebrow">Browse series</p>
+            <div className="shrine-category-list" role="group" aria-label="Filter series">
+              <button
+                className={`shrine-category ${activeSeriesFormat === 'all' ? 'is-active' : ''}`}
+                type="button"
+                aria-pressed={activeSeriesFormat === 'all'}
+                onClick={() => setActiveSeriesFormat('all')}
+              >
+                All series <span>{seriesEntries.length}</span>
+              </button>
+              <button
+                className={`shrine-category ${activeSeriesFormat === 'favorites' ? 'is-active' : ''}`}
+                type="button"
+                aria-pressed={activeSeriesFormat === 'favorites'}
+                onClick={() => setActiveSeriesFormat('favorites')}
+              >
+                Favorites <span>{seriesEntries.filter((entry) => entry.favorite === true).length}</span>
+              </button>
+              {seriesFormats.map((format) => {
+                const count = seriesEntries.filter((entry) => entry.formats?.includes(format)).length
+                return (
+                  <button
+                    className={`shrine-category ${activeSeriesFormat === format ? 'is-active' : ''}`}
+                    type="button"
+                    aria-pressed={activeSeriesFormat === format}
+                    onClick={() => setActiveSeriesFormat(format)}
+                    key={format}
+                  >
+                    {format} <span>{count}</span>
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        )}
+
+        {filteredEntries.length ? (
+          <div className="shrine-entry-grid">
+            {filteredEntries.map((entry) => {
+              const category = shrineCategories.find((item) => item.id === entry.category)
+              const hasSpotifyLink = Boolean(spotifyEmbedUrl(entry.link))
+              return (
+                <article className={`shrine-entry shrine-entry--${entry.category}`} key={entry.id}>
+                  <div className="shrine-entry__topline">
+                    <span className="shrine-entry__symbol" aria-hidden="true">{category.symbol}</span>
+                    <span>{category.label}</span>
+                  </div>
+                  {entry.image && (
+                    <img className="shrine-entry__image" src={entry.image} alt={entry.imageAlt || ''} loading="lazy" />
+                  )}
+                  <h3>{entry.title}</h3>
+                  {(entry.creator || entry.kind) && (
+                    <p className="shrine-entry__meta">{[entry.kind, entry.creator].filter(Boolean).join(' · ')}</p>
+                  )}
+                  {entry.description && <p className="shrine-entry__description">{entry.description}</p>}
+                  {entry.note && (
+                    <p className="shrine-entry__note">
+                      <span className="shrine-entry__note-label">Note</span>
+                      {entry.note}
+                    </p>
+                  )}
+                  {entry.category === 'series' && (
+                    <p className="shrine-entry__availability">
+                      <span>Watch in Sweden</span>
+                      {entry.whereToWatch?.length
+                        ? entry.whereToWatch.join(' · ')
+                        : 'No current listing found'}
+                    </p>
+                  )}
+                  {entry.why && (
+                    <p className="shrine-entry__why">
+                      <span className="shrine-entry__why-label">Personal note</span>
+                      {entry.why}
+                    </p>
+                  )}
+                  <div className="shrine-entry__links">
+                    {hasSpotifyLink && (
+                      <button className="shrine-entry__link" type="button" onClick={() => {
+                        setActiveMusicId(entry.id)
+                        document.getElementById('listening-title')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+                      }}>
+                        Listen here <span aria-hidden="true">♫</span>
+                      </button>
+                    )}
+                    {entry.link && (
+                      <a className="shrine-entry__link" href={entry.link} target="_blank" rel="noreferrer">
+                        {sourceLinkLabel(entry.link)} <span aria-hidden="true">↗</span>
+                      </a>
+                    )}
+                    {entry.website && (
+                      <a className="shrine-entry__link" href={entry.website} target="_blank" rel="noreferrer">
+                        Website <span aria-hidden="true">↗</span>
+                      </a>
+                    )}
+                  </div>
+                </article>
+              )
+            })}
+          </div>
+        ) : (
+          <div className="shrine-empty">
+            <div className="shrine-empty__constellation" aria-hidden="true">
+              <span>✳</span><span>·</span><span>✧</span><span>·</span><span>☼</span>
+            </div>
+            <p className="eyebrow">{activeCategoryDetails?.label || 'The beginning'}</p>
+            <h3>{activeCategoryDetails ? activeCategoryDetails.description : 'An archive with room to become.'}</h3>
+            <p>
+              {activeCategoryDetails
+                ? 'This shelf is still taking shape.'
+                : 'Choose a shelf to explore the collection.'}
+            </p>
+          </div>
+        )}
+      </section>
     </section>
   )
 }
