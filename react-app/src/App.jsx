@@ -25,6 +25,7 @@ function isVisibleShrineEntry(entry) {
 }
 
 const publishedShrineEntries = shrineEntries.filter(isVisibleShrineEntry)
+const shrineCategoryOrder = new Map(shrineCategories.map((category, index) => [category.id, index]))
 const seriesFormats = [
   'Live action',
   'Anime',
@@ -190,7 +191,9 @@ function MusicRoom() {
   const [activeMusicId, setActiveMusicId] = useState('')
   const entries = publishedShrineEntries
   const categoryEntries = activeCategory === 'all'
-    ? entries
+    ? entries.slice().sort((left, right) => (
+      shrineCategoryOrder.get(left.category) - shrineCategoryOrder.get(right.category)
+    ))
     : entries.filter((entry) => entry.category === activeCategory)
   const filteredEntries = activeCategory === 'series' && activeSeriesFormat !== 'all'
     ? categoryEntries.filter((entry) => (
