@@ -160,6 +160,30 @@ function sourceLinkLabel(link) {
   return 'Visit source'
 }
 
+function StarburstIcon({ className }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+      <path d="m12 1.5 2.2 6.3 6.3-4.3-4.3 6.3 6.3 2.2-6.3 2.2 4.3 6.3-6.3-4.3-2.2 6.3-2.2-6.3-6.3 4.3 4.3-6.3L1.5 12l6.3-2.2-4.3-6.3 6.3 4.3L12 1.5Z" fill="currentColor" />
+    </svg>
+  )
+}
+
+function ShrineSymbol({ category, className }) {
+  if (category.symbol === 'starburst') {
+    return <StarburstIcon className={className} />
+  }
+
+  return <span className={className} aria-hidden="true">{category.symbol}</span>
+}
+
+function ExternalLinkIcon() {
+  return (
+    <svg className="external-link-icon" viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+      <path d="M5 3.5h7.5V11M12.25 3.75 4 12" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" />
+    </svg>
+  )
+}
+
 function MusicRoom() {
   const [activeCategory, setActiveCategory] = useState('all')
   const [activeSeriesFormat, setActiveSeriesFormat] = useState('all')
@@ -194,7 +218,7 @@ function MusicRoom() {
         </div>
         <div className="shrine-orbit" aria-hidden="true">
           <span className="shrine-orbit__ring" />
-          <span className="shrine-orbit__moon">✳</span>
+          <span className="shrine-orbit__moon"><StarburstIcon /></span>
           <span className="shrine-orbit__caption">a little altar<br />to what moves me</span>
         </div>
       </header>
@@ -208,7 +232,7 @@ function MusicRoom() {
           </p>
           {listeningEntry?.link && (
             <a className="text-link" href={listeningEntry.link} target="_blank" rel="noreferrer">
-              Open {listeningEntry.title} on Spotify <span aria-hidden="true">↗</span>
+              Open {listeningEntry.title} on Spotify <ExternalLinkIcon />
             </a>
           )}
         </div>
@@ -258,7 +282,7 @@ function MusicRoom() {
                 onClick={() => setActiveCategory(category.id)}
                 key={category.id}
               >
-                <span aria-hidden="true">{category.symbol}</span> {category.label} <span>{count}</span>
+                <ShrineSymbol category={category} className="shrine-category__symbol" /> {category.label} <span>{count}</span>
               </button>
             )
           })}
@@ -310,7 +334,7 @@ function MusicRoom() {
               return (
                 <article className={`shrine-entry shrine-entry--${entry.category}`} key={entry.id}>
                   <div className="shrine-entry__topline">
-                    <span className="shrine-entry__symbol" aria-hidden="true">{category.symbol}</span>
+                    <ShrineSymbol category={category} className="shrine-entry__symbol" />
                     <span>{category.label}</span>
                   </div>
                   {entry.image && (
@@ -352,12 +376,12 @@ function MusicRoom() {
                     )}
                     {entry.link && (
                       <a className="shrine-entry__link" href={entry.link} target="_blank" rel="noreferrer">
-                        {sourceLinkLabel(entry.link)} <span aria-hidden="true">↗</span>
+                        {sourceLinkLabel(entry.link)} <ExternalLinkIcon />
                       </a>
                     )}
                     {entry.website && (
                       <a className="shrine-entry__link" href={entry.website} target="_blank" rel="noreferrer">
-                        Website <span aria-hidden="true">↗</span>
+                        Website <ExternalLinkIcon />
                       </a>
                     )}
                   </div>

@@ -561,6 +561,11 @@ h1, h2, h3 { font-family: 'Cinzel', Georgia, serif; font-weight: 600; }
   box-shadow: 0 0 55px rgba(204, 149, 175, 0.16), inset 0 0 28px rgba(234, 181, 164, 0.1);
 }
 
+.shrine-orbit__moon svg {
+  width: 3.5rem;
+  height: 3.5rem;
+}
+
 .shrine-orbit__caption {
   position: absolute;
   right: 0;
@@ -595,6 +600,14 @@ h1, h2, h3 { font-family: 'Cinzel', Georgia, serif; font-weight: 600; }
 }
 
 .shrine-listening__intro .text-link { display: inline-block; margin-top: 0.3rem; }
+
+.external-link-icon {
+  display: inline-block;
+  width: 0.85em;
+  height: 0.85em;
+  margin-left: 0.2em;
+  vertical-align: -0.08em;
+}
 
 .shrine-player {
   min-height: 190px;
@@ -655,7 +668,8 @@ h1, h2, h3 { font-family: 'Cinzel', Georgia, serif; font-weight: 600; }
   transition: border-color 180ms ease, background 180ms ease, color 180ms ease;
 }
 
-.shrine-category > span:first-child { color: var(--shrine-rose); }
+.shrine-category > :first-child { color: var(--shrine-rose); }
+.shrine-category__symbol { width: 1em; height: 1em; }
 .shrine-category > span:last-child {
   display: grid;
   min-width: 1.15rem;
@@ -705,7 +719,7 @@ h1, h2, h3 { font-family: 'Cinzel', Georgia, serif; font-weight: 600; }
 .shrine-entry--guides, .shrine-entry--people { --entry-glow: rgba(226, 190, 126, 0.15); }
 
 .shrine-entry__topline { display: flex; align-items: center; gap: 0.55rem; color: var(--muted); font: 0.65rem 'Space Grotesk', sans-serif; letter-spacing: 0.09em; text-transform: uppercase; }
-.shrine-entry__symbol { color: var(--shrine-gold); font-size: 1.1rem; }
+.shrine-entry__symbol { width: 1.1rem; height: 1.1rem; color: var(--shrine-gold); }
 .shrine-entry__image { width: 100%; height: clamp(15rem, 28vw, 20rem); margin-top: 0.85rem; border-radius: 0.55rem; object-fit: cover; object-position: center 30%; }
 .shrine-entry h3 { margin: 1.25rem 0 0.35rem; color: #f7ece6; font-size: 1.55rem; line-height: 1.15; overflow-wrap: anywhere; }
 .shrine-entry__meta { margin-bottom: 0.8rem; color: rgba(245, 245, 245, 0.56); font-size: 0.75rem; }
@@ -760,7 +774,8 @@ h1, h2, h3 { font-family: 'Cinzel', Georgia, serif; font-weight: 600; }
   .shrine-hero { min-height: 0; grid-template-columns: 1fr; padding: 2rem 1.4rem 0; }
   .shrine-orbit { min-height: 205px; }
   .shrine-orbit__ring { width: 13rem; }
-  .shrine-orbit__moon { width: 6.3rem; font-size: 2.8rem; }
+  .shrine-orbit__moon { width: 6.3rem; }
+  .shrine-orbit__moon svg { width: 2.8rem; height: 2.8rem; }
   .shrine-orbit__caption { right: 3%; bottom: 5%; }
   .shrine-listening { grid-template-columns: 1fr; gap: 1rem; padding: 3rem 0; }
   .shrine-collection__heading { align-items: flex-start; flex-direction: column; }
