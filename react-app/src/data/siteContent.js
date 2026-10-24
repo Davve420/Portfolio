@@ -20,7 +20,7 @@ export const siteContent = {
         image: '/assets/portals/n3tportal.gif',
       },
       {
-        id: 'fashion',
+        id: 'expression',
         title: 'Expression',
         summary: 'A place where all my expression is dispayed and up for interpretation. What did Davi feel here? Why did they post that? Why do they dress like that? ',
         image: fashionSpiritPortal,

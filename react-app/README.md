@@ -42,6 +42,16 @@ Inspirationssamlingen kan samlas i [`src/data/shrineEntries.json`](./src/data/sh
 
 Appen visar posterna i JSON-filen på Digital Shrine-sidan. Helt tomma mallposter hoppas över, men varje färdig post behöver ett unikt `id`, en `title` och en giltig `category`. Spotify-länkar till album och artister kan laddas i spelaren ovanför samlingen via knappen “Listen here”. Lägg till eller ändra poster i JSON-filen och publicera ändringen som vanligt. Låt JSON-strukturen vara giltig: använd dubbla citattecken och ta bort kommat efter den sista posten.
 
+### Top tracks and Star Notes
+
+The five current featured songs are in [`src/data/shrineTopTracks.js`](./src/data/shrineTopTracks.js). Replace or reorder those entries when your picks change; a regular Spotify track share link is enough.
+
+Star Notes is a React component in [`src/components/StarNotes.jsx`](./src/components/StarNotes.jsx), styled by `src/components/StarNotes.css`. It reads and writes shared notes in the existing Firebase collection using Firebase's official browser SDK, and saves new notes in this browser if cloud sync is unavailable. Its ambient audio is served from `public/star-notes/sounds/spaceambient.mp3`.
+
+### Expression camera roll
+
+The camera-roll selection and accessible captions are in [`src/data/expressionPhotos.js`](./src/data/expressionPhotos.js). Original photos are kept in `src/assets/expression/cameraroll`; the site uses their resized WebP copies in `public/assets/expression/cameraroll` so the full-resolution originals are not shipped to visitors.
+
 Currently, two official plugins are available:
 
 - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)

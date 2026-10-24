@@ -1,9 +1,14 @@
-import { useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { siteContent } from './data/siteContent'
 import { shrineCategories } from './data/shrineCategories'
+import { shrineTopTracks } from './data/shrineTopTracks'
+import { expressionPhotos } from './data/expressionPhotos'
 import shrineEntries from './data/shrineEntries.json'
 import projectsPortal from './assets/projects-portal.gif'
+import futureCity from './assets/expression/futurecity.png'
 import './App.css'
+
+const StarNotes = lazy(() => import('./components/StarNotes'))
 
 function isVisibleShrineEntry(entry) {
   if (entry && typeof entry === 'object' && Object.values(entry).every((value) => value === '')) {
@@ -189,6 +194,10 @@ function MusicRoom() {
   const [activeCategory, setActiveCategory] = useState('all')
   const [activeSeriesFormat, setActiveSeriesFormat] = useState('all')
   const [activeMusicId, setActiveMusicId] = useState('')
+  const [activeTopTrackId, setActiveTopTrackId] = useState(shrineTopTracks[0]?.id || '')
+  const [isStarNotesOpen, setIsStarNotesOpen] = useState(false)
+  const starNotesTriggerRef = useRef(null)
+  const starNotesCloseRef = useRef(null)
   const entries = publishedShrineEntries
   const categoryEntries = activeCategory === 'all'
     ? entries.slice().sort((left, right) => (
@@ -202,16 +211,39 @@ function MusicRoom() {
         : entry.formats?.includes(activeSeriesFormat)
     ))
     : categoryEntries
+  const activeTopTrack = shrineTopTracks.find((track) => track.id === activeTopTrackId)
   const listeningEntry = entries.find((entry) => entry.id === activeMusicId && spotifyEmbedUrl(entry.link)) ||
     entries.find((entry) => entry.category === 'music' && spotifyEmbedUrl(entry.link))
+  const listeningSelection = activeTopTrack || listeningEntry
   const activeCategoryDetails = shrineCategories.find((category) => category.id === activeCategory)
   const seriesEntries = entries.filter((entry) => entry.category === 'series')
+
+  useEffect(() => {
+    if (!isStarNotesOpen) return undefined
+
+    const previousOverflow = document.body.style.overflow
+    const trigger = starNotesTriggerRef.current
+    document.body.style.overflow = 'hidden'
+    starNotesCloseRef.current?.focus()
+
+    const handleEscape = (event) => {
+      if (event.key === 'Escape') setIsStarNotesOpen(false)
+    }
+
+    window.addEventListener('keydown', handleEscape)
+
+    return () => {
+      document.body.style.overflow = previousOverflow
+      window.removeEventListener('keydown', handleEscape)
+      trigger?.focus()
+    }
+  }, [isStarNotesOpen])
 
   return (
     <section className="shrine-page" aria-labelledby="music-title">
       <header className="shrine-hero">
         <div className="shrine-hero__copy">
-          <p className="eyebrow">A living archive · {shrineCategories.length} little worlds</p>
+          <p className="eyebrow">A living archive</p>
           <h1 id="music-title">Things that keep the light on.</h1>
           <p>
             A growing collection of the stories, sounds, and souls that have shaped me.
@@ -231,21 +263,21 @@ function MusicRoom() {
           <p className="eyebrow">The listening nook</p>
           <h2 id="listening-title">Let something play.</h2>
           <p>
-            Pick an artist or album from the music shelf to listen here.
+            Pick one of the five songs I have on repeat right now, or choose something from the music shelf.
           </p>
-          {listeningEntry?.link && (
-            <a className="text-link" href={listeningEntry.link} target="_blank" rel="noreferrer">
-              Open {listeningEntry.title} on Spotify <ExternalLinkIcon />
+          {listeningSelection?.link && (
+            <a className="text-link" href={listeningSelection.link} target="_blank" rel="noreferrer">
+              Open {listeningSelection.title} on Spotify <ExternalLinkIcon />
             </a>
           )}
         </div>
         <div className="shrine-player">
-          {listeningEntry ? (
+          {listeningSelection ? (
             <iframe
-              title={`Spotify player for ${listeningEntry.title}`}
-              src={spotifyEmbedUrl(listeningEntry.link)}
+              title={`Spotify player for ${listeningSelection.title}`}
+              src={spotifyEmbedUrl(listeningSelection.link)}
               width="100%"
-              height={spotifyEmbedHeight(listeningEntry.link)}
+              height={spotifyEmbedHeight(listeningSelection.link)}
               allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
               loading="lazy"
             />
@@ -256,6 +288,45 @@ function MusicRoom() {
             </div>
           )}
         </div>
+        <div className="shrine-track-picker" role="group" aria-label="Choose one of my top five songs right now">
+          {shrineTopTracks.map((track) => (
+            <button
+              className={`shrine-track-choice ${activeTopTrack?.id === track.id ? 'is-active' : ''}`}
+              type="button"
+              key={track.id}
+              aria-pressed={activeTopTrack?.id === track.id}
+              onClick={() => {
+                setActiveTopTrackId(track.id)
+                setActiveMusicId('')
+              }}
+            >
+              <span className="shrine-track-choice__title">{track.title}</span>
+              <span className="shrine-track-choice__symbol" aria-hidden="true">♫</span>
+            </button>
+          ))}
+        </div>
+      </section>
+
+      <section className="shrine-star-notes" aria-labelledby="star-notes-title">
+        <div className="shrine-star-notes__copy">
+          <p className="eyebrow">A little offering</p>
+          <h2 id="star-notes-title">Leave something kind in the cosmos.</h2>
+          <p>
+            Plant a star, leave a blessing, or send a small note into the constellation.
+          </p>
+        </div>
+        <button
+          className="shrine-star-portal"
+          type="button"
+          aria-haspopup="dialog"
+          aria-label="Enter Star Notes"
+          onClick={() => setIsStarNotesOpen(true)}
+          ref={starNotesTriggerRef}
+        >
+          <span className="shrine-star-portal__orbit" aria-hidden="true" />
+          <span className="shrine-star-portal__core" aria-hidden="true">✦</span>
+          <span className="shrine-star-portal__label">Enter</span>
+        </button>
       </section>
 
       <section className="shrine-collection" id="shrine-collection" aria-labelledby="collection-title">
@@ -371,6 +442,7 @@ function MusicRoom() {
                   <div className="shrine-entry__links">
                     {hasSpotifyLink && (
                       <button className="shrine-entry__link" type="button" onClick={() => {
+                        setActiveTopTrackId('')
                         setActiveMusicId(entry.id)
                         document.getElementById('listening-title')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
                       }}>
@@ -407,6 +479,23 @@ function MusicRoom() {
           </div>
         )}
       </section>
+      {isStarNotesOpen && (
+        <div className="shrine-star-overlay" role="dialog" aria-modal="true" aria-label="Star Notes">
+          <button
+            className="shrine-star-overlay__close"
+            type="button"
+            aria-label="Close Star Notes and return to the Shrine"
+            onClick={() => setIsStarNotesOpen(false)}
+            ref={starNotesCloseRef}
+          >
+            <span aria-hidden="true">×</span>
+            <span>Return to Shrine</span>
+          </button>
+          <Suspense fallback={<p className="shrine-star-loading" role="status">Opening the star garden…</p>}>
+            <StarNotes onClose={() => setIsStarNotesOpen(false)} />
+          </Suspense>
+        </div>
+      )}
     </section>
   )
 }
@@ -443,36 +532,262 @@ function PortfolioView() {
   )
 }
 
-// Fashion & spirituality-rummet har ett litet riktigt innehåll redan nu.
-// Det gör portalen användbar vid lansering utan att vi behöver bygga hela moodboarden ännu.
-function FashionRoom() {
+const expressionPieces = [
+  {
+    id: 'self',
+    number: '01',
+    label: 'The self, in soft focus',
+    medium: 'Self portrait · ongoing',
+    image: '/assets/hero-davi.jpeg',
+    alt: 'A creative portrait of Davi',
+    note: 'Identity is not a finished image. It is something I get to keep becoming.',
+    question: 'What do you see when you stop trying to name it?',
+    color: 'rose',
+  },
+  {
+    id: 'future',
+    number: '02',
+    label: 'Dressing for a possible future',
+    medium: 'Solar punk · visual study',
+    image: '/legacy/pictures/solarpunk/solarpunkfashion.jpg',
+    alt: 'A solar punk fashion study',
+    note: 'A little world where self-expression and care for the future can exist together.',
+    question: 'What would you wear if the future felt kind?',
+    color: 'green',
+  },
+  {
+    id: 'worlds',
+    number: '03',
+    label: 'A city from another future',
+    medium: 'Neo-baroque · imagined city',
+    image: futureCity,
+    alt: 'A glowing neo-baroque city of spires, gardens and ornate towers at dusk',
+    note: 'A future with a little more ornament, drama and room for wonder.',
+    question: 'What kind of future would you want to wander through?',
+    color: 'blue',
+  },
+]
+
+const cameraEffects = [
+  { id: 'super-8', label: 'Super 8', filter: 'sepia(0.38) saturate(0.9) contrast(1.06)' },
+  { id: 'after-hours', label: 'After hours', filter: 'saturate(0.62) brightness(0.82) hue-rotate(12deg)' },
+  { id: 'dream-haze', label: 'Dream haze', filter: 'saturate(1.45) brightness(1.08) blur(0.55px)' },
+  { id: 'signal-drift', label: 'Signal drift', filter: '' },
+]
+
+function ExpressionRoom() {
+  const [activePieceId, setActivePieceId] = useState(expressionPieces[0].id)
+  const [activePhotoId, setActivePhotoId] = useState(expressionPhotos[0].id)
+  const [activeEffects, setActiveEffects] = useState([])
+  const activePiece = expressionPieces.find((piece) => piece.id === activePieceId) || expressionPieces[0]
+  const activePhoto = expressionPhotos.find((photo) => photo.id === activePhotoId) || expressionPhotos[0]
+  const imageFilter = activeEffects
+    .map((effectId) => cameraEffects.find((effect) => effect.id === effectId)?.filter)
+    .filter(Boolean)
+    .join(' ') || 'none'
+
+  function toggleCameraEffect(effectId) {
+    setActiveEffects((currentEffects) => (
+      currentEffects.includes(effectId)
+        ? currentEffects.filter((activeEffect) => activeEffect !== effectId)
+        : [...currentEffects, effectId]
+    ))
+  }
+
+  function moveExpressionField(event) {
+    if (event.pointerType === 'touch') {
+      return
+    }
+
+    const bounds = event.currentTarget.getBoundingClientRect()
+    const x = (event.clientX - bounds.left) / bounds.width
+    const y = (event.clientY - bounds.top) / bounds.height
+    event.currentTarget.style.setProperty('--field-x', `${x * 100}%`)
+    event.currentTarget.style.setProperty('--field-y', `${y * 100}%`)
+    event.currentTarget.style.setProperty('--tilt-x', `${(0.5 - y) * 4}deg`)
+    event.currentTarget.style.setProperty('--tilt-y', `${(x - 0.5) * 4}deg`)
+  }
+
+  function resetExpressionField(event) {
+    event.currentTarget.style.setProperty('--field-x', '50%')
+    event.currentTarget.style.setProperty('--field-y', '50%')
+    event.currentTarget.style.setProperty('--tilt-x', '0deg')
+    event.currentTarget.style.setProperty('--tilt-y', '0deg')
+  }
+
   return (
-    <section className="portal-view portal-view--fashion" aria-labelledby="fashion-title">
-      <div className="portal-view__header">
-        <p className="eyebrow">Fashion & content creation</p>
-        <h1 id="fashion-title">A space for personal style and visual storytelling. *Under construction</h1>
+    <section className="expression-page" aria-labelledby="expression-title">
+      <header className="expression-heading">
+        <div className="expression-heading__index">
+          <span className="expression-heading__symbol" aria-hidden="true">✳</span>
+          <p className="eyebrow">A personal field journal</p>
+          <span className="expression-heading__edition">VOL. 01 — STILL BECOMING</span>
+        </div>
+        <h1 id="expression-title">A life, <em>in</em><br />many forms.</h1>
+        <p className="expression-heading__intro">
+          Images, clothes, feelings, unfinished thoughts. Not a portfolio of answers —
+          just little windows into what it feels like to be me.
+        </p>
+      </header>
+
+      <div className={`expression-spread expression-spread--${activePiece.color}`}>
+        <div className="expression-image">
+          <img src={activePiece.image} alt={activePiece.alt} />
+          <span className="expression-image__stamp" aria-hidden="true">D / N3T<br />∞</span>
+          <span className="expression-image__caption">{activePiece.medium}</span>
+          <span className="expression-image__number" aria-hidden="true">{activePiece.number}</span>
+        </div>
+
+        <div className="expression-note">
+          <p className="expression-note__eyebrow">A fragment from the archive <span>✳</span></p>
+          <h2>{activePiece.label}</h2>
+          <p className="expression-note__body">{activePiece.note}</p>
+          <p className="expression-note__question">{activePiece.question}</p>
+          <div className="expression-index" aria-label="Choose a fragment">
+            {expressionPieces.map((piece) => (
+              <button
+                className={`expression-index__item ${piece.id === activePiece.id ? 'is-active' : ''}`}
+                type="button"
+                key={piece.id}
+                aria-pressed={piece.id === activePiece.id}
+                onClick={() => setActivePieceId(piece.id)}
+              >
+                <span>{piece.number}</span>
+                <span>{piece.label}</span>
+                <span aria-hidden="true">↗</span>
+              </button>
+            ))}
+          </div>
+          <p className="expression-note__footnote">A small collection. Open to interpretation.</p>
+        </div>
       </div>
 
-      <div className="portal-view__content">
-        <article className="portal-panel">
-          <h2>Style as self-expression</h2>
-          <p>
-            What we wear and what we choose to share both shape how we meet the world. This room
-            gathers my fashion references, personal style, and experiments in making images and
-            stories. It is a growing archive of moods and ideas, not a finished lookbook.
-          </p>
-        </article>
+      <section className="expression-orbit" aria-labelledby="expression-orbit-title">
+        <header className="expression-orbit__heading">
+          <div>
+            <p className="eyebrow">Follow a thread</p>
+            <h2 id="expression-orbit-title">A map of becoming</h2>
+          </div>
+          <p>Move through the field, or choose a point to return to its fragment.</p>
+        </header>
+        <div
+          className="expression-orbit__stage"
+          onPointerMove={moveExpressionField}
+          onPointerLeave={resetExpressionField}
+        >
+          <div className="expression-orbit__field" aria-hidden="true">
+            <span className="expression-orbit__track expression-orbit__track--outer" />
+            <span className="expression-orbit__track expression-orbit__track--inner" />
+            <span className="expression-orbit__core">
+              <span>still</span>
+              <strong>becoming</strong>
+              <span aria-hidden="true">✳</span>
+            </span>
+          </div>
+          <div className="expression-orbit__points" role="group" aria-label="Explore the story fragments">
+            {expressionPieces.map((piece) => (
+              <button
+                className={`expression-orbit__point ${piece.id === activePiece.id ? 'is-active' : ''}`}
+                type="button"
+                key={piece.id}
+                aria-pressed={piece.id === activePiece.id}
+                onClick={() => setActivePieceId(piece.id)}
+              >
+                <span className="expression-orbit__point-number">{piece.number}</span>
+                <span>{piece.label}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+        <p className="expression-orbit__caption" aria-live="polite">
+          Current fragment <span>{activePiece.number}</span> / {activePiece.label}
+        </p>
+      </section>
 
-        <article className="portal-panel">
-          <h2>Things taking shape</h2>
-          <ul>
-            <li>Outfits, styling experiments, and personal references</li>
-            <li>Fashion images and visual moodboards</li>
-            <li>Content ideas and glimpses behind the creative process</li>
-            <li>Small stories about the feeling behind a look</li>
-          </ul>
-        </article>
-      </div>
+      <section className="expression-camera" aria-labelledby="expression-camera-title">
+        <header className="expression-camera__heading">
+          <div>
+            <p className="eyebrow">A little image playground</p>
+            <h2 id="expression-camera-title">The camera roll</h2>
+          </div>
+          <p>A few moments, kept close. Choose a frame, then shift its mood with a filter.</p>
+        </header>
+
+        <div className="expression-camera__layout">
+          <div className="expression-camera__viewer">
+            <div className={`expression-camera__photo ${activeEffects.includes('signal-drift') ? 'has-signal-drift' : ''}`}>
+              <img src={activePhoto.image} alt={activePhoto.alt} style={{ filter: imageFilter }} />
+              {activeEffects.includes('signal-drift') && (
+                <>
+                  <span className="expression-camera__ghost expression-camera__ghost--cyan" aria-hidden="true">
+                    <img src={activePhoto.image} alt="" />
+                  </span>
+                  <span className="expression-camera__ghost expression-camera__ghost--pink" aria-hidden="true">
+                    <img src={activePhoto.image} alt="" />
+                  </span>
+                </>
+              )}
+              <span className="expression-camera__metadata">{activePhoto.mood} <i>·</i> {String(expressionPhotos.indexOf(activePhoto) + 1).padStart(2, '0')} / {String(expressionPhotos.length).padStart(2, '0')}</span>
+            </div>
+          </div>
+
+          <div className="expression-camera__controls">
+            <div className="expression-camera__effects">
+              <div className="expression-camera__effects-heading">
+                <div>
+                  <p className="eyebrow">Layer your effects</p>
+                  <p className="expression-camera__hint">Tap more than one to mix them.</p>
+                </div>
+                {activeEffects.length > 0 && (
+                  <button className="expression-camera__reset" type="button" onClick={() => setActiveEffects([])}>
+                    Clear
+                  </button>
+                )}
+              </div>
+              <div className="expression-camera__effect-list">
+                {cameraEffects.map((effect) => (
+                  <button
+                    className={`expression-camera__effect ${activeEffects.includes(effect.id) ? 'is-active' : ''}`}
+                    type="button"
+                    key={effect.id}
+                    aria-pressed={activeEffects.includes(effect.id)}
+                    onClick={() => toggleCameraEffect(effect.id)}
+                  >
+                    <span className={`expression-camera__effect-dot expression-camera__effect-dot--${effect.id}`} aria-hidden="true" />
+                    <span>{effect.label}</span>
+                    <span className="expression-camera__effect-state">{activeEffects.includes(effect.id) ? 'ON' : '+'}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="expression-camera__roll" role="group" aria-label="Choose a photo from the camera roll">
+              <p className="eyebrow">Frames <span>{String(expressionPhotos.length).padStart(2, '0')}</span></p>
+              <p className="expression-camera__roll-hint">Scroll to wander through the roll.</p>
+              <div className="expression-camera__filmstrip">
+                {expressionPhotos.map((photo, index) => (
+                  <button
+                    className={`expression-camera__frame ${photo.id === activePhoto.id ? 'is-active' : ''}`}
+                    type="button"
+                    key={photo.id}
+                    aria-label={`Frame ${index + 1}: ${photo.title}`}
+                    aria-pressed={photo.id === activePhoto.id}
+                    onClick={() => setActivePhotoId(photo.id)}
+                  >
+                    <img src={photo.image} alt="" loading="lazy" />
+                    <span>{String(index + 1).padStart(2, '0')}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <footer className="expression-colophon">
+        <span>Some things are better felt than explained.</span>
+        <span>Made of memory, instinct & becoming <b aria-hidden="true">✳</b></span>
+      </footer>
     </section>
   )
 }
@@ -699,7 +1014,7 @@ function App() {
   // Det är det stora React-flödet: state från URL --> komponenten som renderas.
   const page =
     route === 'music' ? <MusicRoom /> :
-    route === 'fashion' ? <FashionRoom /> :
+    route === 'expression' || route === 'fashion' ? <ExpressionRoom /> :
     route === 'portfolio' ? <PortfolioView /> :
     route === 'about' ? <AboutPage /> :
     route === 'projects' ? <ProjectsPage /> :
